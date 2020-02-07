@@ -1,10 +1,10 @@
 <?php
 
 
-namespace HomeCEU\DocumentCreator\Persistence\InMemory;
+namespace HomeCEU\DTS\Persistence\InMemory;
 
 
-use HomeCEU\DocumentCreator\Persistence\InMemory;
+use HomeCEU\DTS\Persistence\InMemory;
 
 class DocDataPersistence extends InMemory {
 

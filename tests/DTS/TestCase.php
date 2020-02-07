@@ -1,5 +1,5 @@
 <?php
-namespace HomeCEU\Tests\DocumentCreator;
+namespace HomeCEU\Tests\DTS;
 
 class TestCase extends \HomeCEU\Tests\TestCase {
 

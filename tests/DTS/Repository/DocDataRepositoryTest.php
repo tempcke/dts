@@ -1,13 +1,13 @@
 <?php
 
 
-namespace HomeCEU\Tests\DocumentCreator\Repository;
+namespace HomeCEU\Tests\DTS\Repository;
 
-use HomeCEU\DocumentCreator\Persistence;
-use HomeCEU\DocumentCreator\Persistence\InMemory\DocDataPersistence;
-use HomeCEU\DocumentCreator\Repository\DocDataRepository;
+use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
+use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\Tests\Faker;
-use HomeCEU\Tests\DocumentCreator\TestCase;
+use HomeCEU\Tests\DTS\TestCase;
 
 class DocDataRepositoryTest extends TestCase {
   const ENTITY_TYPE = 'person';

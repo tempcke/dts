@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DocumentCreator;
+namespace HomeCEU\DTS;
 
 
 interface Persistence {

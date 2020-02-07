@@ -1,8 +1,8 @@
 <?php
 
-namespace HomeCEU\DocumentCreator\UseCase;
+namespace HomeCEU\DTS\UseCase;
 
-use HomeCEU\DocumentCreator\Repository\DocDataRepository;
+use HomeCEU\DTS\Repository\DocDataRepository;
 
 class AddDocData {
   /** @var DocDataRepository */

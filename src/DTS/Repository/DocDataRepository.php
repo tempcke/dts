@@ -1,10 +1,10 @@
 <?php
 
-namespace HomeCEU\DocumentCreator\Repository;
+namespace HomeCEU\DTS\Repository;
 
 use DateTime;
-use HomeCEU\DocumentCreator\Entity\DocData as Entity;
-use HomeCEU\DocumentCreator\Persistence;
+use HomeCEU\DTS\Entity\DocData as Entity;
+use HomeCEU\DTS\Persistence;
 
 class DocDataRepository {
   /** @var Persistence */

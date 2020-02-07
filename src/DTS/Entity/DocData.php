@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DocumentCreator\Entity;
+namespace HomeCEU\DTS\Entity;
 
 
 class DocData {

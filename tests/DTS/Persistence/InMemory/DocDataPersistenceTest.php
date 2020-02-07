@@ -1,10 +1,10 @@
 <?php
 
 
-namespace HomeCEU\Tests\DocumentCreator\Persistence\InMemory;
+namespace HomeCEU\Tests\DTS\Persistence\InMemory;
 
-use HomeCEU\Tests\DocumentCreator\TestCase;
-use HomeCEU\DocumentCreator\Persistence\InMemory\DocDataPersistence;
+use HomeCEU\Tests\DTS\TestCase;
+use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
 
 class DocDataPersistenceTest extends TestCase {
 

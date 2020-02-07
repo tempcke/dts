@@ -1,13 +1,13 @@
 <?php
 
-namespace HomeCEU\Tests\DocumentCreator\UseCase;
+namespace HomeCEU\Tests\DTS\UseCase;
 
-use HomeCEU\DocumentCreator\Persistence;
-use HomeCEU\DocumentCreator\Persistence\InMemory\DocDataPersistence;
-use HomeCEU\DocumentCreator\Repository\DocDataRepository;
-use HomeCEU\DocumentCreator\UseCase\AddDocData;
+use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
+use HomeCEU\DTS\Repository\DocDataRepository;
+use HomeCEU\DTS\UseCase\AddDocData;
 use HomeCEU\Tests\Faker;
-use HomeCEU\Tests\DocumentCreator\TestCase;
+use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class AddDocDataTest extends TestCase {

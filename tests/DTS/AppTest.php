@@ -1,6 +1,6 @@
 <?php
 
-namespace HomeCEU\Tests\DocumentCreator;
+namespace HomeCEU\Tests\DTS;
 
 use PHPUnit\Framework\Assert;
 

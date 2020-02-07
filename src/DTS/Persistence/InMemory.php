@@ -1,9 +1,9 @@
 <?php
 
 
-namespace HomeCEU\DocumentCreator\Persistence;
+namespace HomeCEU\DTS\Persistence;
 
-use HomeCEU\DocumentCreator\Persistence;
+use HomeCEU\DTS\Persistence;
 use Ramsey\Uuid\Uuid;
 
 abstract class InMemory implements Persistence {

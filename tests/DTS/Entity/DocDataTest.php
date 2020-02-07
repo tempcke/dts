@@ -1,12 +1,12 @@
 <?php
 
 
-namespace HomeCEU\Tests\DocumentCreator\Entity;
+namespace HomeCEU\Tests\DTS\Entity;
 
 
-use HomeCEU\DocumentCreator\Entity\DocData;
+use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\Tests\Faker;
-use HomeCEU\Tests\DocumentCreator\TestCase;
+use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class DocDataTest extends TestCase {
