@@ -1,10 +1,10 @@
 # Setup instructions
 ## Using Docker
 ```bash
-git clone git@github.com:HomeCEU/dockerapp.git DocumentCreator
-cd DocumentCreator
+git clone git@github.com:HomeCEU/dockerapp.git dts
+cd dts
 ./app.sh config set GIT_REPO git@github.com:HomeCEU/DocumentCreator.git
-./app.sh config set APP_CONTAINER doc-creator
+./app.sh config set APP_CONTAINER dts
 ./app.sh init
 cd .docker
 docker-compose build

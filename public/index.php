@@ -23,18 +23,30 @@ $app->addRoutingMiddleware();
  */
 $errorMiddleware = $app->addErrorMiddleware(displayErrorDetails(), true, true);
 
-// Define app routes
-$app->get('/', function (Request $request, Response $response, $args) {
-  $response->getBody()->write("Hello world!");
-  return $response;
-});
 
-// Define app routes
-$app->get('/hello/{name}', function (Request $request, Response $response, $args) {
-  $name = $args['name'];
-  $response->getBody()->write("Hello, $name");
-  return $response;
-});
+$routes = [
+    new \HomeCEU\DTS\Api\Route('POST', '/docdata', HomeCEU\DTS\Api\DocDataApi::class . ':post')
+];
+/** @var Route $route */
+foreach ($routes as $route) {
+  $app->map([$route->method], $route->uri, $route->function);
+}
+//// Define app routes
+//$app->get('/', function (Request $request, Response $response, $args) {
+//  $response->getBody()->write("Hello world!");
+//  return $response;
+//});
+//// Define app routes
+//$app->post('/docdata', function (Request $request, Response $response, $args) {
+//  $reqData = $request->getParsedBody();
+//  //$reqData = $request->getBody()->getContents();
+//  $jsonString = json_encode($reqData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+//  $response->getBody()->write(var_export($_REQUEST,true));
+//  //$response->getBody()->write($jsonString);
+//  return $response;
+//});
+
+//$app->post('/docdata', HomeCEU\DTS\Api\DocDataApi::class . ':post');
 
 // Run app
 $app->run();
