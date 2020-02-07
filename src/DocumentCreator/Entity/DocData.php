@@ -4,7 +4,7 @@
 namespace HomeCEU\DocumentCreator\Entity;
 
 
-class TemplateData {
+class DocData {
   public $entityId;
   public $entityType;
   public $entityKey;
@@ -19,8 +19,8 @@ class TemplateData {
       'data'
   ];
 
-  public static function fromState(array $state): TemplateData {
-    $entity = new TemplateData;
+  public static function fromState(array $state): DocData {
+    $entity = new DocData;
     foreach ($entity->keys as $k) {
       if (array_key_exists($k, $state)) {
         $entity->{$k} = $state[$k];

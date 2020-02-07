@@ -19,5 +19,8 @@
         "psr-4": {
             "HomeCEU\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+	    "test": "vendor/bin/phpunit"
     }
 }

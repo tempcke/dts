@@ -3,10 +3,10 @@
 namespace HomeCEU\DocumentCreator\Repository;
 
 use DateTime;
-use HomeCEU\DocumentCreator\Entity\TemplateData as Entity;
+use HomeCEU\DocumentCreator\Entity\DocData as Entity;
 use HomeCEU\DocumentCreator\Persistence;
 
-class EntityRepository {
+class DocDataRepository {
   /** @var Persistence */
   private $persistence;
 

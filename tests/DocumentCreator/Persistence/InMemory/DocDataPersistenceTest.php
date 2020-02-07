@@ -4,11 +4,11 @@
 namespace HomeCEU\Tests\DocumentCreator\Persistence\InMemory;
 
 use HomeCEU\Tests\DocumentCreator\TestCase;
-use HomeCEU\DocumentCreator\Persistence\InMemory\EntityPersistence;
+use HomeCEU\DocumentCreator\Persistence\InMemory\DocDataPersistence;
 
-class EntityPersistenceTest extends TestCase {
+class DocDataPersistenceTest extends TestCase {
 
-  /** @var  EntityPersistence */
+  /** @var  DocDataPersistence */
   private $sut;
   
   private $idCol = 'entityId';
@@ -72,8 +72,8 @@ class EntityPersistenceTest extends TestCase {
     $this->assertNotEmpty($this->persistence()->generateId());
   }
 
-  protected function persistence(): EntityPersistence {
-    return $this->sut ?: $this->sut= new EntityPersistence();
+  protected function persistence(): DocDataPersistence {
+    return $this->sut ?: $this->sut= new DocDataPersistence();
   }
 
 }

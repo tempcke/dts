@@ -4,24 +4,24 @@
 namespace HomeCEU\Tests\DocumentCreator\Repository;
 
 use HomeCEU\DocumentCreator\Persistence;
-use HomeCEU\DocumentCreator\Persistence\InMemory\EntityPersistence;
-use HomeCEU\DocumentCreator\Repository\EntityRepository;
+use HomeCEU\DocumentCreator\Persistence\InMemory\DocDataPersistence;
+use HomeCEU\DocumentCreator\Repository\DocDataRepository;
 use HomeCEU\Tests\Faker;
 use HomeCEU\Tests\DocumentCreator\TestCase;
 
-class EntityRepositoryTest extends TestCase {
+class DocDataRepositoryTest extends TestCase {
   const ENTITY_TYPE = 'person';
 
   /** @var Persistence */
   protected $persistence;
 
-  /** @var EntityRepository */
+  /** @var DocDataRepository */
   protected $repo;
 
   public function setUp(): void {
     parent::setUp();
     $this->persistence = $this->persistence();
-    $this->repo = new EntityRepository($this->persistence);
+    $this->repo = new DocDataRepository($this->persistence);
   }
 
   public function testNewEntity() {
@@ -49,7 +49,7 @@ class EntityRepositoryTest extends TestCase {
   }
 
   protected function persistence() {
-    return new EntityPersistence();
+    return new DocDataPersistence();
   }
 
   protected function profileData() {

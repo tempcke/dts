@@ -2,13 +2,13 @@
 
 namespace HomeCEU\DocumentCreator\UseCase;
 
-use HomeCEU\DocumentCreator\Repository\EntityRepository;
+use HomeCEU\DocumentCreator\Repository\DocDataRepository;
 
-class AddEntity {
-  /** @var EntityRepository */
+class AddDocData {
+  /** @var DocDataRepository */
   private $repo;
 
-  public function __construct(EntityRepository $repo) {
+  public function __construct(DocDataRepository $repo) {
     $this->repo = $repo;
   }
 

@@ -4,15 +4,15 @@
 namespace HomeCEU\Tests\DocumentCreator\Entity;
 
 
-use HomeCEU\DocumentCreator\Entity\TemplateData;
+use HomeCEU\DocumentCreator\Entity\DocData;
 use HomeCEU\Tests\Faker;
 use HomeCEU\Tests\DocumentCreator\TestCase;
 use PHPUnit\Framework\Assert;
 
-class DataTest extends TestCase {
+class DocDataTest extends TestCase {
   public function testBuildFromState() {
     $entityState = $this->fakeEntity();
-    $entity = TemplateData::fromState($entityState);
+    $entity = DocData::fromState($entityState);
     Assert::assertEquals($entityState, $entity->toArray());
   }
 
