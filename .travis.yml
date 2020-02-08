@@ -7,15 +7,14 @@ php:
   - 7.2
   - 7.3
   - 7.4
-  - nightly
 
 matrix:
   allow_failures:
-    - php: nightly
+    - php: 7.2
   fast_finish: true
 
 install:
-  - travis_retry composer install --no-interaction
+  - composer install --no-interaction
 
 before_script:
   - mkdir -p build/logs
