@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\Tests\Api;
+namespace HomeCEU\Tests\Api\DocData;
 
 
 use HomeCEU\DTS\App;
@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 
-class PostDocDataTest extends TestCase {
+class DocDataAddTest extends TestCase {
   /** @var App */
   protected $app;
 

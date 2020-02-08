@@ -7,7 +7,7 @@ namespace HomeCEU\DTS;
 use HomeCEU\DTS\Api\Route;
 
 class App extends \Slim\App {
-  public $configFile = APP_ROOT.'/config/routes.php';
+  public $configFile = APP_ROOT.'/api/routes.php';
 
   public function __construct($container = []) {
     parent::__construct($container);

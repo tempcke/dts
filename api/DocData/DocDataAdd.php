@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DTS\Api;
+namespace HomeCEU\DTS\Api\DocData;
 
 
 use HomeCEU\DTS\Persistence;
@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 
-class PostDocData {
+class DocDataAdd {
   /** @var  Persistence */
   private $persistence;
 

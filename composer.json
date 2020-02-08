@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "HomeCEU\\": "src/"
+            "HomeCEU\\": "src/",
+            "HomeCEU\\DTS\\Api\\": "api/"
         }
     },
     "autoload-dev": {
