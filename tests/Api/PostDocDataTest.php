@@ -5,7 +5,7 @@ namespace HomeCEU\Tests\Api;
 
 
 use GuzzleHttp\RequestOptions;
-use HomeCEU\DTS\Api\DocDataApi;
+use HomeCEU\DTS\Api\PostDockData;
 use HomeCEU\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 use Slim\App;
@@ -62,7 +62,7 @@ class PostDocDataTest extends TestCase {
   protected function slimApp() {
     $app = AppFactory::create();
     $routes = [
-        new Route('POST', '/docdata', DocDataApi::class . ':post')
+        new Route('POST', '/docdata', PostDockData::class . ':post')
     ];
     /** @var Route $route */
     foreach ($routes as $route) {
