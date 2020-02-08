@@ -1,3 +1,9 @@
+[![Travis CI](https://img.shields.io/travis/homeceu/dts/master.svg)](https://travis-ci.org/homeceu/dts)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/homeceu/dts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/homeceu/dts/?branch=master)
+[![CodeCov](https://codecov.io/gh/homeceu/dts/branch/master/graph/badge.svg)](https://codecov.io/gh/homeceu/dts)
+[![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/logikostech/util/master/LICENSE)
+
+
 # Setup instructions
 ## Using Docker
 ```bash
