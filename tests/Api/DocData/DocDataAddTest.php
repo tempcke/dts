@@ -3,21 +3,13 @@
 
 namespace HomeCEU\Tests\Api\DocData;
 
-
-use HomeCEU\DTS\Api\App;
-use HomeCEU\Tests\TestCase;
+use HomeCEU\Tests\Api\TestCase;
 use PHPUnit\Framework\Assert;
-use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Environment;
-use Slim\Http\Request;
 
 class DocDataAddTest extends TestCase {
-  /** @var App */
-  protected $app;
 
   public function setUp(): void {
     parent::setUp();
-    $this->app = $this->slimApp();
   }
 
   public function testBar() {
@@ -37,22 +29,4 @@ class DocDataAddTest extends TestCase {
     );
   }
 
-  protected function slimApp() {
-    $app = new App([]);
-
-    return $app;
-  }
-
-
-  public function post($uri, array $data): ResponseInterface {
-    $method = 'POST';
-    $env = Environment::mock([
-        'REQUEST_METHOD' => strtoupper($method),
-        'REQUEST_URI'    => $uri,
-        'CONTENT_TYPE'   => 'application/json'
-    ]);
-    $req = Request::createFromEnvironment($env)->withParsedBody($data);
-    $this->app->getContainer()['request'] = $req;
-    return $this->app->run(true);
-  }
 }

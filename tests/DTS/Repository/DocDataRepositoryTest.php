@@ -8,6 +8,7 @@ use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\Tests\Faker;
 use HomeCEU\Tests\DTS\TestCase;
+use PHPUnit\Framework\Assert;
 
 class DocDataRepositoryTest extends TestCase {
   const ENTITY_TYPE = 'person';
@@ -37,6 +38,7 @@ class DocDataRepositoryTest extends TestCase {
     $this->assertNotEmpty($e->createdAt);
   }
 
+
   public function testSave() {
     $fake = Faker::generator();
     $type = self::ENTITY_TYPE;
@@ -46,6 +48,32 @@ class DocDataRepositoryTest extends TestCase {
     $this->repo->save($entity);
     $savedEntity = $this->persistence->retrieve($entity->dataId);
     $this->assertEquals($entity->toArray(), $savedEntity);
+  }
+
+  public function testDocDataHistory() {
+    $a1 = $this->fakeDocData('A');
+    $a2 = $this->fakeDocData('A');
+    $b1 = $this->fakeDocData('B');
+    $this->repo->save($a1);
+    $this->repo->save($b1);
+    $this->repo->save($a2);
+    $versions = $this->repo->allVersions('A');
+    Assert::assertSame(2, count($versions));
+    $fetchedIds = [];
+    foreach ($versions as $v) {
+      var_dump($v);
+      Assert::assertSame('A', $v['dataKey']);
+      array_push($fetchedIds, $v['dataId']);
+    }
+    Assert::assertContains($a1->dataId, $fetchedIds);
+    Assert::assertContains($a2->dataId, $fetchedIds);
+  }
+
+  protected function fakeDocData($key=null) {
+    if (is_null($key)) $key = uniqid();
+    $type = self::ENTITY_TYPE;
+    $data = ['hash'=>Faker::generator()->md5];
+    return $this->repo->newDocData($type, $key, $data);
   }
 
   protected function persistence() {

@@ -72,6 +72,8 @@ class DocDataPersistenceTest extends TestCase {
     $this->assertNotEmpty($this->persistence()->generateId());
   }
 
+
+
   protected function persistence(): DocDataPersistence {
     return $this->sut ?: $this->sut= new DocDataPersistence();
   }

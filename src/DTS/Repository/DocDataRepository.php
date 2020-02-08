@@ -29,4 +29,10 @@ class DocDataRepository {
         ]
     );
   }
+
+  public function allVersions(string $key) {
+    return $this->persistence->find([
+        'dataKey'=>$key
+    ]);
+  }
 }

@@ -9,4 +9,6 @@ interface Persistence {
   public function persist($data);
   public function retrieve($id);
   public function delete($id);
+
+  public function find(array $filter);
 }
