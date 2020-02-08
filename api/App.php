@@ -1,10 +1,8 @@
 <?php
 
 
-namespace HomeCEU\DTS;
+namespace HomeCEU\DTS\Api;
 
-
-use HomeCEU\DTS\Api\Route;
 
 class App extends \Slim\App {
   public $configFile = APP_ROOT.'/api/routes.php';

@@ -4,7 +4,7 @@
 namespace HomeCEU\Tests\Api\DocData;
 
 
-use HomeCEU\DTS\App;
+use HomeCEU\DTS\Api\App;
 use HomeCEU\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;

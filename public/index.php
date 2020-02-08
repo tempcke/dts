@@ -1,6 +1,6 @@
 <?php
 
-use HomeCEU\DTS\App;
+use HomeCEU\DTS\Api\App;
 
 define('APP_ROOT', realpath(__DIR__.'/../'));
 init_composer();
