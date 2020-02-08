@@ -1,0 +1,41 @@
+language: php
+os: linux
+
+sudo: false
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+  - nightly
+
+matrix:
+  allow_failures:
+    - php: nightly
+  fast_finish: true
+
+install:
+  - travis_retry composer install --no-interaction
+
+before_script:
+  - mkdir -p build/logs
+
+script:
+  - phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+  # Submit coverage report to codecov.io
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+
+# cache composer for faster tests
+cache:
+  directories:
+    - vendor
+    - $HOME/.cache/composer
