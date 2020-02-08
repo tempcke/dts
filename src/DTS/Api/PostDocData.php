@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 
-class PostDockData {
+class PostDocData {
   /** @var  Persistence */
   private $persistence;
 
