@@ -27,9 +27,14 @@ class PostDocDataTest extends TestCase {
 
     Assert::assertSame($response->getStatusCode(), 200);
     $responseData = json_decode((string)$response->getBody(), true);
-    $requestData = json_decode($requestJson, true);
-    Assert::assertEquals($requestData, $responseData);
-    //$this->assertSame((string)$response->getBody(), "Welcome to the Adroit Library Demo.");
+    $keys = ['dataId', 'docType', 'dataKey', 'createdAt'];
+    foreach ($keys as $key) {
+      Assert::assertFalse(empty($responseData[$key]));
+    }
+    Assert::assertFalse(
+        array_key_exists('data', $responseData),
+        "ERROR: post /docdata should not respond with the data"
+    );
   }
 
   protected function slimApp() {

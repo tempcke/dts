@@ -5,16 +5,16 @@ namespace HomeCEU\DTS\Entity;
 
 
 class DocData {
-  public $entityId;
-  public $entityType;
-  public $entityKey;
+  public $dataId;
+  public $docType;
+  public $dataKey;
   public $createdAt;
   public $data;
 
   private $keys = [
-      'entityId',
-      'entityType',
-      'entityKey',
+      'dataId',
+      'docType',
+      'dataKey',
       'createdAt',
       'data'
   ];

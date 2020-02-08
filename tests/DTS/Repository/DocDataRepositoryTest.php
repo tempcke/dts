@@ -29,11 +29,11 @@ class DocDataRepositoryTest extends TestCase {
     $type = self::ENTITY_TYPE;
     $key = $fake->md5;
     $data = $this->profileData();
-    $e = $this->repo->newEntity($type, $key, $data);
-    $this->assertSame($type, $e->entityType);
-    $this->assertSame($key, $e->entityKey);
+    $e = $this->repo->newDocData($type, $key, $data);
+    $this->assertSame($type, $e->docType);
+    $this->assertSame($key, $e->dataKey);
     $this->assertSame($data, $e->data);
-    $this->assertNotEmpty($e->entityId);;
+    $this->assertNotEmpty($e->dataId);;
     $this->assertNotEmpty($e->createdAt);
   }
 
@@ -42,9 +42,9 @@ class DocDataRepositoryTest extends TestCase {
     $type = self::ENTITY_TYPE;
     $key = $fake->md5;
     $data = $this->profileData();
-    $entity = $this->repo->newEntity($type, $key, $data);
+    $entity = $this->repo->newDocData($type, $key, $data);
     $this->repo->save($entity);
-    $savedEntity = $this->persistence->retrieve($entity->entityId);
+    $savedEntity = $this->persistence->retrieve($entity->dataId);
     $this->assertEquals($entity->toArray(), $savedEntity);
   }
 

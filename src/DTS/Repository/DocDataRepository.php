@@ -3,7 +3,7 @@
 namespace HomeCEU\DTS\Repository;
 
 use DateTime;
-use HomeCEU\DTS\Entity\DocData as Entity;
+use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Persistence;
 
 class DocDataRepository {
@@ -14,16 +14,16 @@ class DocDataRepository {
     $this->persistence = $persistence;
   }
 
-  public function save(Entity $entity) {
-    $this->persistence->persist($entity->toArray());
+  public function save(DocData $docData) {
+    $this->persistence->persist($docData->toArray());
   }
 
-  public function newEntity($type, $key, $data) {
-    return Entity::fromState(
+  public function newDocData($type, $key, $data) {
+    return DocData::fromState(
         [
-            'entityId'   => $this->persistence->generateId(),
-            'entityType' => $type,
-            'entityKey'  => $key,
+            'dataId'     => $this->persistence->generateId(),
+            'docType'    => $type,
+            'dataKey'    => $key,
             'data'       => $data,
             'createdAt'  => (new DateTime())->format(DateTime::ISO8601)
         ]

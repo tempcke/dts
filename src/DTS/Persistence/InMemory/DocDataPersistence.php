@@ -9,10 +9,10 @@ use HomeCEU\DTS\Persistence\InMemory;
 class DocDataPersistence extends InMemory {
 
   public function getTable() {
-    return 'entity';
+    return 'docdata';
   }
 
   public function idColumns(): array {
-    return ['entityId'];
+    return ['dataId'];
   }
 }

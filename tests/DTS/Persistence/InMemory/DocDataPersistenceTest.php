@@ -11,11 +11,11 @@ class DocDataPersistenceTest extends TestCase {
   /** @var  DocDataPersistence */
   private $sut;
   
-  private $idCol = 'entityId';
+  private $idCol = 'dataId';
 
   public function testGetTable() {
     $this->assertSame(
-        'entity',
+        'docdata',
         $this->persistence()->getTable());
   }
 

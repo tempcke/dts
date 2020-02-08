@@ -28,18 +28,18 @@ class AddDocDataTest extends TestCase {
   public function testCanAddEntity() {
     $fake = Faker::generator();
     $inputs = [
-        'entityType' => self::ENTITY_TYPE,
-        'entityKey' => $fake->md5,
+        'docType' => self::ENTITY_TYPE,
+        'dataKey' => $fake->md5,
         'data' => $this->profileData()
     ];
     $uc = new AddDocData($this->repository);
-    $entity = $uc->add(
-        $inputs['entityType'],
-        $inputs['entityKey'],
+    $docData = $uc->add(
+        $inputs['docType'],
+        $inputs['dataKey'],
         $inputs['data']
     );
-    $savedEntity = $this->persistence->retrieve($entity['entityId']);
-    $this->assertEquals($entity, $savedEntity);
+    $savedDocData = $this->persistence->retrieve($docData['dataId']);
+    Assert::assertEquals($docData, $savedDocData);
   }
 
   protected function profileData() {
