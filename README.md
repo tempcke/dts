@@ -3,7 +3,7 @@
 ```bash
 git clone git@github.com:HomeCEU/dockerapp.git dts
 cd dts
-./app.sh config set GIT_REPO git@github.com:HomeCEU/DocumentCreator.git
+./app.sh config set GIT_REPO git@github.com:HomeCEU/dts.git
 ./app.sh config set APP_CONTAINER dts
 ./app.sh init
 cd .docker
