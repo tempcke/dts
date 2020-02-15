@@ -25,3 +25,20 @@ if you wish you can customize the exposed port with
 ```
 
 or just edit config yourself.
+
+## command exec
+You can execute commands in the container from the outside
+
+```bash
+./app.sh exec composer update
+```
+
+also vendor/bin is in `$PATH` so you can
+
+```bash
+# run phpunit
+./app.sh exec phpunit
+
+# create a migration
+./app.sh exec phinx create MyMigration
+````
