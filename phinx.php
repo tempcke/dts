@@ -11,13 +11,13 @@ return
         'default_database' => 'development',
 
         'development' => [
-            'adapter' => 'mysql',
-            'host' => getenv('DB_HOST'),
-            'name' => getenv('DB_NAME'),
-            'user' => getenv('DB_USER'),
-            'pass' => getenv('DB_PASS'),
-            'port' => '3306',
-            'charset' => 'utf8',
+            'adapter' => getenv('DB_DRIVER')?:'mysql',
+            'host'    => getenv('DB_HOST'),
+            'name'    => getenv('DB_NAME'),
+            'user'    => getenv('DB_USER'),
+            'pass'    => getenv('DB_PASS'),
+            'port'    => getenv('DB_PORT')?:3306,
+            'charset' => getenv('DB_CHARSET')?:'utf8',
         ]
     ],
     'version_order' => 'creation'

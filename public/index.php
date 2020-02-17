@@ -7,15 +7,7 @@ init_composer();
 runApp();
 
 function runApp() {
-  // Create and configure Slim app
-  $config = [
-      'settings' => [
-          'addContentLengthHeader' => false,
-      ]
-  ];
-  $app = new App($config);
-
-  // Run app
+  $app = new App();
   $app->run();
 }
 
