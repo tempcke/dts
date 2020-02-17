@@ -15,6 +15,8 @@ cd dts
 cd .docker
 docker-compose build
 docker-compose up
+cd ..
+./app.sh exec phinx migrate
 ```
 http://localhost:8080
 
