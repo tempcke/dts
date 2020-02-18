@@ -1,11 +1,11 @@
 <?php
 
-namespace HomeCEU\Tests\DTS;
+namespace HomeCEU\Tests\DTS\Db;
 
 use HomeCEU\DTS\Db\Config as DbConfig;
 use PHPUnit\Framework\Assert;
 
-class DbConfigTest extends TestCase {
+class ConfigTest extends TestCase {
 
   public function testSqliteDefaults() {
     $c = DbConfig::sqlite();

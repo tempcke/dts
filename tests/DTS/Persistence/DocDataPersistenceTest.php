@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\Persistence;
 
 
 use HomeCEU\DTS\Db;
+use HomeCEU\DTS\Db\Config as DbConfig;
 use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\Tests\DTS\TestCase;
@@ -23,8 +24,6 @@ class DocDataPersistenceTest extends TestCase {
 
   public function setUp(): void {
     parent::setUp();
-    $this->db = Db::connection();
-    $this->p = new DocDataPersistence($this->db);
   }
 
   public function tearDown(): void {
@@ -36,6 +35,8 @@ class DocDataPersistenceTest extends TestCase {
 
   public function testPersist() {
     $data = $this->docData();
+    $this->db = Db::newConnection();
+    $this->p = new DocDataPersistence($this->db);
     $this->p->persist($data->toArray());
     $table = DocDataPersistence::TABLE_DOCDATA;
     $matchingRecordCount = $this->db->count(

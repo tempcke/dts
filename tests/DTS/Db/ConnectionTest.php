@@ -1,13 +1,13 @@
 <?php
 
 
-namespace HomeCEU\Tests\DTS;
+namespace HomeCEU\Tests\DTS\Db;
 
 use Exception;
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Db\Config as DbConfig;
 
-class DbConnectionTest  extends TestCase {
+class ConnectionTest  extends TestCase {
   private $table;
 
   /** @var Connection */
