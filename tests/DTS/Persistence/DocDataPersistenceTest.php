@@ -24,6 +24,8 @@ class DocDataPersistenceTest extends TestCase {
 
   public function setUp(): void {
     parent::setUp();
+    $this->db = Db::newConnection();
+    $this->p = new DocDataPersistence($this->db);
   }
 
   public function tearDown(): void {
@@ -33,19 +35,37 @@ class DocDataPersistenceTest extends TestCase {
     }
   }
 
+  public function testGenerateId() {
+    $id1 = $this->p->generateId();
+    $id2 = $this->p->generateId();
+    Assert::assertNotEmpty($id1);
+    Assert::assertNotEquals($id1, $id2);
+  }
+
   public function testPersist() {
     $data = $this->docData();
-    $this->db = Db::newConnection();
-    $this->p = new DocDataPersistence($this->db);
-    $this->p->persist($data->toArray());
-    $table = DocDataPersistence::TABLE_DOCDATA;
-    $matchingRecordCount = $this->db->count(
-        $table,
-        'data_id=:data_id',
-        [':data_id'=>$data->dataId]
+    $this->persist($data);
+    Assert::assertEquals(
+        1,
+        $this->db->count(
+            DocDataPersistence::TABLE_DOCDATA,
+            'data_id=:data_id',
+            [':data_id'=>$data->dataId]
+        )
     );
-    Assert::assertEquals(1, $matchingRecordCount);
-    $this->addCleanup(function() use($table, $data){
+  }
+
+  public function testCanRetrieveSavedRecord() {
+    $data = $this->docData();
+    $this->persist($data);
+    $retrieved = $this->p->retrieve($data->dataId);
+    var_dump($retrieved);
+  }
+
+  protected function persist(DocData $data) {
+    $this->p->persist($data->toArray());
+    $this->addCleanup(function() use($data){
+      $table = DocDataPersistence::TABLE_DOCDATA;
       $this->db->query("DELETE FROM {$table} WHERE data_id=?", $data->dataId);
     });
   }
