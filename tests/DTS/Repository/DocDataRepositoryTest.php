@@ -52,24 +52,15 @@ class DocDataRepositoryTest extends TestCase {
 
 
   public function testDocDataHistory() {
-    $this->markTestSkipped('not done');
-    return;
-    $a1 = $this->fakeDocData('A');
-    $a2 = $this->fakeDocData('A');
-    $b1 = $this->fakeDocData('B');
-    $this->repo->save($a1);
-    $this->repo->save($b1);
-    $this->repo->save($a2);
-    $versions = $this->repo->allVersions('A');
-    Assert::assertSame(2, count($versions));
-    $fetchedIds = [];
-    foreach ($versions as $v) {
-      var_dump($v);
-      Assert::assertSame('A', $v['dataKey']);
-      array_push($fetchedIds, $v['dataId']);
-    }
-    Assert::assertContains($a1->dataId, $fetchedIds);
-    Assert::assertContains($a2->dataId, $fetchedIds);
+    $persistence = $this->persistenceSpy();
+    $repo = new DocDataRepository($persistence);
+    $repo->allVersions('a');
+    Assert::assertEquals(['dataKey'=>'a'], $persistence->spiedFindFilter);
+    Assert::assertContains('dataId', $persistence->spiedFindCols);
+    Assert::assertContains('docType', $persistence->spiedFindCols);
+    Assert::assertContains('dataKey', $persistence->spiedFindCols);
+    Assert::assertContains('createdAt', $persistence->spiedFindCols);
+    Assert::assertNotContains('data', $persistence->spiedFindCols);
   }
 
   protected function fakeDocData($key=null) {
@@ -91,5 +82,37 @@ class DocDataRepositoryTest extends TestCase {
         "address"   => $fake->address,
         "email"     => $fake->email
     ];
+  }
+  
+  protected function persistenceSpy() {
+    $p = new class implements Persistence {
+      
+      public $spiedFindFilter;
+      public $spiedFindCols;
+      
+      public $spiedRetrieveId;
+      public $spiedRetrieveCols;
+      
+      public $spiedPersistData;
+
+      public function generateId() {}
+
+      public function persist($data) {
+        $this->spiedPersistData = $data;
+      }
+
+      public function retrieve($id, array $cols = ['*']) {
+        $this->spiedRetrieveId = $id;
+        $this->spiedRetrieveCols = $cols;
+      }
+
+      public function find(array $filter, array $cols = ['*']) {
+        $this->spiedFindFilter = $filter;
+        $this->spiedFindCols = $cols;
+      }
+
+      public function delete($id) {}
+    };
+    return $p;
   }
 }

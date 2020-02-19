@@ -21,18 +21,22 @@ class DocDataRepository {
   public function newDocData($type, $key, $data) {
     return DocData::fromState(
         [
-            'dataId'     => $this->persistence->generateId(),
-            'docType'    => $type,
-            'dataKey'    => $key,
-            'data'       => $data,
-            'createdAt'  => (new DateTime())->format(DateTime::ISO8601)
+            'dataId' => $this->persistence->generateId(),
+            'docType' => $type,
+            'dataKey' => $key,
+            'data' => $data,
+            'createdAt' => (new DateTime())->format(DateTime::ISO8601)
         ]
     );
   }
 
   public function allVersions(string $key) {
-    return $this->persistence->find([
-        'dataKey'=>$key
-    ]);
+    $filter = [
+        'dataKey' => $key
+    ];
+    $cols = [
+        'dataId', 'docType', 'dataKey', 'createdAt'
+    ];
+    return $this->persistence->find($filter, $cols);
   }
 }

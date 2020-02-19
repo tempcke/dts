@@ -12,21 +12,28 @@ class DocDataAddTest extends TestCase {
     parent::setUp();
   }
 
-  public function testBar() {
-    $requestJson = '{"docType":"courseCompletionCertificate","dataKey":"ABC123","data":{"name":"Fred"}}';
-    $data = json_decode($requestJson, true);
-    $response = $this->post('/docdata', $data);
+  public function testPostNewDocData() {
+    $requestArray = [
+        "docType" => (new \ReflectionClass($this))->getShortName(),
+        "dataKey" => __FUNCTION__,
+        "data" => ["someid"=>uniqid()]
+    ];
 
-    Assert::assertSame($response->getStatusCode(), 200);
-    $responseData = json_decode((string)$response->getBody(), true);
-    $keys = ['dataId', 'docType', 'dataKey', 'createdAt'];
-    foreach ($keys as $key) {
+    $response = $this->post('/docdata', $requestArray);
+    $responseBody = strval($response->getBody());
+    $responseData = json_decode($responseBody, true);
+
+    $expectedResponseCode = 200;
+    $expectedResponseKeys = ['dataId', 'docType', 'dataKey', 'createdAt'];
+
+    Assert::assertSame($response->getStatusCode(), $expectedResponseCode);
+    foreach ($expectedResponseKeys as $key) {
       Assert::assertFalse(empty($responseData[$key]));
     }
+
     Assert::assertFalse(
         array_key_exists('data', $responseData),
         "ERROR: post /docdata should not respond with the data"
     );
   }
-
 }
