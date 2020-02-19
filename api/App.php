@@ -16,8 +16,7 @@ class App extends \Slim\App {
   }
 
   private function _diContainer() {
-    $services = include $this->servicesFile;
-    return new Container($services);
+    return new DiContainer();
   }
 
   private function _routes() {
