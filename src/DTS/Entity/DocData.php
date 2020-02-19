@@ -30,7 +30,7 @@ class DocData {
   }
 
   protected static function valueFromState(array $state, string $key) {
-    if ($key == 'createdAt')
+    if ($key == 'createdAt' && is_string($state[$key]))
       return new \DateTime($state[$key]);
     return $state[$key];
   }

@@ -21,7 +21,7 @@ abstract class InMemory implements Persistence {
     $this->data[$this->getIdFromData($data)] = $data;
   }
 
-  public function retrieve($id) {
+  public function retrieve($id, array $cols=['*']) {
     if (!$this->has($id))
       throw new \OutOfBoundsException("No such user {$id}");
 
@@ -55,7 +55,7 @@ abstract class InMemory implements Persistence {
     return array_key_exists($id, $this->data);
   }
 
-  public function find(array $filter) {
+  public function find(array $filter, array $cols=['*']) {
     $matching = [];
     foreach ($this->data as $id=>$entity) {
       foreach ($filter as $k=>$v) {
