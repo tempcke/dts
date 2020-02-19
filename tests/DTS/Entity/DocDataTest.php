@@ -10,9 +10,26 @@ use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class DocDataTest extends TestCase {
+
+  public $iso8601;
+
+  public function setUp(): void {
+    parent::setUp();
+    $fake = Faker::generator();
+    $this->iso8601 = $fake->iso8601;
+  }
+
   public function testBuildFromState() {
     $entityState = $this->fakeEntity();
     $entity = DocData::fromState($entityState);
+    Assert::assertEquals($entityState, $entity->toArray());
+  }
+
+  public function testConvertsStringDatetime() {
+    $entityState = $this->fakeEntity();
+    $stateWithStringDatetime = $entityState;
+    $stateWithStringDatetime['createdAt'] = $this->iso8601;
+    $entity = DocData::fromState($stateWithStringDatetime);
     Assert::assertEquals($entityState, $entity->toArray());
   }
 
@@ -20,9 +37,9 @@ class DocDataTest extends TestCase {
     $fake = Faker::generator();
     return [
         'dataId'   => $fake->uuid,
-        'docType' => 'courseCompletionCertificate',
+        'docType'  => 'courseCompletionCertificate',
         'dataKey'  => $fake->md5,
-        'createdAt'  => $fake->iso8601,
+        'createdAt'  => new \DateTime($this->iso8601),
         'data'       => [
             "firstName" => $fake->firstName,
             "lastName"  => $fake->lastName,

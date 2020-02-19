@@ -23,10 +23,16 @@ class DocData {
     $entity = new DocData;
     foreach ($entity->keys as $k) {
       if (array_key_exists($k, $state)) {
-        $entity->{$k} = $state[$k];
+        $entity->{$k} = static::valueFromState($state, $k);
       }
     }
     return $entity;
+  }
+
+  protected static function valueFromState(array $state, string $key) {
+    if ($key == 'createdAt')
+      return new \DateTime($state[$key]);
+    return $state[$key];
   }
 
   public function toArray() {

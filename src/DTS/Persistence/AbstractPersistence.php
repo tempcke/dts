@@ -51,7 +51,7 @@ abstract class AbstractPersistence implements Persistence {
     return $result;
   }
 
-  public function hydrate(array $entity) {
+  public function hydrate($entity) {
     $result = array();
 
     foreach ($entity as $k => $v) {
