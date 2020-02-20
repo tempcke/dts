@@ -54,8 +54,10 @@ class DocDataRepositoryTest extends TestCase {
   public function testDocDataHistory() {
     $persistence = $this->persistenceSpy();
     $repo = new DocDataRepository($persistence);
-    $repo->allVersions('a');
-    Assert::assertEquals(['dataKey'=>'a'], $persistence->spiedFindFilter);
+    $docType = 'd';
+    $dataKey = 'k';
+    $repo->allVersions($docType, $dataKey);
+    Assert::assertEquals(['docType'=>$docType, 'dataKey'=>$dataKey], $persistence->spiedFindFilter);
     Assert::assertContains('dataId', $persistence->spiedFindCols);
     Assert::assertContains('docType', $persistence->spiedFindCols);
     Assert::assertContains('dataKey', $persistence->spiedFindCols);

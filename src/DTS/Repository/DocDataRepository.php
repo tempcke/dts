@@ -30,9 +30,10 @@ class DocDataRepository {
     );
   }
 
-  public function allVersions(string $key) {
+  public function allVersions(string $docType, string $dataKey) {
     $filter = [
-        'dataKey' => $key
+        'docType' => $docType,
+        'dataKey' => $dataKey
     ];
     $cols = [
         'dataId', 'docType', 'dataKey', 'createdAt'
