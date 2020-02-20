@@ -48,4 +48,15 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     $this->app->getContainer()['request'] = $req;
     return $this->app->run(true);
   }
+
+  protected function head($uri): ResponseInterface {
+    $method = 'HEAD';
+    $env = Environment::mock([
+        'REQUEST_METHOD' => strtoupper($method),
+        'REQUEST_URI'    => $uri
+    ]);
+    $req = Request::createFromEnvironment($env);
+    $this->app->getContainer()['request'] = $req;
+    return $this->app->run(true);
+  }
 }

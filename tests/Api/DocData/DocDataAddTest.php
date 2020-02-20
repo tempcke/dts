@@ -3,18 +3,13 @@
 
 namespace HomeCEU\Tests\Api\DocData;
 
-use HomeCEU\Tests\Api\TestCase;
 use PHPUnit\Framework\Assert;
 
 class DocDataAddTest extends TestCase {
 
-  public function setUp(): void {
-    parent::setUp();
-  }
-
   public function testPostNewDocData() {
     $requestArray = [
-        "docType" => (new \ReflectionClass($this))->getShortName(),
+        "docType" => $this->docType,
         "dataKey" => __FUNCTION__,
         "data" => ["someid"=>uniqid()]
     ];
