@@ -58,12 +58,19 @@ abstract class InMemory implements Persistence {
   public function find(array $filter, array $cols=['*']) {
     $matching = [];
     foreach ($this->data as $id=>$entity) {
-      foreach ($filter as $k=>$v) {
-        if (!empty($entity[$k]) && $entity[$k]==$v) {
-          array_push($matching, $v);
-        }
+      if ($this->matchesFilter($entity, $filter)) {
+        array_push($matching, $entity);
       }
     }
     return $matching;
+  }
+
+  private function matchesFilter(array $entity, array $filter) {
+    foreach ($filter as $k=>$v) {
+      if (empty($entity[$k]) || $entity[$k] != $v) {
+        return false;
+      }
+    }
+    return true;
   }
 }
