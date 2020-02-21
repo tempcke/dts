@@ -28,7 +28,7 @@ class TemplatePersistenceTest extends TestCase {
   }
 
   public function tearDown(): void {
-    $this->db->deleteWhere('template', ['docType'=>$this->docType]);
+    $this->db->deleteWhere('template', ['doc_type'=>$this->docType]);
     parent::tearDown();
   }
 
@@ -40,9 +40,18 @@ class TemplatePersistenceTest extends TestCase {
     Assert::assertNotEquals($id1, $id2);
   }
 
-  public function testPersist() {
+  public function testCanRetrievePersistedRecord() {
     $record = $this->fakeTemplate('A');
-    $this->fail('this is where I left off');
+    $this->p->persist($record);
+    $retrieved = $this->p->retrieve($record['templateId']);
+    Assert::assertEquals($record, $retrieved);
+  }
+
+  public function testNoDelete() {
+    $record = $this->fakeTemplate('A');
+    $this->p->persist($record);
+    $this->expectException(\Exception::class);
+    $this->p->delete($record['templateId']);
   }
 
   protected function fakeTemplate($key) {
@@ -53,7 +62,7 @@ class TemplatePersistenceTest extends TestCase {
         'templateKey' => $key,
         'name' => 'name',
         'author' => 'Phil Robinson',
-        'createdAt' => new \DateTime(),
+        'createdAt' => new \DateTime('yesterday'),
         'body' => 'hi {{name}}'
     ];
   }

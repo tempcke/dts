@@ -6,34 +6,28 @@ namespace HomeCEU\DTS\Persistence;
 
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence;
-use Ramsey\Uuid\Uuid;
 
-class TemplatePersistence implements Persistence {
+class TemplatePersistence extends AbstractPersistence implements Persistence {
+  const TABLE = 'template';
+  const ID_COL = 'template_id';
 
-  /** @var Connection */
-  private $db;
+  private $map = [
+      'templateId' => 'template_id',
+      'docType' => 'doc_type',
+      'templateKey' => 'template_key',
+      'createdAt' => 'created_at'
+  ];
 
   public function __construct(Connection $db) {
-    $this->db = $db;
-  }
-
-  public function generateId() {
-    return Uuid::uuid1();
-  }
-
-  public function persist($data) {
-    // TODO: Implement persist() method.
-  }
-
-  public function retrieve($id, array $cols = ['*']) {
-    // TODO: Implement retrieve() method.
-  }
-
-  public function find(array $filter, array $cols = ['*']) {
-    // TODO: Implement find() method.
+    parent::__construct($db);
+    $this->useKeyMap($this->map);
   }
 
   public function delete($id) {
-    // TODO: Implement delete() method.
+    $error = sprintf(
+        "%s not implemented",
+        __METHOD__
+    );
+    throw new \Exception($error);
   }
 }

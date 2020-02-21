@@ -47,7 +47,7 @@ class DocDataPersistenceTest extends TestCase {
     Assert::assertEquals(
         1,
         $this->db->count(
-            DocDataPersistence::TABLE_DOCDATA,
+            DocDataPersistence::TABLE,
             'data_id=:data_id',
             [':data_id'=>$data->dataId]
         )
@@ -91,8 +91,8 @@ class DocDataPersistenceTest extends TestCase {
 
   public function testFindWithSpecificCols() {
     $cols = ['docType', 'dataKey'];
-    $a1 = $this->docData('a');
-    $this->persist($a1);
+    $this->persist($this->docData('a'));
+    $this->persist($this->docData('b'));
     $results = $this->p->find(['dataKey'=>'a'], $cols);
     $row = $results[0];
     Assert::assertCount(2, $row);
@@ -111,7 +111,7 @@ class DocDataPersistenceTest extends TestCase {
     $array = $data->toArray();
     $this->p->persist($array);
     $this->addCleanup(function() use($data){
-      $table = DocDataPersistence::TABLE_DOCDATA;
+      $table = DocDataPersistence::TABLE;
       $this->db->query("DELETE FROM {$table} WHERE data_id=?", $data->dataId);
     });
   }

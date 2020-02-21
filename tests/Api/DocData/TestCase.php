@@ -28,7 +28,7 @@ class TestCase extends \HomeCEU\Tests\Api\TestCase {
   public function tearDown(): void {
     $db = $this->di->dbConnection;
     $db->deleteWhere(
-        DocDataPersistence::TABLE_DOCDATA,
+        DocDataPersistence::TABLE,
         ['doc_type'=>$this->docType]
     );
     parent::tearDown();

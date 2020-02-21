@@ -4,13 +4,49 @@
 namespace HomeCEU\DTS\Persistence;
 
 
+use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence;
+use Ramsey\Uuid\Uuid;
 
 abstract class AbstractPersistence implements Persistence {
   /** @var array */
   private $hydratedToDbMap;
   /** @var array */
   private $dbToHydratedMap;
+
+  /** @var Connection */
+  protected $db;
+
+  public function __construct(Connection $db) {
+    $this->db = $db;
+  }
+
+  public function generateId() {
+    return Uuid::uuid1();
+  }
+
+  public function persist($entity) {
+    $this->db->insert(static::TABLE, $this->flatten($entity));
+  }
+
+  public function retrieve($id, array $cols=['*']) {
+    $row = $this->db->selectWhere(
+        static::TABLE,
+        $this->selectColumns(...$cols),
+        [static::ID_COL => $id]
+    )->fetch();
+    return $this->hydrate($row);
+  }
+
+  public function find(array $filter, $cols=['*']) {
+    $where = $this->flatten($filter); // changes keys to snake_case
+    $rows = $this->db->selectWhere(
+        static::TABLE,
+        $this->selectColumns(...$cols),
+        $where
+    )->fetchAll();
+    return array_map([$this, 'hydrate'], $rows);
+  }
 
   /**
    * @param array $map map of hydratedKey => db_key
@@ -78,8 +114,11 @@ abstract class AbstractPersistence implements Persistence {
     return json_decode($json, true);
   }
 
-  // CREDIT: https://stackoverflow.com/a/19533226/2683059
-  protected function toSnakeCase($input) {
-    return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $input)), '_');
+  protected function selectColumns(...$cols) {
+    $selectedCols = [];
+    foreach ($cols as $alias) {
+      array_push($selectedCols, $this->dbKey($alias));
+    }
+    return implode(', ', $selectedCols);
   }
 }

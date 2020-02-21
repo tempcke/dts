@@ -4,11 +4,21 @@
 namespace HomeCEU\Tests\DTS\Persistence;
 
 
+use HomeCEU\DTS\Db\Config;
+use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence\AbstractPersistence;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class AbstractPersistenceTest extends TestCase {
+  /** @var Connection */
+  private $fakeDb;
+
+  public function setUp(): void {
+    parent::setUp();
+    $this->fakeDb = Connection::buildFromConfig(Config::sqlite());
+  }
+
   public function hydrated() {
     return [
         "firstName" => "Fred",
@@ -48,12 +58,8 @@ class AbstractPersistenceTest extends TestCase {
   }
 
   protected function persistence() {
-    return new class extends AbstractPersistence {
-      public function generateId() {}
-      public function persist($data) {}
-      public function retrieve($id, array $cols=[]) {}
+    return new class($this->fakeDb) extends AbstractPersistence {
       public function delete($id) {}
-      public function find(array $filter, array $cols=[]) {}
     };
   }
 }

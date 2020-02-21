@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\Persistence\InMemory;
 
 use HomeCEU\Tests\DTS\TestCase;
 use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
+use PHPUnit\Framework\Assert;
 
 class DocDataPersistenceTest extends TestCase {
 
@@ -72,6 +73,18 @@ class DocDataPersistenceTest extends TestCase {
     $this->assertNotEmpty($this->persistence()->generateId());
   }
 
+  public function testFind() {
+    $p = $this->persistence();
+    $p->persist(['dataId'=>'a','lname'=>'smith']);
+    $p->persist(['dataId'=>'b','lname'=>'doe']);
+    $p->persist(['dataId'=>'c','lname'=>'smith']);
+    $results = $p->find(['lname'=>'smith']);
+    $expected = [
+        ['dataId'=>'a','lname'=>'smith'],
+        ['dataId'=>'c','lname'=>'smith']
+    ];
+    Assert::assertEquals($expected, $results);
+  }
 
 
   protected function persistence(): DocDataPersistence {
