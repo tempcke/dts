@@ -3,8 +3,9 @@
 namespace HomeCEU\DTS\Entity;
 
 use HomeCEU\DTS\Entity;
+use HomeCEU\DTS\EntityHelperTrait;
 
-class Template extends Entity {
+class Template implements Entity {
   public $templateId;
   public $templateKey;
   public $docType;
@@ -12,6 +13,8 @@ class Template extends Entity {
   public $author;
   public $createdAt;
   public $body;
+
+  use EntityHelperTrait;
 
   protected static function keys(): array {
     return [

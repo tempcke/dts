@@ -5,13 +5,16 @@ namespace HomeCEU\DTS\Entity;
 
 
 use HomeCEU\DTS\Entity;
+use HomeCEU\DTS\EntityHelperTrait;
 
-class DocData extends Entity {
+class DocData implements Entity {
   public $dataId;
   public $docType;
   public $dataKey;
   public $createdAt;
   public $data;
+
+  use EntityHelperTrait;
 
   protected static function keys(): array {
     return [
