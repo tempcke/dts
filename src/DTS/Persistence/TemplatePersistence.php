@@ -4,10 +4,18 @@
 namespace HomeCEU\DTS\Persistence;
 
 
+use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence;
 use Ramsey\Uuid\Uuid;
 
 class TemplatePersistence implements Persistence {
+
+  /** @var Connection */
+  private $db;
+
+  public function __construct(Connection $db) {
+    $this->db = $db;
+  }
 
   public function generateId() {
     return Uuid::uuid1();
