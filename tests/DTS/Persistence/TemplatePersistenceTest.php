@@ -7,7 +7,6 @@ namespace HomeCEU\Tests\DTS\Persistence;
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\Tests\DTS\TestCase;
-use HomeCEU\Tests\Faker;
 use PHPUnit\Framework\Assert;
 
 class TemplatePersistenceTest extends TestCase {
@@ -41,29 +40,16 @@ class TemplatePersistenceTest extends TestCase {
   }
 
   public function testCanRetrievePersistedRecord() {
-    $record = $this->fakeTemplate('A');
+    $record = $this->fakeTemplateArray($this->docType);
     $this->p->persist($record);
     $retrieved = $this->p->retrieve($record['templateId']);
     Assert::assertEquals($record, $retrieved);
   }
 
   public function testNoDelete() {
-    $record = $this->fakeTemplate('A');
+    $record = $this->fakeTemplateArray($this->docType);
     $this->p->persist($record);
     $this->expectException(\Exception::class);
     $this->p->delete($record['templateId']);
-  }
-
-  protected function fakeTemplate($key) {
-    $fake = Faker::generator();
-    return [
-        'templateId' => $fake->uuid,
-        'docType' => $this->docType,
-        'templateKey' => $key,
-        'name' => 'name',
-        'author' => 'Phil Robinson',
-        'createdAt' => new \DateTime('yesterday'),
-        'body' => 'hi {{name}}'
-    ];
   }
 }
