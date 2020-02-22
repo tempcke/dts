@@ -20,5 +20,9 @@ class Render {
     $this->templateRepo = $templateRepo;
   }
 
-
+  public function renderDoc(RenderRequest $request) {
+    if (!$request->isValid()) {
+      throw new InvalidRenderRequestException;
+    }
+  }
 }
