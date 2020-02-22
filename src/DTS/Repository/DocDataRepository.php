@@ -40,4 +40,16 @@ class DocDataRepository {
     ];
     return $this->persistence->find($filter, $cols);
   }
+
+  public function lookupId(string $docType, string $dataKey) {
+    $filter = [
+        'docType' => $docType,
+        'dataKey' => $dataKey
+    ];
+    $cols = [
+        'dataId'
+    ];
+    $rows = $this->persistence->find($filter, $cols);
+    return $rows[0]['dataId'];
+  }
 }

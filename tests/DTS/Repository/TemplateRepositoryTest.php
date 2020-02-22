@@ -63,6 +63,18 @@ class TemplateRepositoryTest extends TestCase {
     Assert::assertEquals($templateArray, $fromDb->toArray());
   }
 
+  public function testLookupIdFromKey() {
+    $p = $this->fakePersistence('template', 'templateId');
+    $p->persist([
+        'docType' => 'dt',
+        'templateId' => 'tid',
+        'templateKey' => 'tk',
+        'body'=>'Hi {{name}}'
+    ]);
+    $repo = new TemplateRepository($p);
+    Assert::assertEquals('tid', $repo->lookupId('dt','tk'));
+  }
+
   private function buildTemplate($key, $name, $createdAt) {
     $t = $this->fakeTemplateArray($this->docType, $key);
     $t['createdAt']= new \DateTime($createdAt);

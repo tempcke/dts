@@ -4,14 +4,14 @@
 namespace HomeCEU\DTS\Api;
 
 
-use Slim\Container;
+use Psr\Container\ContainerInterface;
 
 class App extends \Slim\App {
   public $routesFile = APP_ROOT.'/api/routes.php';
   public $servicesFile = APP_ROOT.'/api/services.php';
 
-  public function __construct() {
-    parent::__construct($this->_diContainer());
+  public function __construct(ContainerInterface $diContainer=null) {
+    parent::__construct($diContainer ?: $this->_diContainer());
     $this->loadRoutes(...$this->_routes());
   }
 

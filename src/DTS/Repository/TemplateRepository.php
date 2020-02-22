@@ -32,6 +32,18 @@ class TemplateRepository {
     return Template::fromState($row);
   }
 
+  public function lookupId($docType, $templateKey) {
+    $filter = [
+        'docType' => $docType,
+        'templateKey' => $templateKey
+    ];
+    $cols = [
+        'templateId'
+    ];
+    $rows = $this->persistence->find($filter, $cols);
+    return $rows[0]['templateId'];
+  }
+
   // used for usort - https://www.php.net/manual/en/function.usort.php
   protected function rowComp($a, $b) {
     $adate = $a['createdAt'];

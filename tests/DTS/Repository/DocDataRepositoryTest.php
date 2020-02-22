@@ -65,6 +65,18 @@ class DocDataRepositoryTest extends TestCase {
     Assert::assertNotContains('data', $persistence->spiedFindCols);
   }
 
+  public function testLookupIdFromKey() {
+    $p = $this->fakePersistence('docdata', 'dataId');
+    $p->persist([
+        'docType' => 'dt',
+        'dataId' => 'did',
+        'dataKey' => 'dk',
+        'data'=>['name'=>'Fred']
+    ]);
+    $repo = new DocDataRepository($p);
+    Assert::assertEquals('did', $repo->lookupId('dt','dk'));
+  }
+
   protected function fakeDocData($key=null) {
     if (is_null($key)) $key = uniqid();
     $type = self::ENTITY_TYPE;
@@ -84,37 +96,5 @@ class DocDataRepositoryTest extends TestCase {
         "address"   => $fake->address,
         "email"     => $fake->email
     ];
-  }
-  
-  protected function persistenceSpy() {
-    $p = new class implements Persistence {
-      
-      public $spiedFindFilter;
-      public $spiedFindCols;
-      
-      public $spiedRetrieveId;
-      public $spiedRetrieveCols;
-      
-      public $spiedPersistData;
-
-      public function generateId() {}
-
-      public function persist($data) {
-        $this->spiedPersistData = $data;
-      }
-
-      public function retrieve($id, array $cols = ['*']) {
-        $this->spiedRetrieveId = $id;
-        $this->spiedRetrieveCols = $cols;
-      }
-
-      public function find(array $filter, array $cols = ['*']) {
-        $this->spiedFindFilter = $filter;
-        $this->spiedFindCols = $cols;
-      }
-
-      public function delete($id) {}
-    };
-    return $p;
   }
 }
