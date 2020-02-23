@@ -36,7 +36,7 @@ class Render {
     $templateId = $this->completeRequest->templateId;
     $docDataId = $this->completeRequest->dataId;
 
-    throw new \Exception('Dan needs to take it from here...');
+//    throw new \Exception('Dan needs to take it from here...');
 
     $body = 'Hi Fred';
 
