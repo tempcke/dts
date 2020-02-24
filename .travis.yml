@@ -19,17 +19,17 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install:
-  - ./dts init
+  - ./dts init-conf
 
 before_script:
   - mkdir -p build/logs
   - ./dts docker-compose up -d --build
-  - sleep 30
+  - ./dts composer install --no-interaction
   - ./dts exec phinx migrate
 
 script:
   #- phpunit --coverage-clover build/logs/clover.xml
-  - ./dts docker-compose exec app phpunit --coverage-clover build/logs/clover.xml
+  - ./dts docker-compose exec dts phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - ./dts docker-compose down

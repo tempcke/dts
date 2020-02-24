@@ -52,6 +52,9 @@ function route() {
     init)
       Init
       ;;
+    init-conf)
+      InitConfig
+      ;;
     exec)
       Exec ${@:2}
       ;;
@@ -78,13 +81,16 @@ function Composer() {
 }
 
 function Init() {
-  cpExampleFiles .
-  cpExampleFiles ${DOCKER_DIR}
-  config_set "${DOCKER_CONF}" HOST_UID ${HOST_UID}
+  InitConfig
   Composer install --no-interaction
   DockerCompose build
 }
 
+function InitConfig() {
+  cpExampleFiles .
+  cpExampleFiles ${DOCKER_DIR}
+  config_set "${DOCKER_CONF}" HOST_UID ${HOST_UID}
+}
 
 function Exec() {
   docker exec --user ${HOST_UID}:${HOST_GID} ${APP_CONTAINER} sh -c "cd /var/www/html/ && $*";
