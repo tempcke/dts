@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\Render;
 
 
 use HomeCEU\DTS\Render\CompilationException;
+use HomeCEU\DTS\Render\Helper;
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\TemplateCompiler as Template;
 
@@ -17,35 +18,48 @@ class TemplateCompilerTest extends RenderTestCase
 
     public function testCompileTemplate(): void
     {
-        $template = "{{ placeholder }}";
         $data = ['placeholder' => 'password'];
 
-        $cTemplate = Template::create($template)
+        $template = Template::create('{{ placeholder }}')
                              ->compile();
 
-        $rendered = $this->renderer->renderCompiledTemplate($cTemplate, $data);
-
-        $this->assertEquals($data['placeholder'], $rendered);
+        $this->assertEquals($data['placeholder'], $this->render($template, $data));
     }
 
     public function testCompileMissingPartial(): void
     {
         $this->expectException(CompilationException::class);
 
-        $template = "{{> expected_partial }}";
-
-        Template::create($template)
+        Template::create('{{> expected_partial }}')
                 ->compile();
     }
 
     public function testCompileWithPartial(): void
     {
-        $template = "{{> expected_partial }}";
+        $template = '{{> expected_partial }}';
 
-        $cTemplate = Template::create($template)
+        $template = Template::create($template)
                              ->withPartials([new Partial('expected_partial', 'text')])
                              ->compile();
 
-        $this->assertEquals('text', $this->renderer->renderCompiledTemplate($cTemplate, []));
+        $this->assertEquals('text', $this->render($template));
+    }
+
+    public function testCompileWithHelper(): void
+    {
+        $helper = new Helper('upper', function ($val) {
+            return strtoupper($val);
+        });
+
+        $template = Template::create('{{upper string}}')
+                             ->withHelpers([$helper])
+                             ->compile();
+
+        $this->assertEquals('TEXT', $this->render($template, ['string' => 'text']));
+    }
+
+    private function render($compiledTemplate, $data = []): string
+    {
+        return $this->renderer->renderCompiledTemplate($compiledTemplate, $data);
     }
 }

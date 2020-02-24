@@ -26,9 +26,16 @@ class TemplateCompiler
         return new self($template);
     }
 
+    public function addHelper(Helper $helper): void
+    {
+        $this->helpers[$helper->name] = $helper->func;
+    }
+
     public function withHelpers(array $helpers): self
     {
-        $this->helpers = $helpers;
+        foreach ($helpers as $helper) {
+            $this->addHelper($helper);
+        }
         return $this;
     }
 
@@ -45,7 +52,7 @@ class TemplateCompiler
         return $this;
     }
 
-    public function compile(): ?string
+    public function compile(): string
     {
         try {
             $options = [
