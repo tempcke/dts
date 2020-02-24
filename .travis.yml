@@ -1,20 +1,29 @@
 language: php
 os: linux
 
-sudo: false
+env:
+  - DB_ADAPTER=mysql DB_NAME=dts DB_USER=root DB_HOST=127.0.0.1
 
 php:
   - 7.2
   - 7.3
   - 7.4
 
+services:
+  - mysql
+
 matrix:
   allow_failures:
     - php: 7.2
+    - PHP: 7.4
   fast_finish: true
+
+before_install:
+  - mysql -e "CREATE DATABASE IF NOT EXISTS dts;"
 
 install:
   - composer install --no-interaction
+  - vendor/bin/phinx migrate
 
 before_script:
   - mkdir -p build/logs
