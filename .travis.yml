@@ -1,6 +1,8 @@
 language: php
 os: linux
 
+php: 7.3
+
 sudo: required
 
 services:
@@ -22,6 +24,7 @@ install:
 before_script:
   - mkdir -p build/logs
   - ./dts docker-compose up -d --build
+  - sleep 30
   - ./dts exec phinx migrate
 
 script:
