@@ -3,7 +3,7 @@
 
 namespace HomeCEU\Tests\DTS\Template;
 
-use HomeCEU\DTS\Template\Helper;
+use HomeCEU\DTS\Render\Helper;
 
 class TemplateRendererHelpersTest extends TestCase {
   private $templateWithIfHelper = '{{if status "test" "passed"}}

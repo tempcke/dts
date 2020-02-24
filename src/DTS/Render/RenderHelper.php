@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DTS\Template;
+namespace HomeCEU\DTS\Render;
 
 
 class RenderHelper {

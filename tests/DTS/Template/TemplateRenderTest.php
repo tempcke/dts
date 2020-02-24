@@ -3,9 +3,9 @@
 
 namespace HomeCEU\Tests\DTS\Template;
 
-use HomeCEU\DTS\Template\NoTemplateProvidedException;
-use HomeCEU\DTS\Template\Partial;
-use HomeCEU\DTS\Template\RenderHelper;
+use HomeCEU\DTS\Render\NoTemplateProvidedException;
+use HomeCEU\DTS\Render\Partial;
+use HomeCEU\DTS\Render\RenderHelper;
 use LightnCandy\Flags;
 
 class TemplateRenderTest extends TestCase {

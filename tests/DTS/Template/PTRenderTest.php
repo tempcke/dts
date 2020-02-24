@@ -3,8 +3,8 @@
 
 namespace HomeCEU\Tests\DTS\Template;
 
-use HomeCEU\DTS\Template\Partial;
-use HomeCEU\DTS\Template\Renderer;
+use HomeCEU\DTS\Render\Partial;
+use HomeCEU\DTS\Render\Renderer;
 
 
 class PTRenderTest extends TestCase {
@@ -53,7 +53,7 @@ class PTRenderTest extends TestCase {
         'pt_pta',
         file_get_contents(APP_ROOT . '/temp_templates/accreditation_partials/pt_pta.template')
     );
-    $certificate = new Renderer();
+    $certificate = Renderer::create();
     $certificate->setTemplate('{{> pt_pta }}');
     $certificate->addPartial($partial);
 

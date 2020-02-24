@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DTS\Template;
+namespace HomeCEU\DTS\Render;
 
 use LightnCandy\Flags;
 use LightnCandy\LightnCandy;
@@ -17,11 +17,16 @@ class Renderer {
   /** @var int */
   private $flags = Flags::FLAG_HANDLEBARS;
 
-  public function __construct()
-  {
-    $this->resetPartials();
-    $this->resetHelpers();
-  }
+    protected function __construct()
+    {
+        $this->resetPartials();
+        $this->resetHelpers();
+    }
+
+    public static function create(): self
+    {
+        return new self();
+    }
 
   public function setFlags(int $flags): void
   {
@@ -72,7 +77,7 @@ class Renderer {
     return LightnCandy::compile($this->template, $this->buildOptions());
   }
 
-  private function renderCompiledTemplate(string $compiledTemplate, array $data): ?string
+  public function renderCompiledTemplate(string $compiledTemplate, array $data): ?string
   {
     $file = $this->saveCompiledTemplateToTempFile($compiledTemplate);
 
@@ -112,7 +117,7 @@ class Renderer {
 
   private function setDefaultHelpers(): void
   {
-    $ifComparisonHelper = TemplateHelpers::getIfComparisonHelper();
+    $ifComparisonHelper = Helpers::ifComparisonHelper();
     $this->helpers[$ifComparisonHelper->name] = $ifComparisonHelper->func;
   }
 }

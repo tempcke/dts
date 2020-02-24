@@ -3,7 +3,7 @@
 
 namespace HomeCEU\Tests\DTS\Template;
 
-use HomeCEU\DTS\Template\Partial;
+use HomeCEU\DTS\Render\Partial;
 
 class PartialTest extends TestCase {
   public function testCreatePartial(): void
