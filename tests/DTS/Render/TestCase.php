@@ -5,14 +5,19 @@ namespace HomeCEU\Tests\DTS\Render;
 
 
 use HomeCEU\DTS\Render\Renderer;
-use PHPUnit\Framework\TestCase;
+use HomeCEU\Tests\DTS\TestCase as dtsTestCase;
 
-class RenderTestCase extends TestCase
+class TestCase extends dtsTestCase
 {
     protected $renderer;
 
     protected function setUp(): void
     {
         $this->renderer = Renderer::create();
+    }
+
+    protected function render($compiledTemplate, $data = []): string
+    {
+        return $this->renderer->render($compiledTemplate, $data);
     }
 }

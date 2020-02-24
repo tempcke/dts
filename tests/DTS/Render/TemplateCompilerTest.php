@@ -9,7 +9,7 @@ use HomeCEU\DTS\Render\Helper;
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\TemplateCompiler as Template;
 
-class TemplateCompilerTest extends RenderTestCase
+class TemplateCompilerTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -56,10 +56,5 @@ class TemplateCompilerTest extends RenderTestCase
                              ->compile();
 
         $this->assertEquals('TEXT', $this->render($template, ['string' => 'text']));
-    }
-
-    private function render($compiledTemplate, $data = []): string
-    {
-        return $this->renderer->renderCompiledTemplate($compiledTemplate, $data);
     }
 }

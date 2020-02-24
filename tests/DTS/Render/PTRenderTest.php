@@ -5,7 +5,7 @@ namespace HomeCEU\Tests\DTS\Render;
 
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\Renderer;
-use HomeCEU\Tests\DTS\TestCase;
+use HomeCEU\DTS\Render\TemplateCompiler;
 
 
 class PTRenderTest extends TestCase
@@ -55,13 +55,14 @@ class PTRenderTest extends TestCase
             'pt_pta',
             file_get_contents(APP_ROOT . '/temp_templates/accreditation_partials/pt_pta.template')
         );
-        $certificate = Renderer::create();
-        $certificate->setTemplate('{{> pt_pta }}');
-        $certificate->addPartial($partial);
+        $template = TemplateCompiler::create('{{> pt_pta }}')
+                                    ->withPartials([$partial])
+                                    ->compile();
 
         $this->assertStringContainsString(
             "TX: Category 1 approved 098765 An approval statement; " .
-            "FL: Category 2 approval pending 123456 A different approval statement", $certificate->render($this->dto)
+            "FL: Category 2 approval pending 123456 A different approval statement",
+            $this->render($template, $this->dto)
         );
     }
 }
