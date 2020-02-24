@@ -10,8 +10,12 @@ class DocDataRepository {
   /** @var Persistence */
   private $persistence;
 
+  /** @var RepoHelper */
+  private $repoHelper;
+
   public function __construct(Persistence $persistence) {
     $this->persistence = $persistence;
+    $this->repoHelper = new RepoHelper($persistence);
   }
 
   public function save(DocData $docData) {
@@ -47,9 +51,10 @@ class DocDataRepository {
         'dataKey' => $dataKey
     ];
     $cols = [
-        'dataId'
+        'dataId',
+        'createdAt'
     ];
-    $rows = $this->persistence->find($filter, $cols);
-    return $rows[0]['dataId'];
+    $row = $this->repoHelper->findNewest($filter, $cols);
+    return $row['dataId'];
   }
 }
