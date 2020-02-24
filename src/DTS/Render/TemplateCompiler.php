@@ -12,9 +12,8 @@ class TemplateCompiler
     private $template;
 
     private $flags = Flags::FLAG_HANDLEBARS;
-    private $options = [];
     private $helpers = [];
-    private $partials;
+    private $partials = [];
 
     protected function __construct(string $template)
     {
@@ -26,11 +25,6 @@ class TemplateCompiler
         return new self($template);
     }
 
-    public function addHelper(Helper $helper): void
-    {
-        $this->helpers[$helper->name] = $helper->func;
-    }
-
     public function withHelpers(array $helpers): self
     {
         foreach ($helpers as $helper) {
@@ -39,9 +33,9 @@ class TemplateCompiler
         return $this;
     }
 
-    public function addPartial(Partial $partial): void
+    protected function addHelper(Helper $helper): void
     {
-        $this->partials[$partial->name] = $partial->template;
+        $this->helpers[$helper->name] = $helper->func;
     }
 
     public function withPartials(array $partials): self
@@ -50,6 +44,11 @@ class TemplateCompiler
             $this->addPartial($partial);
         }
         return $this;
+    }
+
+    protected function addPartial(Partial $partial): void
+    {
+        $this->partials[$partial->name] = $partial->template;
     }
 
     public function compile(): string
