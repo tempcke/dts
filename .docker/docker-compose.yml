@@ -1,0 +1,40 @@
+version: "3.2"
+
+services:
+  dts:
+    build:
+      context: './app/'
+      args:
+        HOST_UID: ${HOST_UID}
+        PHP_VERSION: ${PHP_VERSION}
+    ports:
+      - "${APP_PORT}:80"
+    environment:
+      - "DB_HOST=${DB_HOST}"
+      - "DB_NAME=${DB_NAME}"
+      - "DB_USER=${DB_USER}"
+      - "DB_PASS=${DB_PASS}"
+      - "APP_ENV=${APP_ENV}"
+    volumes:
+      - ../:/var/www/html/
+      - ./log/app/apache2/:/var/log/apache2/
+    depends_on:
+      - dts-db
+    container_name: ${APP_CONTAINER}
+
+  dts-db:
+    image: mysql:${MYSQL_VERSION:-latest}
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}"
+      - "MYSQL_DATABASE=${DB_NAME}"
+      - "MYSQL_USER=${DB_USER}"
+      - "MYSQL_PASSWORD=${DB_PASS}"
+    volumes:
+      - dts-data:/var/lib/mysql
+    ports:
+      - "33061:3306"
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    container_name: ${APP_CONTAINER}-db
+
+volumes:
+    dts-data:

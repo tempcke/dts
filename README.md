@@ -5,42 +5,26 @@
 
 
 # Setup instructions
-## Using Docker
-```bash
-git clone git@github.com:HomeCEU/dockerapp.git dts
-cd dts
-./app.sh config set GIT_REPO git@github.com:HomeCEU/dts.git
-./app.sh config set APP_CONTAINER dts
-./app.sh init
-cd .docker
-docker-compose build
-docker-compose up
-cd ..
-./app.sh exec phinx migrate
-```
-http://localhost:8080
-
-if you wish you can customize the exposed port with
 
 ```bash
-./app.sh config set APP_PORT 8080
+./dts init
+./dts docker-compose up
+./dts exec phinx migrate
 ```
-
-or just edit config yourself.
 
 ## command exec
 You can execute commands in the container from the outside
 
 ```bash
-./app.sh exec composer update
+./dts exec composer update
 ```
 
 also vendor/bin is in `$PATH` so you can
 
 ```bash
 # run phpunit
-./app.sh exec phpunit
+./dts exec phpunit
 
 # create a migration
-./app.sh exec phinx create MyMigration
+./dts exec phinx create MyMigration
 ````
