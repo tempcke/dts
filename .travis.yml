@@ -25,6 +25,7 @@ before_script:
   - mkdir -p build/logs
   - ./dts docker-compose up -d --build
   - ./dts composer install --no-interaction
+  - sleep 10 # phinx will fail due to db not actually existing unless we wait...
   - ./dts exec phinx migrate
 
 script:
