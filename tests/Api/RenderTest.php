@@ -14,6 +14,7 @@ class RenderTest extends TestCase {
     $templateKey = __FUNCTION__;
     $dataKey = __FUNCTION__;
     $this->addDocDataFixture($dataKey);
+    $this->addTemplateFixture($templateKey);
     $response = $this->get("/render?docType={$this->docType}&templateKey={$templateKey}&dataKey={$dataKey}");
     Assert::assertEquals(200, $response->getStatusCode());
     Assert::assertEquals('Hi Fred', strval($response->getBody()));

@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\Repository;
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
@@ -63,6 +64,10 @@ class TemplateRepositoryTest extends TestCase {
     Assert::assertEquals($templateArray, $fromDb->toArray());
   }
 
+  public function test_LookupId_shouldThrowExceptionIfNoneFound() {
+    $this->expectException(RecordNotFoundException::class);
+    $this->repo->lookupId($this->docType, __FUNCTION__);
+  }
   public function testLookupIdFromKey() {
     $p = $this->fakePersistence('template', 'templateId');
     $p->persist([
@@ -73,6 +78,17 @@ class TemplateRepositoryTest extends TestCase {
     ]);
     $repo = new TemplateRepository($p);
     Assert::assertEquals('tid', $repo->lookupId('dt','tk'));
+  }
+  public function testGetNewestTemplateIdWhenLookupByKey() {
+    $key = __FUNCTION__;
+    $a = $this->buildTemplate($key, 'A', '2000-01-01');
+    $b = $this->buildTemplate($key, 'B', '2000-01-02');
+    $c = $this->buildTemplate($key, 'C', '2000-01-03');
+    $this->p->persist($b);
+    $this->p->persist($a);
+    $this->p->persist($c);
+    $id = $this->repo->lookupId($this->docType, $key);
+    Assert::assertEquals($c['templateId'], $id);
   }
 
   private function buildTemplate($key, $name, $createdAt) {
