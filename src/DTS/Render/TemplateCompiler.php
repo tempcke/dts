@@ -24,7 +24,7 @@ class TemplateCompiler {
     return $this;
   }
 
-  protected function addHelper(Helper $helper): void {
+  public function addHelper(Helper $helper): void {
     $this->helpers[$helper->name] = $helper->func;
   }
 
@@ -36,7 +36,7 @@ class TemplateCompiler {
     return $this;
   }
 
-  protected function addPartial(Partial $partial): void {
+  public function addPartial(Partial $partial): void {
     $this->partials[$partial->name] = $partial->template;
   }
 
