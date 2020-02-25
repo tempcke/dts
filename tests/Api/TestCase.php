@@ -47,6 +47,10 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         TemplatePersistence::TABLE,
         ['doc_type'=>$this->docType]
     );
+    $db->deleteWhere(
+        TemplatePersistence::TABLE,
+        ['doc_type'=>$this->docType . '/partial']
+    );
     parent::tearDown();
   }
 
