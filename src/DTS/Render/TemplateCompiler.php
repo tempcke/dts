@@ -17,6 +17,7 @@ class TemplateCompiler {
   }
 
   public function setHelpers(array $helpers): self {
+    $this->helpers = [];
     foreach ($helpers as $helper) {
       $this->addHelper($helper);
     }
@@ -28,6 +29,7 @@ class TemplateCompiler {
   }
 
   public function setPartials(array $partials): self {
+    $this->partials = [];
     foreach ($partials as $partial) {
       $this->addPartial($partial);
     }
