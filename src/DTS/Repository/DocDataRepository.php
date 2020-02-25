@@ -4,6 +4,7 @@ namespace HomeCEU\DTS\Repository;
 
 use DateTime;
 use HomeCEU\DTS\Entity\DocData;
+use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
 class DocDataRepository {
@@ -20,6 +21,10 @@ class DocDataRepository {
 
   public function save(DocData $docData) {
     $this->persistence->persist($docData->toArray());
+  }
+
+  public function getByDocDataId($dataId) {
+    return DocData::fromState($this->persistence->retrieve($dataId));
   }
 
   public function newDocData($type, $key, $data) {

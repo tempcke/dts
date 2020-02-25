@@ -3,6 +3,7 @@
 
 namespace HomeCEU\Tests\DTS\Repository;
 
+use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Persistence;
 use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
@@ -50,6 +51,16 @@ class DocDataRepositoryTest extends TestCase {
     $this->assertEquals($entity->toArray(), $savedEntity);
   }
 
+  public function testGetDocDataById() {
+    $d = $this->fakeDocDataArray(__FUNCTION__);
+    $this->persistence->persist($this->fakeDocDataArray());
+    $this->persistence->persist($d);
+    $this->persistence->persist($this->fakeDocDataArray());
+
+    $docData = $this->repo->getByDocDataId($d['dataId']);
+    Assert::assertInstanceOf(DocData::class, $docData);
+    Assert::assertEquals($d['dataId'], $docData->dataId);
+  }
 
   public function testDocDataHistory() {
     $persistence = $this->persistenceSpy();
@@ -82,6 +93,10 @@ class DocDataRepositoryTest extends TestCase {
     $type = self::ENTITY_TYPE;
     $data = ['hash'=>Faker::generator()->md5];
     return $this->repo->newDocData($type, $key, $data);
+  }
+
+  protected function fakeDocDataArray($key=null) {
+    return $this->fakeDocData($key)->toArray();
   }
 
   protected function persistence() {
