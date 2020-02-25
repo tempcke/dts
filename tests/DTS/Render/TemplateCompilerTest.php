@@ -26,9 +26,14 @@ class TemplateCompilerTest extends TestCase {
     $this->assertEquals($data['placeholder'], $this->render($template, $data));
   }
 
-  public function testCompileMissingPartial(): void {
+  public function testExpectedPartialNotProvided(): void {
     $this->expectException(CompilationException::class);
     $this->compiler->compile('{{> expected_partial }}');
+  }
+
+  public function testProvidedPartialNotExpected(): void {
+    $this->compiler->addPartial(new Partial('a_partial', 'some text'));
+    $this->assertEquals('a template', $this->render($this->compiler->compile('a template')));
   }
 
   public function testCompileWithPartial(): void {
