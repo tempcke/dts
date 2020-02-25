@@ -4,7 +4,7 @@
 namespace HomeCEU\DTS\Render;
 
 
-class Helpers
+class TemplateHelpers
 {
     public static function ifComparisonHelper(): Helper
     {
