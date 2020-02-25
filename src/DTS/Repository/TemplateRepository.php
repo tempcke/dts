@@ -28,6 +28,12 @@ class TemplateRepository {
     return Template::fromState($array);
   }
 
+  public function findByDocType(string $docType) {
+    return array_map(function($result) {
+      return Template::fromState($result);
+    }, $this->persistence->find(['doc_type' => $docType]));
+  }
+
   public function getTemplateByKey(string $docType, string $key) {
     $filter = [
         'docType' => $docType,
