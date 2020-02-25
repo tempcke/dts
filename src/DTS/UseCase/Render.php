@@ -4,6 +4,9 @@
 namespace HomeCEU\DTS\UseCase;
 
 
+use HomeCEU\DTS\Render\Renderer;
+use HomeCEU\DTS\Render\TemplateCompiler;
+use HomeCEU\DTS\Render\TemplateHelpers;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 
@@ -33,13 +36,15 @@ class Render {
     $this->originalRequest = $request;
     $this->completeRequest = $this->buildRequestOfIds($request);
 
-    $templateId = $this->completeRequest->templateId;
-    $docDataId = $this->completeRequest->dataId;
+    $template = $this->templateRepo->getTemplateById($this->completeRequest->templateId);
+    $docData = $this->docDataRepo->getByDocDataId($this->completeRequest->dataId);
 
-    throw new \Exception('Dan needs to take it from here...');
+    $compiler = TemplateCompiler::create();
+    $renderer = Renderer::create();
 
-    $body = 'Hi Fred';
+    $body = $renderer->render($compiler->compile($template->body), $docData->data);
 
+    throw new \Exception('incomplete');
     $file = tmpfile();
     fwrite($file, $body);
     rewind($file);
