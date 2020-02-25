@@ -4,6 +4,5 @@
 namespace HomeCEU\DTS\Render;
 
 
-class CompilationException extends \Exception
-{
+class CompilationException extends \Exception {
 }
