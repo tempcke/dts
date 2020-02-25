@@ -55,9 +55,9 @@ class PTRenderTest extends TestCase
             'pt_pta',
             file_get_contents(APP_ROOT . '/temp_templates/accreditation_partials/pt_pta.template')
         );
-        $template = TemplateCompiler::create('{{> pt_pta }}')
-                                    ->withPartials([$partial])
-                                    ->compile();
+        $template = TemplateCompiler::create()
+                                    ->setPartials([$partial])
+                                    ->compile('{{> pt_pta }}');
 
         $this->assertStringContainsString(
             "TX: Category 1 approved 098765 An approval statement; " .

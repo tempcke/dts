@@ -9,23 +9,16 @@ use LightnCandy\LightnCandy;
 
 class TemplateCompiler
 {
-    private $template;
-
     private $flags = Flags::FLAG_HANDLEBARS;
     private $helpers = [];
     private $partials = [];
 
-    protected function __construct(string $template)
+    public static function create(): self
     {
-        $this->template = $template;
+        return new self();
     }
 
-    public static function create(string $template): self
-    {
-        return new self($template);
-    }
-
-    public function withHelpers(array $helpers): self
+    public function setHelpers(array $helpers): self
     {
         foreach ($helpers as $helper) {
             $this->addHelper($helper);
@@ -38,7 +31,7 @@ class TemplateCompiler
         $this->helpers[$helper->name] = $helper->func;
     }
 
-    public function withPartials(array $partials): self
+    public function setPartials(array $partials): self
     {
         foreach ($partials as $partial) {
             $this->addPartial($partial);
@@ -51,7 +44,7 @@ class TemplateCompiler
         $this->partials[$partial->name] = $partial->template;
     }
 
-    public function compile(): string
+    public function compile(string $template): string
     {
         try {
             $options = [
@@ -59,7 +52,7 @@ class TemplateCompiler
                 'helpers' => $this->helpers,
                 'partials' => $this->partials,
             ];
-            return LightnCandy::compile($this->template, $options);
+            return LightnCandy::compile($template, $options);
         } catch (\Exception $e) {
             throw new CompilationException("Cannot compile template: {$e->getMessage()}");
         }

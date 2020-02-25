@@ -7,21 +7,24 @@ namespace HomeCEU\Tests\DTS\Render;
 use HomeCEU\DTS\Render\CompilationException;
 use HomeCEU\DTS\Render\Helper;
 use HomeCEU\DTS\Render\Partial;
-use HomeCEU\DTS\Render\TemplateCompiler as Template;
+use HomeCEU\DTS\Render\TemplateCompiler;
 
 class TemplateCompilerTest extends TestCase
 {
+    private $compiler;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->compiler = TemplateCompiler::create();
+        $this->compiler->setPartials([]);
+        $this->compiler->setHelpers([]);
     }
 
     public function testCompileTemplate(): void
     {
         $data = ['placeholder' => 'password'];
-
-        $template = Template::create('{{ placeholder }}')
-                             ->compile();
+        $template = $this->compile('{{ placeholder }}');
 
         $this->assertEquals($data['placeholder'], $this->render($template, $data));
     }
@@ -29,32 +32,27 @@ class TemplateCompilerTest extends TestCase
     public function testCompileMissingPartial(): void
     {
         $this->expectException(CompilationException::class);
-
-        Template::create('{{> expected_partial }}')
-                ->compile();
+        $this->compiler->compile('{{> expected_partial }}');
     }
 
     public function testCompileWithPartial(): void
     {
-        $template = '{{> expected_partial }}';
-
-        $template = Template::create($template)
-                             ->withPartials([new Partial('expected_partial', 'text')])
-                             ->compile();
-
-        $this->assertEquals('text', $this->render($template));
+        $this->compiler->setPartials([new Partial('expected_partial', 'text')]);
+        $this->assertEquals('text', $this->render($this->compile('{{> expected_partial }}')));
     }
 
     public function testCompileWithHelper(): void
     {
-        $helper = new Helper('upper', function ($val) {
-            return strtoupper($val);
-        });
+        $this->compiler->setHelpers([
+            new Helper('upper', function ($val) {
+                return strtoupper($val);
+            })
+        ]);
+        $this->assertEquals('TEXT', $this->render($this->compile('{{upper var}}'), ['var' => 'text']));
+    }
 
-        $template = Template::create('{{upper string}}')
-                             ->withHelpers([$helper])
-                             ->compile();
-
-        $this->assertEquals('TEXT', $this->render($template, ['string' => 'text']));
+    private function compile($template)
+    {
+        return $this->compiler->compile($template);
     }
 }
