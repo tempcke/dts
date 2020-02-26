@@ -27,7 +27,7 @@ class PTRenderTest extends TestCase {
           ],
       ],
       'approvals' => [
-          'pt_pta' => [
+          'pt-pta' => [
               [
                   'state' => 'TX',
                   'category' => 'Category 1',
@@ -51,7 +51,7 @@ class PTRenderTest extends TestCase {
   public function testPTSubTemplate(): void {
     $partial = new Partial(
         'pt_pta',
-        file_get_contents(APP_ROOT . '/temp_templates/accreditation_partials/pt_pta.template')
+        file_get_contents(APP_ROOT . '/temp_templates/accreditation_partials/pt-pta.template')
     );
     $template = TemplateCompiler::create()
         ->setPartials([$partial])
