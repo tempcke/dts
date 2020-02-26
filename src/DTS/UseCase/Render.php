@@ -4,9 +4,9 @@
 namespace HomeCEU\DTS\UseCase;
 
 
+use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\Renderer;
 use HomeCEU\DTS\Render\TemplateCompiler;
-use HomeCEU\DTS\Render\TemplateHelpers;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 
@@ -40,11 +40,15 @@ class Render {
     $docData = $this->docDataRepo->getByDocDataId($this->completeRequest->dataId);
 
     $compiler = TemplateCompiler::create();
+    $partials = $this->templateRepo->findByDocType($template->docType . '/partial');
+
+    foreach ($partials as $partial) {
+      $compiler->addPartial(new Partial($partial->templateKey, $partial->body));
+    }
     $renderer = Renderer::create();
 
     $body = $renderer->render($compiler->compile($template->body), $docData->data);
 
-    throw new \Exception('incomplete');
     $file = tmpfile();
     fwrite($file, $body);
     rewind($file);
