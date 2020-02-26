@@ -1,0 +1,15 @@
+{{#with approvals.sw as |sw|}}
+<table width="100%">
+    <tr>
+        <td width="65%">
+            <span class="char-style-override-1">SW</span>
+            <br />
+            <span>
+            {{#with sw.[0] as |approval|~}}
+                {{approval.state}}: {{approval.category}} - {{approval.status}} {{approval.code}} - {{approval.statement}}
+            {{~/with}}
+            </span>
+        </td>
+    </tr>
+</table>
+{{/with}}

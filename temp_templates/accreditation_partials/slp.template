@@ -1,0 +1,15 @@
+{{#with approvals.slp as |slp|}}
+<table width="100%">
+    <tr>
+        <td width="65%">
+            <span class="char-style-override-1">SLP</span>
+            <br />
+            <span>
+            {{#with slp.[0] as |approval|~}}
+                {{approval.status}} {{approval.code}} This certificate neither awards ASHA CEUs nor verifies that ASHA CEUs have been awarded to the person named above. ASHA CEUs are awarded to those that meet eligibility criteria by the ASHA CE Registry upon receipt of the CEU Participant Form from the ASHA Approved CE Provider.
+            {{~/with}}
+            </span>
+        </td>
+    </tr>
+</table>
+{{/with}}

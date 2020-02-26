@@ -1,0 +1,15 @@
+{{#with approvals.rs as |rs|}}
+<table width="100%">
+    <tr>
+        <td width="65%">
+            <span class="char-style-override-1">Rec / Activities Director</span>
+            <br />
+            <span>
+            {{#with rs.[0] as |approval|~}}
+                {{approval.state}}: {{approval.category}} - {{approval.status}} {{approval.code}} - {{approval.statement}}
+            {{~/with}}
+            </span>
+        </td>
+    </tr>
+</table>
+{{/with}}
