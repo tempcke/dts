@@ -17,13 +17,10 @@ class TemplateMigration extends AbstractMigration {
   }
 
   public function up() {
-    $templates = array_merge(
-        $this->extractTemplates($this->templateDir, 'certificate'),
-        $this->extractTemplates($this->partialDir, 'certificate/partial')
-    );
-    if (!empty($templates)) {
-      $this->table('template')->insert($templates)->save();
-    }
+    $table = $this->table('template');
+    $table->insert($this->extractTemplates($this->templateDir, 'certificate'));
+    $table->insert($this->extractTemplates($this->partialDir, 'certificate/partial'));
+    $table->save();
   }
 
   public function down() {
