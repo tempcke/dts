@@ -4,6 +4,8 @@
 namespace HomeCEU\DTS\UseCase;
 
 
+use HomeCEU\DTS\Entity\DocData;
+use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\Renderer;
 use HomeCEU\DTS\Render\TemplateCompiler;
@@ -36,18 +38,10 @@ class Render {
     $this->originalRequest = $request;
     $this->completeRequest = $this->buildRequestOfIds($request);
 
-    $template = $this->templateRepo->getTemplateById($this->completeRequest->templateId);
-    $docData = $this->docDataRepo->getByDocDataId($this->completeRequest->dataId);
-
-    $compiler = TemplateCompiler::create();
-    $partials = $this->templateRepo->findByDocType($template->docType . '/partial');
-
-    foreach ($partials as $partial) {
-      $compiler->addPartial(new Partial($partial->templateKey, $partial->body));
-    }
-    $renderer = Renderer::create();
-
-    $body = $renderer->render($compiler->compile($template->body), $docData->data);
+    $body = $this->renderTemplate(
+        $this->templateRepo->getTemplateById($this->completeRequest->templateId),
+        $this->docDataRepo->getByDocDataId($this->completeRequest->dataId)
+    );
 
     $file = tmpfile();
     fwrite($file, $body);
@@ -74,5 +68,17 @@ class Render {
       return $request->templateId;
     }
     return $this->templateRepo->lookupId($request->docType, $request->templateKey);
+  }
+
+  private function renderTemplate(Template $template, DocData $docData) {
+    $compiler = TemplateCompiler::create();
+    $partials = $this->templateRepo->findByDocType($template->docType . '/partial');
+
+    foreach ($partials as $partial) {
+      $compiler->addPartial(new Partial($partial->templateKey, $partial->body));
+    }
+    $renderer = Renderer::create();
+
+    return $renderer->render($compiler->compile($template->body), $docData->data);
   }
 }
