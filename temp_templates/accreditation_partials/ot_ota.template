@@ -1,0 +1,17 @@
+{{#with approvals.ot-ota as |ot-cota|}}
+<table>
+    <tr>
+        <td width="25%">
+            <span class="char-style-override-1">OT/COTA</span><br />
+            <span>{{> ot_bw_image }}</span>
+        </td>
+        <td width="75%">
+            <span>
+            {{#with ot-cota.[0]}}
+                AOTA approved provider #{{ provider_code }}: The following states recognize AOTA Approved Provider courses: AK, AR, DE, DC, IL, IN, KY, LA, MD, MN, MS, MO, MT, NH, NC, OH, OK, OR, PA, RI, SC, TN, TX, VT, VA, WI. This course also satisfies Continuing Education Requirements for the following states: AL, AZ, CA, GA, IA, KS, NE, NV, ND, SD, WA, WV. NBCOT: This course satisfies NBCOT Professional Development requirements CO,CT,HI,ID,ME,MA,MI,NJ,NM,NY,UT,WY.
+            {{/with}}
+            </span>
+        </td>
+    </tr>
+</table>
+{{/with}}

@@ -1,0 +1,29 @@
+{{#with approvals.mt-lmt as |mt-lmt|}}
+<table>
+    <tr>
+        <td width="">
+            <span class="char-style-override-1">MT/LMT</span>
+        </td>
+        <td width="20%" align="center">
+            <span>{{> mt_bw_image }}</span>
+        </td>
+        <td width="65%">
+            <span>
+            {{#with mt-lmt.[0] as |approval|~}}
+
+                This {{if approval.item_format "live" "live"}}
+                {{if approval.item_format "text" "home study"}}
+                {{if approval.item_format "video" "home study"}}
+                {{if approval.item_format "webinar" "live webinar"}}
+                {{if approval.item_format "package" ""}} course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
+            {{~/with}}
+            {{#each mt-lmt as |approval|~}}
+                {{ approval.category }}: {{ approval.status }} {{ approval.code }} - {{ approval.statement }}{{#unless @last}}; {{/unless}}
+            {{~/each}}
+            <br />
+            1 Contact Hour = 1 CE Hour.
+            </span>
+        </td>
+    </tr>
+</table>
+{{/with}}
