@@ -52,9 +52,9 @@ class TemplateMigration extends AbstractMigration {
     return [
         'body' => $body,
         'template_key' => str_replace('.', '-', $pathInfo['filename']),
-        'template_id' => \Ramsey\Uuid\Uuid::uuid1(),
+        'template_id' => \Ramsey\Uuid\Uuid::uuid4(),
         'name' => ucwords(str_replace(['.', '_'], ' ', $pathInfo['filename'])),
-        'author' => 'System',
+        'author' => 'Dan',
         'doc_type' => $docType,
         'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
     ];
