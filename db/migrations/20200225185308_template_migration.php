@@ -5,6 +5,7 @@ use Phinx\Migration\AbstractMigration;
 class TemplateMigration extends AbstractMigration {
   protected $templateDir;
   protected $partialDir;
+  protected $imageDir;
 
   protected function init() {
     parent::init();
@@ -14,13 +15,42 @@ class TemplateMigration extends AbstractMigration {
     }
     $this->templateDir = APP_ROOT . '/temp_templates';
     $this->partialDir = $this->templateDir . '/accreditation_partials';
+    $this->imageDir = $this->templateDir . '/images';
   }
 
   public function up() {
-    $table = $this->table('template');
-    $table->insert($this->extractTemplates($this->templateDir, 'certificate'));
-    $table->insert($this->extractTemplates($this->partialDir, 'certificate/partial'));
-    $table->save();
+    $templateTable = $this->table('template');
+    $compiledTemplateTable = $this->table('compiled_template');
+
+    $templates = $this->extractTemplates($this->templateDir, 'certificate');
+    $partials = $this->extractTemplates($this->partialDir, 'certificate/partial');
+    $images = $this->extractTemplates($this->imageDir, 'certificate/image');
+
+    $compiledTemplates = $this->compileTemplates($templates, $partials, $images);
+
+    $templateTable->insert($templates)
+        ->insert($partials)
+        ->insert($images)
+        ->save();
+
+    $compiledTemplateTable->insert($compiledTemplates)->save();
+  }
+
+  private function compileTemplates(array $templates, array $partials, array $images) {
+    $compiler = \HomeCEU\DTS\Render\TemplateCompiler::create();
+
+    $compiledTemplates = [];
+    foreach ($templates as $template) {
+      $compiler->setPartials(array_map(function($partial) {
+        return new \HomeCEU\DTS\Render\Partial($partial['template_key'], $partial['body']);
+      }, array_merge($partials, $images)));
+      $compiledTemplates[] = [
+          'template_id' => $template['template_id'],
+          'body' => $compiler->compile($template['body']),
+          'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+      ];
+    }
+    return $compiledTemplates;
   }
 
   public function down() {
