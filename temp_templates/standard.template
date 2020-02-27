@@ -34,7 +34,7 @@
     </p>
 
     <p>
-        {{> admin_signature_image }}
+        {{> admin_signature }}
     </p>
     <p>
         Anne Osborn, PT, MPT
@@ -43,5 +43,6 @@
         Owner, HomeCEUConnection.com
     </p>
 
+    {{> approvals}}
 
 </div>
