@@ -20,7 +20,7 @@ class DocDataRepositoryTest extends TestCase {
   /** @var DocDataRepository */
   protected $repo;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->persistence = $this->persistence();
     $this->repo = new DocDataRepository($this->persistence);

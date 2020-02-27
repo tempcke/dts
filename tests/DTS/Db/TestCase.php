@@ -16,11 +16,12 @@ class TestCase extends \HomeCEU\Tests\DTS\TestCase {
       'DB_PORT'
   ];
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->saveDbEnv();
   }
-  public function tearDown(): void {
+
+  protected function tearDown(): void {
     parent::tearDown();
     $this->restoreDbEnv();
   }

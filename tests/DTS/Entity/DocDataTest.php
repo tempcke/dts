@@ -13,7 +13,7 @@ class DocDataTest extends TestCase {
 
   public $iso8601;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $fake = Faker::generator();
     $this->iso8601 = $fake->iso8601;

@@ -21,13 +21,13 @@ class DocDataPersistenceTest extends TestCase {
 
   private $cleanupCalls = [];
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->db = Db::newConnection();
     $this->p = new DocDataPersistence($this->db);
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     parent::tearDown();
     foreach ($this->cleanupCalls as $func) {
       call_user_func($func);

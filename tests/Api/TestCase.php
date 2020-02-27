@@ -29,7 +29,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   /** @var string */
   protected $docType;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->di = new DiContainer();
     $this->app = new App($this->di);
@@ -37,7 +37,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     $this->docType = (new \ReflectionClass($this))->getShortName().'-'.time();
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     $db = $this->di->dbConnection;
     $db->deleteWhere(
         DocDataPersistence::TABLE,

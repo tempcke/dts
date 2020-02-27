@@ -25,7 +25,7 @@ class RenderTest extends TestCase {
   /** @var Persistence\InMemory */
   protected $templatePersistence;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->dataPersistence = $this->fakePersistence('docdata', 'dataId');
     $this->dataRepo = new DocDataRepository($this->dataPersistence);

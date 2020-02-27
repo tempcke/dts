@@ -22,7 +22,7 @@ class TemplateRepositoryTest extends TestCase {
 
   private $docType;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->db = Db::connection();
     $this->p = new TemplatePersistence($this->db);
@@ -30,7 +30,7 @@ class TemplateRepositoryTest extends TestCase {
     $this->docType = 'TemplateRepositoryTest-' . time();
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     $this->db->deleteWhere('template', ['doc_type' => $this->docType]);
     parent::tearDown();
   }

@@ -6,7 +6,7 @@ namespace HomeCEU\Tests\Api;
 use PHPUnit\Framework\Assert;
 
 class RenderTest extends TestCase {
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
   }
 

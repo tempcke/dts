@@ -14,7 +14,7 @@ class ConnectionTest  extends TestCase {
   private $connection;
 
   /** @throws Exception */
-  public function setUp(): void {
+  protected function setUp(): void {
     $this->connection = Connection::buildFromConfig(DbConfig::sqlite());
     $this->initRolesTable();
   }
