@@ -37,6 +37,23 @@ class CompiledTemplatePersistenceTest extends TestCase {
     Assert::assertEquals($cTemplate, $retrieved);
   }
 
+  public function testCanFindRecordByTemplateDocTypeAndKey(): void
+  {
+    $cTemplate = $this->fakeCompiledTemplate();
+    $this->persistence->persist($cTemplate);
+
+    $retrieved = $this->persistence->findBy(
+        $this->template['docType'],
+        $this->template['templateKey']
+    );
+    Assert::assertEquals($cTemplate, $retrieved);
+  }
+
+  public function testFindByTemplateDocTypeAndKeyRecordNotFound(): void
+  {
+    Assert::assertNull($this->persistence->findBy('made-up-type', 'made-up-key'));
+  }
+
   private function fakeCompiledTemplate(): array {
     return [
         'templateId' => $this->template['templateId'],

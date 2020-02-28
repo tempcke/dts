@@ -21,6 +21,16 @@ class CompiledTemplatePersistence extends AbstractPersistence {
     $this->useKeyMap(self::MAP);
   }
 
+  public function findBy(string $docType, string $key) {
+    $row = $this->db->query("SELECT ct.* FROM compiled_template ct
+                                JOIN template t
+                                    ON t.template_id = ct.template_id
+                                    AND t.doc_type = ?
+                                    AND t.template_key = ?", $docType, $key
+    )->fetch();
+    return !empty($row) ? $this->hydrate($row) : null;
+  }
+
   public function generateId(): void {
     $this->notImplemented(__METHOD__);
   }
