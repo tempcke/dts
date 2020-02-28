@@ -35,6 +35,8 @@ abstract class AbstractPersistence implements Persistence {
         $this->selectColumns(...$cols),
         [static::ID_COL => $id]
     )->fetch();
+    if (is_null($row))
+      throw new \Exception("Cannot retrieve entity with id: {$id} (not found)");
     return $this->hydrate($row);
   }
 
