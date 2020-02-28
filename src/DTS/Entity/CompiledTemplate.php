@@ -14,7 +14,7 @@ class CompiledTemplate implements Entity {
 
   use EntityHelperTrait;
 
-  protected static function key(): array {
+  protected static function keys(): array {
     return [
         'templateId',
         'body',
