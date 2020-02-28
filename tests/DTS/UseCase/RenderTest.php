@@ -31,7 +31,10 @@ class RenderTest extends TestCase {
     $this->dataRepo = new DocDataRepository($this->dataPersistence);
 
     $this->templatePersistence = $this->fakePersistence('template', 'templateId');
-    $this->templateRepo = new TemplateRepository($this->templatePersistence);
+    $this->templateRepo = new TemplateRepository(
+        $this->templatePersistence,
+        $this->fakePersistence('compiled_template', 'templateId')
+    );
 
     $this->render = new Render($this->templateRepo, $this->dataRepo);
   }

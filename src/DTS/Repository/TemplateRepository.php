@@ -4,6 +4,7 @@
 namespace HomeCEU\DTS\Repository;
 
 
+use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
@@ -13,9 +14,15 @@ class TemplateRepository {
 
   /** @var RepoHelper */
   private $repoHelper;
+  private $compiledTemplatePersistence;
 
-  public function __construct(Persistence $persistence) {
+  public function __construct(
+      Persistence $persistence,
+      Persistence $compiledTemplatePersistence
+  ) {
     $this->persistence = $persistence;
+    $this->compiledTemplatePersistence = $compiledTemplatePersistence;
+
     $this->repoHelper = new RepoHelper($persistence);
   }
 
@@ -26,6 +33,11 @@ class TemplateRepository {
   public function getTemplateById(string $id) {
     $array = $this->persistence->retrieve($id);
     return Template::fromState($array);
+  }
+
+  public function getCompiledTemplateById(string $id) {
+    $arr = $this->compiledTemplatePersistence->retrieve($id);
+    return CompiledTemplate::fromState($arr);
   }
 
   public function findByDocType(string $docType) {
