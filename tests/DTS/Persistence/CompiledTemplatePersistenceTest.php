@@ -30,7 +30,7 @@ class CompiledTemplatePersistenceTest extends TestCase {
   }
 
   public function testCanRetrievePersistedRecord(): void {
-    $cTemplate = $this->fakeCompiledTemplate();
+    $cTemplate = $this->fakeCompiledTemplate($this->template);
     $this->persistence->persist($cTemplate);
 
     $retrieved = $this->persistence->retrieve($cTemplate['templateId']);
@@ -39,7 +39,7 @@ class CompiledTemplatePersistenceTest extends TestCase {
 
   public function testCanFindRecordByTemplateDocTypeAndKey(): void
   {
-    $cTemplate = $this->fakeCompiledTemplate();
+    $cTemplate = $this->fakeCompiledTemplate($this->template);
     $this->persistence->persist($cTemplate);
 
     $retrieved = $this->persistence->findBy(
@@ -52,13 +52,5 @@ class CompiledTemplatePersistenceTest extends TestCase {
   public function testFindByTemplateDocTypeAndKeyRecordNotFound(): void
   {
     Assert::assertNull($this->persistence->findBy('made-up-type', 'made-up-key'));
-  }
-
-  private function fakeCompiledTemplate(): array {
-    return [
-        'templateId' => $this->template['templateId'],
-        'body' => 'a template body',
-        'createdAt' => new \DateTime('yesterday'),
-    ];
   }
 }
