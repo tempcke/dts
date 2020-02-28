@@ -1,15 +1,16 @@
 <?php
 
-use Phinx\Migration\AbstractMigration;
 
-class TemplateMigration extends AbstractMigration {
+use HomeCEU\DTS\Render\Partial;
+use HomeCEU\DTS\Render\TemplateCompiler;
+use Phinx\Seed\AbstractSeed;
+
+class TemplateSeeder extends AbstractSeed {
   protected $templateDir;
   protected $partialDir;
   protected $imageDir;
 
   protected function init() {
-    parent::init();
-
     if (!defined('APP_ROOT')) {
       define('APP_ROOT', realpath(__DIR__ . '/../../'));
     }
@@ -18,7 +19,7 @@ class TemplateMigration extends AbstractMigration {
     $this->imageDir = $this->templateDir . '/images';
   }
 
-  public function up() {
+  public function run() {
     $templateTable = $this->table('template');
     $compiledTemplateTable = $this->table('compiled_template');
 
@@ -36,27 +37,6 @@ class TemplateMigration extends AbstractMigration {
     $compiledTemplateTable->insert($compiledTemplates)->save();
   }
 
-  private function compileTemplates(array $templates, array $partials, array $images) {
-    $compiler = \HomeCEU\DTS\Render\TemplateCompiler::create();
-
-    $compiledTemplates = [];
-    foreach ($templates as $template) {
-      $compiler->setPartials(array_map(function($partial) {
-        return new \HomeCEU\DTS\Render\Partial($partial['template_key'], $partial['body']);
-      }, array_merge($partials, $images)));
-      $compiledTemplates[] = [
-          'template_id' => $template['template_id'],
-          'body' => $compiler->compile($template['body']),
-          'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
-      ];
-    }
-    return $compiledTemplates;
-  }
-
-  public function down() {
-    $this->execute('DELETE FROM template;');
-  }
-
   private function extractTemplates($location, $docType) {
     $templates = [];
     foreach (scandir($location) as $file) {
@@ -72,6 +52,23 @@ class TemplateMigration extends AbstractMigration {
       }
     }
     return $templates;
+  }
+
+  private function compileTemplates(array $templates, array $partials, array $images) {
+    $compiler = TemplateCompiler::create();
+    $compiler->setPartials(array_map(function ($partial) {
+      return new Partial($partial['template_key'], $partial['body']);
+    }, array_merge($partials, $images)));
+
+    $compiledTemplates = [];
+    foreach ($templates as $template) {
+      $compiledTemplates[] = [
+          'template_id' => $template['template_id'],
+          'body' => $compiler->compile($template['body']),
+          'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+      ];
+    }
+    return $compiledTemplates;
   }
 
   private function fileIsHidden($file): bool {
