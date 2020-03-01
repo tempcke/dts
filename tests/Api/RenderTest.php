@@ -10,13 +10,26 @@ class RenderTest extends TestCase {
     parent::setUp();
   }
 
-  public function testRenderFromKeys() {
+  public function testTemplateNotFound(): void {
+    $templateKey = __FUNCTION__;
+    $dataKey = __FUNCTION__;
+
+    $response = $this->get($this->buildURI($templateKey, $dataKey));
+    Assert::assertEquals(404, $response->getStatusCode());
+  }
+
+  public function testRenderFromKeys(): void {
     $templateKey = __FUNCTION__;
     $dataKey = __FUNCTION__;
     $this->addDocDataFixture($dataKey);
     $this->addTemplateFixture($templateKey);
-    $response = $this->get("/render?docType={$this->docType}&templateKey={$templateKey}&dataKey={$dataKey}");
+    $response = $this->get($this->buildURI($templateKey, $dataKey));
     Assert::assertEquals(200, $response->getStatusCode());
     Assert::assertEquals('Hi Fred', strval($response->getBody()));
+  }
+
+  private function buildURI(...$args)
+  {
+    return "/render/{$this->docType}/" . implode('/', $args);
   }
 }

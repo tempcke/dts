@@ -6,9 +6,7 @@ namespace HomeCEU\DTS\UseCase;
 
 use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Entity\Template;
-use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\Renderer;
-use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 
@@ -71,14 +69,7 @@ class Render {
   }
 
   private function renderTemplate(Template $template, DocData $docData) {
-    $compiler = TemplateCompiler::create();
-    $partials = $this->templateRepo->findByDocType($template->docType . '/partial');
-
-    foreach ($partials as $partial) {
-      $compiler->addPartial(new Partial($partial->templateKey, $partial->body));
-    }
-    $renderer = Renderer::create();
-
-    return $renderer->render($compiler->compile($template->body), $docData->data);
+    $template = $this->templateRepo->getCompiledTemplateById($template->templateId);
+    return Renderer::create()->render($template->body, $docData->data);
   }
 }
