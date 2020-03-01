@@ -6,6 +6,8 @@ use HomeCEU\DTS\Render\TemplateCompiler;
 use Phinx\Seed\AbstractSeed;
 
 class TemplateSeeder extends AbstractSeed {
+  protected const DOC_TYPE = 'enrollment';
+
   protected $templateDir;
   protected $partialDir;
   protected $imageDir;
@@ -23,9 +25,9 @@ class TemplateSeeder extends AbstractSeed {
     $templateTable = $this->table('template');
     $compiledTemplateTable = $this->table('compiled_template');
 
-    $templates = $this->extractTemplates($this->templateDir, 'certificate');
-    $partials = $this->extractTemplates($this->partialDir, 'certificate/partial');
-    $images = $this->extractTemplates($this->imageDir, 'certificate/image');
+    $templates = $this->extractTemplates($this->templateDir, self::DOC_TYPE);
+    $partials = $this->extractTemplates($this->partialDir, self::DOC_TYPE . '/partial');
+    $images = $this->extractTemplates($this->imageDir, self::DOC_TYPE . '/image');
 
     $compiledTemplates = $this->compileTemplates($templates, $partials, $images);
 
