@@ -7,6 +7,7 @@ use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\Render as RenderUseCase;
 use HomeCEU\DTS\UseCase\RenderRequest;
@@ -41,12 +42,18 @@ class Render {
   }
 
   public function __invoke(Request $request, Response $response, $args) {
-    $query = $request->getQueryParams();
-    $renderRequest = RenderRequest::fromState($query);
-    $stream = $this->useCase->renderDoc($renderRequest);
-    // $docBody = stream_get_contents($stream);
-    return $response
-        ->withBody(new Stream($stream))
-        ->withStatus(200);
+    try {
+      $renderRequest = RenderRequest::fromState([
+          'docType' => $args['docType'],
+          'templateKey' => $args['templateKey'],
+          'dataKey' => $args['dataKey'],
+      ]);
+      $stream = $this->useCase->renderDoc($renderRequest);
+      return $response
+          ->withBody(new Stream($stream))
+          ->withStatus(200);
+    } catch (RecordNotFoundException $e) {
+      return $response->withStatus(404);
+    }
   }
 }
