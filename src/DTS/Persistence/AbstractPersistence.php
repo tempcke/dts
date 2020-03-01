@@ -6,6 +6,7 @@ namespace HomeCEU\DTS\Persistence;
 
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use Ramsey\Uuid\Uuid;
 
 abstract class AbstractPersistence implements Persistence {
@@ -36,7 +37,7 @@ abstract class AbstractPersistence implements Persistence {
         [static::ID_COL => $id]
     )->fetch();
     if (is_null($row))
-      throw new \Exception("Cannot retrieve entity with id: {$id} (not found)");
+      throw new RecordNotFoundException("Cannot retrieve ".str_replace('_', ' ', static::TABLE)." with id: {$id}");
     return $this->hydrate($row);
   }
 
