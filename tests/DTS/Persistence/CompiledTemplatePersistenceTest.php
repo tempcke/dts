@@ -7,8 +7,10 @@ namespace DTS\Persistence;
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class CompiledTemplatePersistenceTest extends TestCase {
   protected $persistence;
@@ -47,6 +49,12 @@ class CompiledTemplatePersistenceTest extends TestCase {
         $this->template['templateKey']
     );
     Assert::assertEquals($cTemplate, $retrieved);
+  }
+
+  public function testRecordNotFound(): void {
+    $this->expectException(RecordNotFoundException::class);
+    $this->expectExceptionMessage('compiled template');
+    $this->persistence->retrieve(Uuid::uuid4());
   }
 
   public function testFindByTemplateDocTypeAndKeyRecordNotFound(): void

@@ -7,6 +7,7 @@ namespace HomeCEU\Tests\DTS\Persistence;
 use HomeCEU\DTS\Db\Config;
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence\AbstractPersistence;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
@@ -58,17 +59,8 @@ class AbstractPersistenceTest extends TestCase {
     Assert::assertEquals($this->hydrated(), $hydrated);
   }
 
-  public function testRetrieveNonExistentRecord(): void {
-    $this->expectException(\Exception::class);
-    $p = $this->persistence();
-    $p->useKeyMap($this->keymap());
-    $p->retrieve(Uuid::uuid4());
-  }
-
   protected function persistence() {
     return new class($this->fakeDb) extends AbstractPersistence {
-      const TABLE = 'fake_table';
-      const ID_COL = 'fake_id';
       public function delete($id) {}
     };
   }
