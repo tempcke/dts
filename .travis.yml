@@ -11,6 +11,7 @@ php:
 
 services:
   - mysql
+  - xvfb
 
 matrix:
   allow_failures:
