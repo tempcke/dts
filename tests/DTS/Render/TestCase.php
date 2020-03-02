@@ -25,7 +25,7 @@ class TestCase extends dtsTestCase {
     return $this->renderer->render($compiledTemplate, $data);
   }
 
-  public function pdf($compiledTemplate, $data = []) {
-    return $this->renderer->pdf($compiledTemplate, $data);
+  public function renderPDF($compiledTemplate, $data = [], $options = []) {
+    return $this->renderer->pdf($compiledTemplate, $data, $options);
   }
 }
