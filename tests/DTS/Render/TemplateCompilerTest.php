@@ -10,19 +10,9 @@ use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\TemplateCompiler;
 
 class TemplateCompilerTest extends TestCase {
-  private $compiler;
-
-  protected function setUp(): void {
-    parent::setUp();
-    $this->compiler = TemplateCompiler::create();
-    $this->compiler->setPartials([]);
-    $this->compiler->setHelpers([]);
-  }
-
   public function testCompileTemplate(): void {
     $data = ['placeholder' => 'password'];
     $template = $this->compile('{{ placeholder }}');
-
     $this->assertEquals($data['placeholder'], $this->render($template, $data));
   }
 
@@ -48,9 +38,5 @@ class TemplateCompilerTest extends TestCase {
         })
     ]);
     $this->assertEquals('TEXT', $this->render($this->compile('{{upper var}}'), ['var' => 'text']));
-  }
-
-  private function compile($template): string {
-    return $this->compiler->compile($template);
   }
 }
