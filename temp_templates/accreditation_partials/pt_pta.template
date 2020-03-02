@@ -1,4 +1,4 @@
-{{#with approvals.pt-pta as |pt_pta|}}
+{{#with approvals.pt_pta as |pt_pta|}}
 <table>
     <tr>
         <td width="25%">
