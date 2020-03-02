@@ -77,11 +77,8 @@ class RenderTest extends TestCase {
 
     $r = $this->render;
 
-    $result = $this->render->renderDoc($request);
-    $docBody = stream_get_contents($result);
+    $this->render->renderDoc($request);
     Assert::assertEquals('did', $r->completeRequest->dataId);
     Assert::assertEquals($templateId, $r->completeRequest->templateId);
-    Assert::assertEquals('Hi Fred', $docBody);
   }
-
 }

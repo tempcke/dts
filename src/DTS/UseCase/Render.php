@@ -40,11 +40,7 @@ class Render {
         $this->templateRepo->getTemplateById($this->completeRequest->templateId),
         $this->docDataRepo->getByDocDataId($this->completeRequest->dataId)
     );
-
-    $file = tmpfile();
-    fwrite($file, $body);
-    rewind($file);
-    return $file;
+    return $body;
   }
 
   protected function buildRequestOfIds(RenderRequest $request): RenderRequest {
@@ -68,8 +64,8 @@ class Render {
     return $this->templateRepo->lookupId($request->docType, $request->templateKey);
   }
 
-  private function renderTemplate(Template $template, DocData $docData) {
+  private function renderTemplate(Template $template, DocData $docData): string {
     $template = $this->templateRepo->getCompiledTemplateById($template->templateId);
-    return Renderer::create()->render($template->body, $docData->data);
+    return Renderer::create()->pdf($template->body, $docData->data);
   }
 }

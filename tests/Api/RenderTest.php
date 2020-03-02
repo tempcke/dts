@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\Api;
 
 use PHPUnit\Framework\Assert;
+use Slim\Http\Stream;
 
 class RenderTest extends TestCase {
   protected function setUp(): void {
@@ -24,8 +25,10 @@ class RenderTest extends TestCase {
     $this->addDocDataFixture($dataKey);
     $this->addTemplateFixture($templateKey);
     $response = $this->get($this->buildURI($templateKey, $dataKey));
+
     Assert::assertEquals(200, $response->getStatusCode());
-    Assert::assertEquals('Hi Fred', strval($response->getBody()));
+    Assert::assertTrue(in_array('application/pdf', $response->getHeaders()['Content-Type']));
+    Assert::assertInstanceOf(Stream::class, $response->getBody());
   }
 
   private function buildURI(...$args)
