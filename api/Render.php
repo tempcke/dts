@@ -50,7 +50,8 @@ class Render {
       ]);
       $stream = $this->useCase->renderDoc($renderRequest);
       return $response
-          ->withBody(new Stream($stream))
+          ->withAddedHeader('Content-Type', 'application/pdf')
+          ->withBody(new Stream(fopen($stream, 'r')))
           ->withStatus(200);
     } catch (RecordNotFoundException $e) {
       return $response->withStatus(404);
