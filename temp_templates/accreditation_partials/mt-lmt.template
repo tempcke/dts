@@ -11,11 +11,11 @@
             <span>
             {{#with mt-lmt.[0] as |approval|~}}
 
-                This {{if approval.item_format "live" "live"}}
-                {{if approval.item_format "text" "home study"}}
-                {{if approval.item_format "video" "home study"}}
-                {{if approval.item_format "webinar" "live webinar"}}
-                {{if approval.item_format "package" ""}} course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
+                This {{comp-if approval.item_format "live" "live"}}
+                {{comp-if approval.item_format "text" "home study"}}
+                {{comp-if approval.item_format "video" "home study"}}
+                {{comp-if approval.item_format "webinar" "live webinar"}}
+                {{comp-if approval.item_format "package" ""}} course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
             {{~/with}}
             {{#each mt-lmt as |approval|~}}
                 {{ approval.category }}: {{ approval.status }} {{ approval.code }} - {{ approval.statement }}{{#unless @last}}; {{/unless}}
