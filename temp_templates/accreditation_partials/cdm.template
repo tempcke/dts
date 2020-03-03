@@ -2,10 +2,10 @@
 <table width="100%">
     <tr>
         <td width="25%">
-            <span>{{> cdm_image }}</span>
+            <span>{{> cdm }}</span>
         </td>
         <td width="75%">
-            <span>
+            <span class="char-style-override-5">
             {{#with cdm.[0] as |approval|~}}
                 This program has been approved for fulfilling the continuing education requirements of the Certifying Board for Dietary Managers (CBDM). Granting prior approval does not constitute an endorsement of the program content or its program sponsor.
             {{~/with}}

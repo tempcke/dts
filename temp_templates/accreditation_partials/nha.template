@@ -4,7 +4,7 @@
         <td width="65%">
             <span class="char-style-override-1">NHA</span>
             <br />
-            <span>
+            <span class="char-style-override-5">
             {{#with nha.[0] as |approval|~}}
                 {{approval.statement}} NAB/NCERS Approval #:{{approval.code}}
             {{~/with}}

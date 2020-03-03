@@ -4,7 +4,7 @@
         <td width="65%">
             <span class="char-style-override-1">RN</span>
             <br />
-            <span>
+            <span class="char-style-override-5">
             {{#with rn.[0] as |approval|~}}
                 HomeCEUConnection.com is accredited as a provider of continuing nursing education by the American Nurses Credentialing Center's Commission on Accreditation.
             {{~/with}}

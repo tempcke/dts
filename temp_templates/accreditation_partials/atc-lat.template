@@ -5,10 +5,10 @@
             <span class="char-style-override-1">ATC/LAT</span>
         </td>
         <td align="center">
-            <span>{{> boc_bw_image }}</span>
+            <span>{{> boc_bw }}</span>
         </td>
         <td width="65%">
-            <span>
+            <span class="char-style-override-5">
             {{#with atc-lat.[0] as |approval|~}}
                 HomeCEUConnection.com (BOC AP#: {{approval.code}}) is approved by the Board of Certification, Inc. to provide continuing education to Certified Athletic Trainers. This program is eligible for a maximum of {{course.hours}}&nbsp;
                 {{if approval.code "BOC Approved Provider" "Category A"}}

@@ -5,10 +5,10 @@
             <span class="char-style-override-1">MT/LMT</span>
         </td>
         <td width="20%" align="center">
-            <span>{{> mt_bw_image }}</span>
+            <span>{{> mt_bw }}</span>
         </td>
         <td width="65%">
-            <span>
+            <span class="char-style-override-5">
             {{#with mt-lmt.[0] as |approval|~}}
 
                 This {{comp-if approval.item_format "live" "live"}}
@@ -17,6 +17,9 @@
                 {{comp-if approval.item_format "webinar" "live webinar"}}
                 {{comp-if approval.item_format "package" ""}} course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
             {{~/with}}
+            {{~#each mt-lmt as |approval|~}}
+                {{approval.state}}{{#unless @last}}, {{/unless}}
+            {{~/each~}}&nbsp;
             {{#each mt-lmt as |approval|~}}
                 {{ approval.category }}: {{ approval.status }} {{ approval.code }} - {{ approval.statement }}{{#unless @last}}; {{/unless}}
             {{~/each}}
