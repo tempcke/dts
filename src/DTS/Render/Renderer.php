@@ -7,7 +7,14 @@ use mikehaertl\wkhtmlto\Pdf;
 use Ramsey\Uuid\Uuid;
 
 class Renderer {
-  protected const PDF_OPTIONS = ['commandOptions' => ['enableXvfb' => true]];
+  protected const PDF_OPTIONS = [
+      'no-outline',
+      'exclude-from-outline',
+      'margin-bottom' => 0,
+      'margin-right'  => 10,
+      'margin-left'   => 5,
+      'commandOptions' => ['enableXvfb' => true]
+  ];
 
   public static function create(): self {
     return new self();
