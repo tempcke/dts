@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\UseCase;
 
 
 use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\InvalidRenderRequestException;
@@ -24,14 +25,21 @@ class RenderTest extends TestCase {
   protected $dataPersistence;
   /** @var Persistence\InMemory */
   protected $templatePersistence;
+  /** @var Persistence\InMemory */
+  private $compiledTemplatePersistence;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->dataPersistence = $this->fakePersistence('docdata', 'dataId');
     $this->dataRepo = new DocDataRepository($this->dataPersistence);
 
     $this->templatePersistence = $this->fakePersistence('template', 'templateId');
-    $this->templateRepo = new TemplateRepository($this->templatePersistence);
+    $this->compiledTemplatePersistence = $this->fakePersistence('compiled_template', 'templateId');
+
+    $this->templateRepo = new TemplateRepository(
+        $this->templatePersistence,
+        $this->compiledTemplatePersistence
+    );
 
     $this->render = new Render($this->templateRepo, $this->dataRepo);
   }
@@ -43,17 +51,23 @@ class RenderTest extends TestCase {
   }
 
   public function testCanResolveRequest() {
+    $templateId = 'tid';
+    $body = 'Hi {{name}}';
+    $this->templatePersistence->persist([
+        'docType' => 'dt',
+        'templateId' => $templateId,
+        'templateKey' => 'tk',
+        'body' => $body
+    ]);
+    $this->compiledTemplatePersistence->persist([
+        'templateId' => $templateId,
+        'body' => TemplateCompiler::create()->compile($body)
+    ]);
     $this->dataPersistence->persist([
         'docType' => 'dt',
         'dataId' => 'did',
         'dataKey' => 'dk',
         'data'=>['name'=>'Fred']
-    ]);
-    $this->templatePersistence->persist([
-        'docType' => 'dt',
-        'templateId' => 'tid',
-        'templateKey' => 'tk',
-        'body'=>'Hi {{name}}'
     ]);
     $request = RenderRequest::fromState([
         'docType' => 'dt',
@@ -63,11 +77,8 @@ class RenderTest extends TestCase {
 
     $r = $this->render;
 
-    $result = $this->render->renderDoc($request);
-    $docBody = stream_get_contents($result);
+    $this->render->renderDoc($request);
     Assert::assertEquals('did', $r->completeRequest->dataId);
-    Assert::assertEquals('tid', $r->completeRequest->templateId);
-    Assert::assertEquals('Hi Fred', $docBody);
+    Assert::assertEquals($templateId, $r->completeRequest->templateId);
   }
-
 }

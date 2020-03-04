@@ -15,6 +15,7 @@ class DocDataAddTest extends TestCase {
     ];
 
     $response = $this->post('/docdata', $requestArray);
+    $this->assertContentType($response, 'application/json');
     $responseBody = strval($response->getBody());
     $responseData = json_decode($responseBody, true);
 

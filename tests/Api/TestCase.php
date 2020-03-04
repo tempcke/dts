@@ -6,8 +6,10 @@ namespace HomeCEU\Tests\Api;
 
 use HomeCEU\DTS\Api\App;
 use HomeCEU\DTS\Api\DiContainer;
+use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Render\TemplateCompiler;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -23,30 +25,27 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   /** @var TemplatePersistence */
   private $templatePersistence;
 
+  /** @var CompiledTemplatePersistence */
+  private $compiledTemplatePersistence;
+
   /** @var DocDataPersistence */
   protected $docDataPersistence;
 
   /** @var string */
   protected $docType;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->di = new DiContainer();
+    $this->di->dbConnection->beginTransaction();
     $this->app = new App($this->di);
 
     $this->docType = (new \ReflectionClass($this))->getShortName().'-'.time();
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     $db = $this->di->dbConnection;
-    $db->deleteWhere(
-        DocDataPersistence::TABLE,
-        ['doc_type'=>$this->docType]
-    );
-    $db->deleteWhere(
-        TemplatePersistence::TABLE,
-        ['doc_type'=>$this->docType]
-    );
+    $db->rollBack();
     parent::tearDown();
   }
 
@@ -64,6 +63,13 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return $this->templatePersistence;
   }
 
+  protected function compiledTemplatePersistence(): CompiledTemplatePersistence {
+    if (empty($this->compiledTemplatePersistence)) {
+      $this->compiledTemplatePersistence = new CompiledTemplatePersistence($this->di->dbConnection);
+    }
+    return $this->compiledTemplatePersistence;
+  }
+
   protected function addDocDataFixture($dataKey) {
     $this->docDataPersistence()->persist([
         'docType' => $this->docType,
@@ -75,14 +81,20 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   }
 
   protected function addTemplateFixture($templateKey) {
+    $id = uniqid();
+    $body = 'Hi {{name}}';
     $this->templatePersistence()->persist([
         'docType' => $this->docType,
         'templateKey' => $templateKey,
         'createdAt' => $this->createdAtDateTime(),
-        'templateId' => uniqid(),
-        'body'=>'Hi {{name}}',
+        'templateId' => $id,
+        'body'=> $body,
         'author'=>'author',
         'name'=>'name'
+    ]);
+    $this->compiledTemplatePersistence()->persist([
+        'templateId' => $id,
+        'body' => TemplateCompiler::create()->compile($body)
     ]);
   }
 

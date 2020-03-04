@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS template;
 CREATE TABLE template (
       template_id  CHAR(36)         NOT NULL   COMMENT 'UUID to identify a single unique version',

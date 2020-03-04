@@ -7,14 +7,16 @@ namespace HomeCEU\Tests\DTS\Persistence;
 use HomeCEU\DTS\Db\Config;
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence\AbstractPersistence;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class AbstractPersistenceTest extends TestCase {
   /** @var Connection */
   private $fakeDb;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->fakeDb = Connection::buildFromConfig(Config::sqlite());
   }

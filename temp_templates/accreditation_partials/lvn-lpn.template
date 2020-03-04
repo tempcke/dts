@@ -1,0 +1,15 @@
+{{#with approvals.lvn-lpn as |lvn-lpn|}}
+<table width="100%">
+    <tr>
+        <td width="65%">
+            <span class="char-style-override-1">LVN/LPN</span>
+            <br />
+            <span class="char-style-override-5">
+            {{#with lvn-lpn.[0] as |approval|~}}
+                HomeCEUConnection.com is accredited as a provider of continuing nursing education by the American Nurses Credentialing Center's Commission on Accreditation.
+            {{~/with}}
+            </span>
+        </td>
+    </tr>
+</table>
+{{/with}}

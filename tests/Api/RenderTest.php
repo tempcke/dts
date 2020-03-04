@@ -4,40 +4,35 @@
 namespace HomeCEU\Tests\Api;
 
 use PHPUnit\Framework\Assert;
+use Slim\Http\Stream;
 
 class RenderTest extends TestCase {
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
   }
 
-  public function testRenderFromKeys() {
+  public function testTemplateNotFound(): void {
+    $templateKey = __FUNCTION__;
+    $dataKey = __FUNCTION__;
+
+    $response = $this->get($this->buildURI($templateKey, $dataKey));
+    Assert::assertEquals(404, $response->getStatusCode());
+  }
+
+  public function testRenderFromKeys(): void {
     $templateKey = __FUNCTION__;
     $dataKey = __FUNCTION__;
     $this->addDocDataFixture($dataKey);
     $this->addTemplateFixture($templateKey);
-    $response = $this->get("/render?docType={$this->docType}&templateKey={$templateKey}&dataKey={$dataKey}");
+    $response = $this->get($this->buildURI($templateKey, $dataKey));
+
     Assert::assertEquals(200, $response->getStatusCode());
-    Assert::assertEquals('Hi Fred', strval($response->getBody()));
+    Assert::assertTrue(in_array('application/pdf', $response->getHeaders()['Content-Type']));
+    Assert::assertInstanceOf(Stream::class, $response->getBody());
   }
 
-  protected function loadDocDataFixture($dataKey) {
-    $this->docDataPersistence()->persist([
-        'docType' => $this->docType,
-        'dataKey' => $dataKey,
-        'createdAt' => $this->createdAtDateTime(),
-        'dataId' => uniqid(),
-        'data' => ['name'=>'Fred']
-    ]);
-  }
-  protected function loadTemplateFixture($dataKey) {
-    $this->TemplatePersistence()->persist([
-        'docType' => $this->docType,
-        'templateKey' => $dataKey,
-        'createdAt' => $this->createdAtDateTime(),
-        'templateId' => uniqid(),
-        'name'=>'name',
-        'author'=>'author',
-        'body' => 'Hi {{name}}'
-    ]);
+  private function buildURI(...$args)
+  {
+    return "/render/{$this->docType}/" . implode('/', $args);
   }
 }

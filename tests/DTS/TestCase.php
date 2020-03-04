@@ -17,6 +17,14 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     ];
   }
 
+  protected function fakeCompiledTemplate(array $template): array {
+    return [
+        'templateId' => $template['templateId'],
+        'body' => 'a template body',
+        'createdAt' => new \DateTime('yesterday'),
+    ];
+  }
+
   protected function fakePersistence($table, $idCol) {
     return new class($table, $idCol) extends Persistence\InMemory {
       private $table;
