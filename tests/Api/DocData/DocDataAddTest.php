@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\Api\DocData;
 
 use PHPUnit\Framework\Assert;
+use Psr\Http\Message\ResponseInterface;
 
 class DocDataAddTest extends TestCase {
 
@@ -15,6 +16,7 @@ class DocDataAddTest extends TestCase {
     ];
 
     $response = $this->post('/docdata', $requestArray);
+    $this->assertContentType($response, 'application/json');
     $responseBody = strval($response->getBody());
     $responseData = json_decode($responseBody, true);
 
@@ -29,6 +31,15 @@ class DocDataAddTest extends TestCase {
     Assert::assertFalse(
         array_key_exists('data', $responseData),
         "ERROR: post /docdata should not respond with the data"
+    );
+  }
+
+  protected function assertContentType(ResponseInterface $response, $contentType): void {
+    $headers = $response->getHeaders();
+
+    Assert::assertTrue(
+        in_array($contentType, $headers['Content-Type']),
+        'Content-Type does not include "application/json"'
     );
   }
 }

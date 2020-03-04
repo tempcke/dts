@@ -10,7 +10,7 @@ use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\UseCase\AddDocData;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 
@@ -50,9 +50,6 @@ class DocDataAdd {
             'createdAt'
         ]
     );
-    $jsonString = json_encode($savedDocData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    $response->getBody()->write($jsonString);
-    return $response;
+    return $response->withJson($savedDocData);
   }
-
 }
