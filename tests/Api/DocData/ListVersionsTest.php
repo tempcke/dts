@@ -13,6 +13,7 @@ class ListVersionsTest extends TestCase {
 
     $uri = "/docdata/{$this->docType}/{$dataKey}/history";
     $response = $this->get($uri);
+    $this->assertContentType($response, 'application/json');
     $responseData = json_decode(strval($response->getBody()), true);
 
     Assert::assertSame($response->getStatusCode(), 200);
