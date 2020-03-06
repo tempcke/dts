@@ -50,6 +50,6 @@ class DocDataAdd {
             'createdAt'
         ]
     );
-    return $response->withJson($savedDocData);
+    return $response->withStatus(201)->withJson($savedDocData);
   }
 }

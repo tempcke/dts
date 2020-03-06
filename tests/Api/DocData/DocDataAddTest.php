@@ -19,7 +19,7 @@ class DocDataAddTest extends TestCase {
     $responseBody = strval($response->getBody());
     $responseData = json_decode($responseBody, true);
 
-    $expectedResponseCode = 200;
+    $expectedResponseCode = 201;
     $expectedResponseKeys = ['dataId', 'docType', 'dataKey', 'createdAt'];
 
     Assert::assertSame($response->getStatusCode(), $expectedResponseCode);
