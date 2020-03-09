@@ -150,7 +150,7 @@
         Owner, HomeCEUConnection.com
     </p>
 
-    {{> approvals}}
+    {{> standard_approvals}}
 
 </div>
 </body>
