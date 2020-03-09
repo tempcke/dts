@@ -56,10 +56,10 @@
     </p>
 
     <p>
-        {{> nara_signature }}
+        {{> encompass_care_signature }}
     </p>
     <p>
-
+        Linda Stratton, DPT
     </p>
 
     {{> encompass-cota}}
