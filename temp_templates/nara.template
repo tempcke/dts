@@ -155,6 +155,15 @@
     {{> pt-pta}}
     {{> slp}}
 
+    {{#if course.atcCode}}
+    <div style="text-align: center">
+        {{> nara_asha_block}}
+    </div>
+    <span class="char-style-override-5">
+            Course {{course.atcCode}} This course is offered for up to {{course.hours}} CEUs (Intermediate Level, Related Area)
+        </span>
+    {{/if}}
+
 </div>
 </body>
 </html>
