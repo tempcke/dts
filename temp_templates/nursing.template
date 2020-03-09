@@ -108,10 +108,7 @@
 
     <p>
         <span class="char-style-override-1">
-            {{ student.firstName }} {{ student.lastName }}&nbsp;-&nbsp;
-            {{~#each student.licenses as |license|~}}
-                {{license.state}} {{license.type}} {{license.number}}{{#unless @last}}; {{/unless}}
-            {{~/each~}}
+            {{ student.firstName }} {{ student.lastName }}&nbsp;-&nbsp;{{> student_licenses}}
         </span>
     </p>
 
