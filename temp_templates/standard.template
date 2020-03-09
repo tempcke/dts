@@ -118,7 +118,15 @@
     <p>
         <span>has successfully completed </span>
         <span class="char-style-override-1">{{ course.hours }} contact hours</span>
-        <span>{{ course.format }} on the topic of:</span>
+        <span>
+            {{#if (eq course.format "live")}}
+                live continuing education
+            {{else if (eq course.format "webinar")}}
+                post graduate live, interactive webinar
+            {{else}}
+                post-graduate online training
+            {{/if}}
+             on the topic of:</span>
     </p>
 
     <p>

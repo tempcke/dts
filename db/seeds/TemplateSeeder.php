@@ -58,6 +58,7 @@ class TemplateSeeder extends AbstractSeed {
 
   private function compileTemplates(array $templates, array $partials, array $images) {
     $compiler = TemplateCompiler::create();
+    $compiler->addHelper(\HomeCEU\DTS\Render\TemplateHelpers::equal());
     $compiler->setPartials(array_map(function ($partial) {
       return new Partial($partial['template_key'], $partial['body']);
     }, array_merge($partials, $images)));

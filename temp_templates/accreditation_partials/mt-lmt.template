@@ -12,11 +12,18 @@
             <span class="char-style-override-5">
             {{#with mt-lmt.[0] as |approval|~}}
 
-                This {{comp-if approval.item_format "live" "live"}}
-                {{comp-if approval.item_format "text" "home study"}}
-                {{comp-if approval.item_format "video" "home study"}}
-                {{comp-if approval.item_format "webinar" "live webinar"}}
-                {{comp-if approval.item_format "package" ""}} course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
+                This
+                {{#if (eq ../../course.format "live")}}
+                    live
+                {{else if (eq ../../course.format "text")}}
+                    home study
+                {{else if (eq ../../course.format "video")}}
+                    home study
+                {{else if (eq ../../course.format "webinar")}}
+                    live webinar
+                {{else if (eq ../../course.format "package")}}
+                {{/if}}
+                course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
             {{~/with}}
             {{~#each mt-lmt as |approval|~}}
                 {{approval.state}}{{#unless @last}}, {{/unless}}

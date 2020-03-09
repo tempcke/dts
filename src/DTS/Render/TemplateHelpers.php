@@ -5,9 +5,9 @@ namespace HomeCEU\DTS\Render;
 
 
 class TemplateHelpers {
-  public static function ifComparisonHelper(): Helper {
-    return new Helper('comp-if', function ($arg1, $arg2, $return) {
-      return $arg1 == $arg2 ? $return : '';
+  public static function equal(): Helper {
+    return new Helper('eq', function ($val1, $val2) {
+      return $val1 == $val2;
     });
   }
 }
