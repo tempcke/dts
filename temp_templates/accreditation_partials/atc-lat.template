@@ -1,3 +1,4 @@
+{{#if approvals.atc-lat}}
 {{#with approvals.atc-lat as |atc-lat|}}
 <table width="100%">
     <tr>
@@ -20,3 +21,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}

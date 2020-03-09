@@ -1,3 +1,4 @@
+{{#if approvals.ot-ota}}
 {{#with approvals.ot-ota as |ot-cota|}}
 <table>
     <tr>
@@ -15,3 +16,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}

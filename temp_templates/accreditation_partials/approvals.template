@@ -1,62 +1,21 @@
-{{#if approvals.ot-ota}}
-    {{> ot-cota}}
-{{/if}}
+{{> ot-cota}}
 
-<br/>
-{{#if approvals.mt-lmt}}
-    {{> mt-lmt}}
-{{/if}}
+{{> mt-lmt}}
 
-<br />
+{{> atc-lat}}
 
-{{#if approvals.atc-lat}}
-    {{> atc-lat}}
-{{/if}}
+{{> slp}}
 
-<br />
+{{> audiology}}
 
-{{#if approvals.slp}}
-    {{> slp}}
-{{/if}}
+{{> cscs}}
 
-<br />
+{{> pt-pta}}
 
-{{#if approvals.audiology}}
-    {{> audiology}}
-{{/if}}
+{{> dietitian-nutritionist}}
 
-<br />
+{{> nha}}
 
-{{#if approvals.cscs}}
-    {{> cscs}}
-{{/if}}
+{{> rs}}
 
-<br />
-
-{{#if approvals.pt-pta}}
-    {{> pt-pta}}
-{{/if}}
-
-<br />
-
-{{#if approvals.dietitian-nutritionist}}
-    {{> dietitian-nutritionist}}
-{{/if}}
-
-<br />
-
-{{#if approvals.nha}}
-    {{> nha}}
-{{/if}}
-
-<br />
-
-{{#if approvals.rs}}
-    {{> rs}}
-{{/if}}
-
-<br />
-
-{{#if approvals.cdm}}
-    {{> cdm}}
-{{/if}}
+{{> cdm}}

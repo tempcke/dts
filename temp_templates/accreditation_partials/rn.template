@@ -1,3 +1,4 @@
+{{#if approvals.rn}}
 {{#with approvals.rn as |rn|}}
 <table width="100%">
     <tr>
@@ -13,3 +14,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}

@@ -1,3 +1,4 @@
+{{#if approvals.mt-lmt}}
 {{#with approvals.mt-lmt as |mt-lmt|}}
 <table>
     <tr>
@@ -30,3 +31,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}
