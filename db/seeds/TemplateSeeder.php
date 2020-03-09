@@ -17,7 +17,7 @@ class TemplateSeeder extends AbstractSeed {
       define('APP_ROOT', realpath(__DIR__ . '/../../'));
     }
     $this->templateDir = APP_ROOT . '/temp_templates';
-    $this->partialDir = $this->templateDir . '/accreditation_partials';
+    $this->partialDir = $this->templateDir . '/partials';
     $this->imageDir = $this->templateDir . '/images';
   }
 
