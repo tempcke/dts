@@ -1,3 +1,8 @@
-{{#with course.author }}
-Course Speakers: {{ course.author.summary }}
+{{#if course.authors}}
+{{#with course.authors as |authors|}}
+Course Speakers:
+{{#each authors~}}
+    {{this}}{{#unless @last}} | {{/unless}}
+{{~/each}}
 {{/with}}
+{{/if}}
