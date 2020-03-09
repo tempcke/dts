@@ -91,7 +91,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> nara_certificate_logo }}
+        {{> infinity_rehab_logo }}
     </p>
 
     <p style="text-align:center;">
