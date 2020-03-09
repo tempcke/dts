@@ -14,11 +14,6 @@
 
 ## command exec
 You can execute commands in the container from the outside
-
-```bash
-./dts exec composer update
-```
-
 also vendor/bin is in `$PATH` so you can
 
 ```bash
@@ -28,3 +23,13 @@ also vendor/bin is in `$PATH` so you can
 # create a migration
 ./dts exec phinx create MyMigration
 ````
+
+## Composer
+To use composer use `dts composer ...` rather than `dts exec composer ...`
+
+```bash
+./dts composer update
+```
+
+The composer inside the container doesn't work right, by using dts composer it uses a seperate composer contaier to do the work.
+

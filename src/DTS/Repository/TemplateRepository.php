@@ -11,8 +11,12 @@ class TemplateRepository {
   /** @var Persistence */
   private $persistence;
 
+  /** @var RepoHelper */
+  private $repoHelper;
+
   public function __construct(Persistence $persistence) {
     $this->persistence = $persistence;
+    $this->repoHelper = new RepoHelper($persistence);
   }
 
   public function save(Template $template) {
@@ -25,10 +29,11 @@ class TemplateRepository {
   }
 
   public function getTemplateByKey(string $docType, string $key) {
-    $p = $this->persistence;
-    $rows = $p->find(['docType'=>$docType, 'templateKey'=>$key]);
-    usort($rows, [$this, 'rowcomp']);
-    $row = array_pop($rows);
+    $filter = [
+        'docType' => $docType,
+        'templateKey' => $key
+    ];
+    $row = $this->repoHelper->findNewest($filter);
     return Template::fromState($row);
   }
 
@@ -38,16 +43,10 @@ class TemplateRepository {
         'templateKey' => $templateKey
     ];
     $cols = [
-        'templateId'
+        'templateId',
+        'createdAt'
     ];
-    $rows = $this->persistence->find($filter, $cols);
-    return $rows[0]['templateId'];
-  }
-
-  // used for usort - https://www.php.net/manual/en/function.usort.php
-  protected function rowComp($a, $b) {
-    $adate = $a['createdAt'];
-    $bdate = $b['createdAt'];
-    return $adate < $bdate ? -1: 1;
+    $row = $this->repoHelper->findNewest($filter, $cols);
+    return $row['templateId'];
   }
 }

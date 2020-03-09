@@ -70,7 +70,19 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         'dataKey' => $dataKey,
         'createdAt' => $this->createdAtDateTime(),
         'dataId' => uniqid(),
-        'data' => ['foo']
+        'data' => ['name'=>'Fred']
+    ]);
+  }
+
+  protected function addTemplateFixture($templateKey) {
+    $this->templatePersistence()->persist([
+        'docType' => $this->docType,
+        'templateKey' => $templateKey,
+        'createdAt' => $this->createdAtDateTime(),
+        'templateId' => uniqid(),
+        'body'=>'Hi {{name}}',
+        'author'=>'author',
+        'name'=>'name'
     ]);
   }
 
