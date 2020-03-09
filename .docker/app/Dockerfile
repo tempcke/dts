@@ -31,12 +31,22 @@ RUN apt clean -y \
         sudo \
         vim \
         wget \
-        wkhtmltopdf \
+        xauth \
+        xvfb \
+        openssl \
+        build-essential \
+        xorg \
+        libssl-dev \
+    # zip is required for composer
+        zip unzip \
+        && wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
+        && tar xvJf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
+        && cp wkhtmltox/bin/wkhtmlto* /usr/bin/ \
     # Apache
     && a2enmod rewrite \
     && a2enmod headers \
     # PHP Extensions
-    && install-php-extensions gd xdebug pdo_mysql \
+    && install-php-extensions gd xdebug pdo_mysql zip \
     # Cleanup
     && apt autoremove -y \
     && apt clean -y \
@@ -46,6 +56,6 @@ RUN apt clean -y \
     && find /var/log -type f | while read f; do echo -n '' > ${f}; done \
     && rm -rf /run/httpd/* /tmp/httpd* \
     # Configure Host User
-    && useradd -u ${HOST_UID} hostuser \
+    && useradd -u ${HOST_UID} -m hostuser \
     && usermod -a -G www-data hostuser \
     && usermod -a -G hostuser www-data \
