@@ -1,0 +1,5 @@
+{{#if (eq course.format "live")}}
+Live Continuing Education
+{{else}}
+continuing education online training
+{{/if}}

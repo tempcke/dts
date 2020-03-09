@@ -108,25 +108,20 @@
 
     <p>
         <span class="char-style-override-1">
-            {{ student.firstName }} {{ student.lastName }}&nbsp;-&nbsp;
-            {{~#each student.licenses as |license|~}}
-                {{license.state}} {{license.type}} {{license.number}}{{#unless @last}}; {{/unless}}
-            {{~/each~}}
+            {{> student_name}} - {{> student_licenses}}
         </span>
     </p>
 
     <p>
         <span>has successfully completed </span>
         <span class="char-style-override-1">{{ course.hours }} contact hours</span>
-        <span>{{ course.format }} on the topic of:</span>
+        <span>{{> course_format }} on the topic of:</span>
     </p>
 
     <p>
         <span class="char-style-override-4">{{ course.name }}</span>
         <br/>
-        {{#with course.author }}
-        Course Speakers: {{ course.author.summary }}
-        {{/with}}
+        {{> course_authors }}
     </p>
 
     <p>

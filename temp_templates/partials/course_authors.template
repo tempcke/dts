@@ -1,0 +1,3 @@
+{{#with course.author }}
+Course Speakers: {{ course.author.summary }}
+{{/with}}
