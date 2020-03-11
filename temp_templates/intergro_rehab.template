@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> homeceu_logo }}
+        {{> intergro_certificate_logo }}
     </p>
 
     <p style="text-align:center;">
@@ -34,15 +34,7 @@
     <p>
         <span>has successfully completed </span>
         <span class="char-style-override-1">{{ course.hours }} contact hours</span>
-        <span>
-            {{#if (eq course.format "live")}}
-                live continuing education
-            {{else if (eq course.format "webinar")}}
-                post graduate live, interactive webinar
-            {{else}}
-                post-graduate online training
-            {{/if}}
-             on the topic of:</span>
+        <span>{{> course_format }}on the topic of:</span>
     </p>
 
     <p>
@@ -52,7 +44,7 @@
     </p>
 
     <p>
-        <span>Presented by HomeCEUConnection.com, 5048 Tennyson Pkwy, Suite 200 Plano TX 75024</span>
+        <span>Presented by Intergro Rehab Services, 1922 North Broadway; Santa Ana, CA 92706</span>
     </p>
 
     <p>
@@ -60,16 +52,17 @@
     </p>
 
     <p>
-        {{> sig_anne }}
+        {{> intergro-signature }}
     </p>
     <p>
-        Anne Osborn, PT, MPT
+        Karen Lutgerding, PT
     </p>
     <p>
-        Owner, HomeCEUConnection.com
+        Director of Quality Assurance and Compliance
     </p>
+    <p>Speech Board Approval Course #: PDP-367</p>
 
-    {{> standard_approvals}}
+    {{> slp}}
 
 </div>
 </body>

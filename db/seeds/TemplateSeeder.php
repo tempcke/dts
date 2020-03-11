@@ -17,7 +17,7 @@ class TemplateSeeder extends AbstractSeed {
       define('APP_ROOT', realpath(__DIR__ . '/../../'));
     }
     $this->templateDir = APP_ROOT . '/temp_templates';
-    $this->partialDir = $this->templateDir . '/accreditation_partials';
+    $this->partialDir = $this->templateDir . '/partials';
     $this->imageDir = $this->templateDir . '/images';
   }
 
@@ -58,6 +58,7 @@ class TemplateSeeder extends AbstractSeed {
 
   private function compileTemplates(array $templates, array $partials, array $images) {
     $compiler = TemplateCompiler::create();
+    $compiler->addHelper(\HomeCEU\DTS\Render\TemplateHelpers::equal());
     $compiler->setPartials(array_map(function ($partial) {
       return new Partial($partial['template_key'], $partial['body']);
     }, array_merge($partials, $images)));

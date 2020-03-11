@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> homeceu_logo }}
+        {{> blue-sky-alt }}
     </p>
 
     <p style="text-align:center;">
@@ -52,11 +52,11 @@
     </p>
 
     <p>
-        <span>Presented by HomeCEUConnection.com, 5048 Tennyson Pkwy, Suite 200 Plano TX 75024</span>
+        <span>Presented by Blue Sky Therapy</span>
     </p>
 
     <p>
-        <span>Course completed on {{ completionDate }}</span>
+        <span>500 Technology Dr; Canonsburg, PA 15317</span>
     </p>
 
     <p>

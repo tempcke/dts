@@ -13,10 +13,7 @@ class TemplateCompiler {
   private $partials = [];
 
   public static function create(): self {
-    $self = new self();
-    $self->addHelper(TemplateHelpers::ifComparisonHelper());
-
-    return $self;
+    return new self();
   }
 
   public function setHelpers(array $helpers): self {

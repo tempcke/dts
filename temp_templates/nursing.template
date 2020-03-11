@@ -27,28 +27,20 @@
 
     <p>
         <span class="char-style-override-1">
-            {{> student_name }}&nbsp;-&nbsp;{{> student_licenses }}
+            {{ student.firstName }} {{ student.lastName }}&nbsp;-&nbsp;{{> student_licenses}}
         </span>
     </p>
 
     <p>
         <span>has successfully completed </span>
         <span class="char-style-override-1">{{ course.hours }} contact hours</span>
-        <span>
-            {{#if (eq course.format "live")}}
-                live continuing education
-            {{else if (eq course.format "webinar")}}
-                post graduate live, interactive webinar
-            {{else}}
-                post-graduate online training
-            {{/if}}
-             on the topic of:</span>
+        <span>{{> course_format }} on the topic of:</span>
     </p>
 
     <p>
         <span class="char-style-override-4">{{ course.name }}</span>
         <br/>
-        {{> course_authors }}
+        {{> course_authors}}
     </p>
 
     <p>
@@ -62,14 +54,11 @@
     <p>
         {{> sig_anne }}
     </p>
-    <p>
-        Anne Osborn, PT, MPT
-    </p>
-    <p>
-        Owner, HomeCEUConnection.com
-    </p>
 
-    {{> standard_approvals}}
+    {{> rn}}
+    {{> lvn-lpn}}
+    {{> rt}}
+    {{> np}}
 
 </div>
 </body>

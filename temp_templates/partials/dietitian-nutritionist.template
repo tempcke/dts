@@ -1,3 +1,4 @@
+{{#if approvals.dietitian-nutritionist}}
 {{#with approvals.dietitian-nutritionist as |dn|}}
 <table width="100%">
     <tr>
@@ -15,3 +16,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}

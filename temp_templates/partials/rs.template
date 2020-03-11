@@ -1,11 +1,12 @@
-{{#with approvals.sw as |sw|}}
+{{#if approvals.rs}}
+{{#with approvals.rs as |rs|}}
 <table width="100%">
     <tr>
         <td width="65%">
-            <span class="char-style-override-1">SW</span>
+            <span class="char-style-override-1">Rec / Activities Director</span>
             <br />
             <span class="char-style-override-5">
-            {{#with sw.[0] as |approval|~}}
+            {{#with rs.[0] as |approval|~}}
                 {{approval.state}}: {{approval.category}} - {{approval.status}} {{approval.code}} - {{approval.statement}}
             {{~/with}}
             </span>
@@ -13,3 +14,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}

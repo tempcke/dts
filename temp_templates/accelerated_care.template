@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> homeceu_logo }}
+        {{> acp_logo }}
     </p>
 
     <p style="text-align:center;">
@@ -34,15 +34,7 @@
     <p>
         <span>has successfully completed </span>
         <span class="char-style-override-1">{{ course.hours }} contact hours</span>
-        <span>
-            {{#if (eq course.format "live")}}
-                live continuing education
-            {{else if (eq course.format "webinar")}}
-                post graduate live, interactive webinar
-            {{else}}
-                post-graduate online training
-            {{/if}}
-             on the topic of:</span>
+        <span>{{> course_format }} on the topic of:</span>
     </p>
 
     <p>
@@ -52,7 +44,11 @@
     </p>
 
     <p>
-        <span>Presented by HomeCEUConnection.com, 5048 Tennyson Pkwy, Suite 200 Plano TX 75024</span>
+        <span>
+            Presented by Accelerated Care Plus
+            <br/>
+            4999 Aircenter Circle, Suite 103; Reno, Nevada 89502
+        </span>
     </p>
 
     <p>
@@ -60,16 +56,28 @@
     </p>
 
     <p>
-        {{> sig_anne }}
+        {{> acp_john_tawfik_signature }}
     </p>
     <p>
-        Anne Osborn, PT, MPT
+        John Tawfik, PT, DPT, GCS, CEEAA
     </p>
     <p>
-        Owner, HomeCEUConnection.com
+        CE Administrator, Accelerated Care Plus
     </p>
 
-    {{> standard_approvals}}
+    {{> accelerated_care-cota}}
+    {{> pt-pta}}
+    {{> slp}}
+
+    {{#if course.atcCode}}
+        <div style="text-align: center">
+            {{> acp_asha_block}}
+        </div>
+        <span class="char-style-override-5">
+            Course {{course.atcCode}} This course is offered for up to {{course.hours}} CEUs (Intermediate Level, Related Area)
+        </span>
+    {{/if}}
+
 
 </div>
 </body>

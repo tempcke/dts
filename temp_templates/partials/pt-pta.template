@@ -1,3 +1,4 @@
+{{#if approvals.pt-pta}}
 {{#with approvals.pt-pta as |pt_pta|}}
 <table width="100%">
     <tr>
@@ -14,3 +15,4 @@
     </tr>
 </table>
 {{/with}}
+{{/if}}
