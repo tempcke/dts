@@ -13,8 +13,8 @@
         {{> homeceu_logo }}
     </p>
 
-    <span class="char-style-override-6" style="float: right;">Certificate #: {{ certificate.number }}</span>
-
+    <span id="cert_number" style="float: right;">Certificate #: {{ certificate.number }}</span>
+    <div style="clear:both"></div>
     <h1>Certificate of Course Completion</h1>
 
     <h3 style="font-weight:normal">This is to certify</h3>
