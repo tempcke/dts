@@ -1,0 +1,16 @@
+.build
+.cache
+.git
+**/*.cache
+**/*.env
+**/*.log
+vendor
+**/README.md
+phpunit.xml
+LICENSE
+.travis.yml
+.scrutinizer.yml
+.gitignore
+tests
+.docker/docker-compose.yml
+.docker/.env.example
