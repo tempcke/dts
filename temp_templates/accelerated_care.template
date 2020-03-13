@@ -71,7 +71,7 @@
 
     {{#if course.atcCode}}
         <div style="text-align: center">
-            {{> acp_asha_block}}
+            {{> acp_asha_block.png }}
         </div>
         <span class="char-style-override-5">
             Course {{course.atcCode}} This course is offered for up to {{course.hours}} CEUs (Intermediate Level, Related Area)
