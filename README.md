@@ -33,7 +33,7 @@ or just edit config yourself.
 You can execute commands in the container from the outside
 
 ```bash
-./app.sh exec composer update
+./app.sh composer update
 ```
 
 also vendor/bin is in `$PATH` so you can
