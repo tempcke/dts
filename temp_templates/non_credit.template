@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> homeceu_logo }}
+        {{> homeceu_logo.png }}
     </p>
 
     <span id="cert_number" style="float: right;">Certificate #: {{ certificate.number }}</span>
@@ -29,7 +29,7 @@
     <h2 style="font-weight:normal">Course completed on {{ completionDate }}</h2>
 
     <p>
-        {{> sig_anne }}
+        {{> sig_anne.jpg }}
     </p>
 
     <p id="homeceuinfo">Presented by HomeCEUConnection.com, 5048 Tennyson Pkwy, Suite 200 Plano TX</p>

@@ -60,7 +60,7 @@
     </p>
 
     <p>
-        {{> sig_anne }}
+        {{> sig_anne.jpg }}
     </p>
     <p>
         Anne Osborn, PT, MPT

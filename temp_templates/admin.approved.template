@@ -11,7 +11,7 @@
 <div id="container" class="page">
 
     <p class="header_images">
-        {{> homeceu_logo }}
+        {{> homeceu_logo.png }}
     </p>
 
     <p style="text-align:center;">

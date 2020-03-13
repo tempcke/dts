@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> benchmark-logo }}
+        {{> benchmark-logo.png }}
     </p>
 
     <p style="text-align:center;">
@@ -52,7 +52,7 @@
     </p>
 
     <p>
-        {{> benchmark-signature }}
+        {{> benchmark-signature.jpeg }}
     </p>
     <p>
         Christina Myers, PT, DPT, OCS, FAAOMPT

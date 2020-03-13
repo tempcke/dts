@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> infinity_rehab_logo }}
+        {{> infinity_rehab_logo.jpg }}
     </p>
 
     <p style="text-align:center;">
@@ -56,7 +56,7 @@
     </p>
 
     <p>
-        {{> infinity_ce_manager_signature }}
+        {{> infinity_ce_manager_signature.jpg }}
     </p>
     <p>
         Joan Brassfield, PT

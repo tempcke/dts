@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> homeceu_logo }}
+        {{> homeceu_logo.png }}
     </p>
 
     <p style="text-align:center;">
@@ -60,7 +60,7 @@
     </p>
 
     <p>
-        {{> sig_anne }}
+        {{> sig_anne.jpg }}
     </p>
     <p>
         Anne Osborn, PT, MPT

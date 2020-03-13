@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> intergro_certificate_logo }}
+        {{> intergro_certificate_logo.jpg }}
     </p>
 
     <p style="text-align:center;">
@@ -52,7 +52,7 @@
     </p>
 
     <p>
-        {{> intergro-signature }}
+        {{> intergro-signature.png }}
     </p>
     <p>
         Karen Lutgerding, PT
