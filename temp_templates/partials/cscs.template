@@ -6,7 +6,7 @@
             <span class="char-style-override-1">CSCS/NSCA-CPT</span>
         </td>
         <td width="20%" align="center">
-            <span>{{> nsca_bw }}</span>
+            <span>{{> nsca_bw.png }}</span>
         </td>
         <td width="45%">
             <span class="char-style-override-5">

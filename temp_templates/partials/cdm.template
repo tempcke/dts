@@ -3,7 +3,7 @@
 <table width="100%">
     <tr>
         <td width="25%">
-            <span>{{> cdm }}</span>
+            <span>{{> cdm.jpg }}</span>
         </td>
         <td width="75%">
             <span class="char-style-override-5">

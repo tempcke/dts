@@ -4,7 +4,7 @@
     <tr>
         <td width="25%">
             <span class="char-style-override-1">OT/COTA</span><br />
-            <span>{{> ot_bw }}</span>
+            <span>{{> ot_bw.jpg }}</span>
         </td>
         <td width="75%">
             <span class="char-style-override-5">

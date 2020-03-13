@@ -6,7 +6,7 @@
             <span class="char-style-override-1">ATC/LAT</span>
         </td>
         <td align="center">
-            <span>{{> boc_bw }}</span>
+            <span>{{> boc_bw.jpg }}</span>
         </td>
         <td width="65%">
             <span class="char-style-override-5">

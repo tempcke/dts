@@ -6,7 +6,7 @@
             <span class="char-style-override-1">MT/LMT</span>
         </td>
         <td width="20%" align="center">
-            <span>{{> mt_bw }}</span>
+            <span>{{> mt_bw.png }}</span>
         </td>
         <td width="65%">
             <span class="char-style-override-5">
