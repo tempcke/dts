@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> blue-sky-alt }}
+        {{> blue-sky-alt.png }}
     </p>
 
     <p style="text-align:center;">
