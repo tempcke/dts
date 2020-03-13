@@ -81,7 +81,7 @@ class TemplateSeeder extends AbstractSeed {
   private function getTemplateArray($pathInfo, string $body, $docType): array {
     return [
         'body' => $body,
-        'template_key' => str_replace('.', '-', $pathInfo['filename']),
+        'template_key' => $pathInfo['filename'],
         'template_id' => \Ramsey\Uuid\Uuid::uuid4(),
         'name' => ucwords(str_replace(['.', '_'], ' ', $pathInfo['filename'])),
         'author' => 'Dan',
