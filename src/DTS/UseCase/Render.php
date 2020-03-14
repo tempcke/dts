@@ -36,11 +36,10 @@ class Render {
     $this->originalRequest = $request;
     $this->completeRequest = $this->buildRequestOfIds($request);
 
-    $body = $this->renderTemplate(
+    return $this->renderTemplate(
         $this->templateRepo->getTemplateById($this->completeRequest->templateId),
         $this->docDataRepo->getByDocDataId($this->completeRequest->dataId)
     );
-    return $body;
   }
 
   protected function buildRequestOfIds(RenderRequest $request): RenderRequest {

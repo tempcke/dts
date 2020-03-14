@@ -3,6 +3,7 @@
 
 namespace HomeCEU\Tests\Api\DocData;
 
+use HomeCEU\Tests\Api\TestCase;
 use PHPUnit\Framework\Assert;
 
 class ListVersionsTest extends TestCase {
