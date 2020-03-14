@@ -4,7 +4,6 @@
 namespace HomeCEU\DTS\Render;
 
 use mikehaertl\wkhtmlto\Pdf;
-use Ramsey\Uuid\Uuid;
 
 class Renderer {
   protected const PDF_OPTIONS = [
@@ -41,7 +40,7 @@ class Renderer {
   }
 
   protected function generateTemporaryPath(): string {
-    return sprintf('/tmp/%s.pdf', Uuid::uuid4());
+    return sprintf('/tmp/%s.pdf', uniqid());
   }
 
   protected function saveToFile(Pdf $pdf): string {
