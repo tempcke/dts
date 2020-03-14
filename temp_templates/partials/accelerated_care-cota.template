@@ -1,5 +1,5 @@
-{{#if approvals.ot-ota}}
-{{#with approvals.ot-ota as |ot-cota|}}
+{{#if approvals.ot-cota}}
+{{#with approvals.ot-cota as |ot-cota|}}
 <table>
     <tr>
         <td width="25%">
