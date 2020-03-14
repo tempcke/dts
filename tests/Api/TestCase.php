@@ -10,6 +10,7 @@ use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Render\TemplateCompiler;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -149,5 +150,14 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     $req = Request::createFromEnvironment($env);
     $this->app->getContainer()['request'] = $req;
     return $this->app->run(true);
+  }
+
+  protected function assertContentType(ResponseInterface $response, $contentType): void {
+    $headers = $response->getHeaders();
+
+    Assert::assertTrue(
+        in_array($contentType, $headers['Content-Type']),
+        sprintf('Content-Type does not include "%s"', $contentType)
+    );
   }
 }

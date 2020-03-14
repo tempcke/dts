@@ -26,8 +26,8 @@ class RenderTest extends TestCase {
     $this->addTemplateFixture($templateKey);
     $response = $this->get($this->buildURI($templateKey, $dataKey));
 
+    $this->assertContentType($response, 'application/pdf');
     Assert::assertEquals(200, $response->getStatusCode());
-    Assert::assertTrue(in_array('application/pdf', $response->getHeaders()['Content-Type']));
     Assert::assertInstanceOf(Stream::class, $response->getBody());
   }
 
