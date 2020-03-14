@@ -27,8 +27,8 @@ class CompiledTemplatePersistenceTest extends TestCase {
   }
 
   protected function tearDown(): void {
-    parent::tearDown();
     $this->db->rollBack();
+    parent::tearDown();
   }
 
   public function testCanRetrievePersistedRecord(): void {
