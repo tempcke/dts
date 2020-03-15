@@ -12,8 +12,11 @@
             {{~/each}}<br />
             Contact hours by state:&nbsp;
             {{#each pt_pta as |approval|~}}
+                {{ approval.state }}:
                 {{#if approval.hours }}
-                    {{ approval.state }}: {{ approval.hours }}{{#unless @last}}; {{/unless}}
+                    {{ approval.hours }}
+                {{else}}
+                    {{ ../../course.hours }}{{#unless @last}}; {{/unless}}
                 {{/if}}
             {{~/each}}
             </span>
