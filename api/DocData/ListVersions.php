@@ -9,7 +9,7 @@ use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\UseCase\DocDataVersionList;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ListVersions {
@@ -39,8 +39,6 @@ class ListVersions {
         'total' => count($versions),
         'items' => $versions
     ];
-    $jsonString = json_encode($responseData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    $response->getBody()->write($jsonString);
-    return $response;
+    return $response->withJson($responseData);
   }
 }

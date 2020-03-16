@@ -3,6 +3,7 @@
 
 namespace HomeCEU\Tests\Api\DocData;
 
+use HomeCEU\Tests\Api\TestCase;
 use PHPUnit\Framework\Assert;
 
 class DocDataAddTest extends TestCase {
@@ -15,10 +16,11 @@ class DocDataAddTest extends TestCase {
     ];
 
     $response = $this->post('/docdata', $requestArray);
+    $this->assertContentType($response, 'application/json');
     $responseBody = strval($response->getBody());
     $responseData = json_decode($responseBody, true);
 
-    $expectedResponseCode = 200;
+    $expectedResponseCode = 201;
     $expectedResponseKeys = ['dataId', 'docType', 'dataKey', 'createdAt'];
 
     Assert::assertSame($response->getStatusCode(), $expectedResponseCode);

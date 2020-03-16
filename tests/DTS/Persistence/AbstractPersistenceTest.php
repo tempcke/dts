@@ -14,7 +14,7 @@ class AbstractPersistenceTest extends TestCase {
   /** @var Connection */
   private $fakeDb;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->fakeDb = Connection::buildFromConfig(Config::sqlite());
   }

@@ -3,6 +3,7 @@
 
 namespace HomeCEU\Tests\Api\DocData;
 
+use HomeCEU\Tests\Api\TestCase;
 use PHPUnit\Framework\Assert;
 
 class ListVersionsTest extends TestCase {
@@ -13,6 +14,7 @@ class ListVersionsTest extends TestCase {
 
     $uri = "/docdata/{$this->docType}/{$dataKey}/history";
     $response = $this->get($uri);
+    $this->assertContentType($response, 'application/json');
     $responseData = json_decode(strval($response->getBody()), true);
 
     Assert::assertSame($response->getStatusCode(), 200);

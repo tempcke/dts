@@ -1,0 +1,76 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+    <style>
+        {{> standard_certificate_style}}
+    </style>
+</head>
+
+<body>
+<div id="container" class="page">
+    <p class="header_images">
+        {{> blue-sky-alt }}
+    </p>
+
+    <p style="text-align:center;">
+        Certificate #: <span class="char-style-override-6">{{ certificate.number }}</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-2" style="line-height: 1.2;">Course Certificate</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-3">This is to certify</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-1">
+            {{> student_name }}&nbsp;-&nbsp;{{> student_licenses }}
+        </span>
+    </p>
+
+    <p>
+        <span>has successfully completed </span>
+        <span class="char-style-override-1">{{ course.hours }} contact hours</span>
+        <span>
+            {{#if (eq course.format "live")}}
+                live continuing education
+            {{else if (eq course.format "webinar")}}
+                post graduate live, interactive webinar
+            {{else}}
+                post-graduate online training
+            {{/if}}
+             on the topic of:</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-4">{{ course.name }}</span>
+        <br/>
+        {{> course_authors }}
+    </p>
+
+    <p>
+        <span>Presented by Blue Sky Therapy</span>
+    </p>
+
+    <p>
+        <span>500 Technology Dr; Canonsburg, PA 15317</span>
+    </p>
+
+    <p>
+        {{> sig_anne }}
+    </p>
+    <p>
+        Anne Osborn, PT, MPT
+    </p>
+    <p>
+        Owner, HomeCEUConnection.com
+    </p>
+
+    {{> standard_approvals}}
+
+</div>
+</body>
+</html>

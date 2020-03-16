@@ -3,21 +3,20 @@
 
 namespace HomeCEU\DTS\Api;
 
+use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\Render as RenderUseCase;
 use HomeCEU\DTS\UseCase\RenderRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\StreamInterface;
 use Slim\Http\Stream;
 
 class Render {
-  /** @var ContainerInterface */
-  private $di;
   /**
    * @var DocDataRepository
    */
@@ -31,20 +30,31 @@ class Render {
    */
   private $templateRepo;
 
-  public function __construct(ContainerInterface $diContainer) {
-    $this->di = $diContainer;
-    $this->templateRepo = new TemplateRepository(new TemplatePersistence($this->di->dbConnection));
-    $this->dataRepo = new DocDataRepository(new DocDataPersistence($this->di->dbConnection));
+  public function __construct(ContainerInterface $container) {
+    $conn = $container->dbConnection;
+
+    $this->templateRepo = new TemplateRepository(
+        new TemplatePersistence($conn),
+        new CompiledTemplatePersistence($conn)
+    );
+    $this->dataRepo = new DocDataRepository(new DocDataPersistence($conn));
     $this->useCase = new RenderUseCase($this->templateRepo, $this->dataRepo);
   }
 
   public function __invoke(Request $request, Response $response, $args) {
-    $query = $request->getQueryParams();
-    $renderRequest = RenderRequest::fromState($query);
-    $stream = $this->useCase->renderDoc($renderRequest);
-    // $docBody = stream_get_contents($stream);
-    return $response
-        ->withBody(new Stream($stream))
-        ->withStatus(200);
+    try {
+      $renderRequest = RenderRequest::fromState([
+          'docType' => $args['docType'],
+          'templateKey' => $args['templateKey'],
+          'dataKey' => $args['dataKey'],
+      ]);
+      $stream = $this->useCase->renderDoc($renderRequest);
+      return $response
+          ->withAddedHeader('Content-Type', 'application/pdf')
+          ->withBody(new Stream(fopen($stream, 'r')))
+          ->withStatus(200);
+    } catch (RecordNotFoundException $e) {
+      return $response->withStatus(404);
+    }
   }
 }

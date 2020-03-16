@@ -19,14 +19,14 @@ class TemplatePersistenceTest extends TestCase {
   /** @var Db\Connection */
   protected $db;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->db = Db::newConnection();
     $this->p = new TemplatePersistence($this->db);
     $this->docType = 'TemplatePersistenceTest-'.time();
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     $this->db->deleteWhere('template', ['doc_type'=>$this->docType]);
     parent::tearDown();
   }

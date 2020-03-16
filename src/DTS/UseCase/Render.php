@@ -4,6 +4,9 @@
 namespace HomeCEU\DTS\UseCase;
 
 
+use HomeCEU\DTS\Entity\DocData;
+use HomeCEU\DTS\Entity\Template;
+use HomeCEU\DTS\Render\Renderer;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 
@@ -33,17 +36,10 @@ class Render {
     $this->originalRequest = $request;
     $this->completeRequest = $this->buildRequestOfIds($request);
 
-    $templateId = $this->completeRequest->templateId;
-    $docDataId = $this->completeRequest->dataId;
-
-    throw new \Exception('Dan needs to take it from here...');
-
-    $body = 'Hi Fred';
-
-    $file = tmpfile();
-    fwrite($file, $body);
-    rewind($file);
-    return $file;
+    return $this->renderTemplate(
+        $this->templateRepo->getTemplateById($this->completeRequest->templateId),
+        $this->docDataRepo->getByDocDataId($this->completeRequest->dataId)
+    );
   }
 
   protected function buildRequestOfIds(RenderRequest $request): RenderRequest {
@@ -65,5 +61,10 @@ class Render {
       return $request->templateId;
     }
     return $this->templateRepo->lookupId($request->docType, $request->templateKey);
+  }
+
+  private function renderTemplate(Template $template, DocData $docData): string {
+    $template = $this->templateRepo->getCompiledTemplateById($template->templateId);
+    return Renderer::create()->pdf($template->body, $docData->data);
   }
 }

@@ -20,7 +20,7 @@ class DocDataVersionListTest extends TestCase {
   /** @var DocDataVersionList */
   private $usecase;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->persistence = new DocDataPersistence();
     $this->repo = new DocDataRepository($this->persistence);
