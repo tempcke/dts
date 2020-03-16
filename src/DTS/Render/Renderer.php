@@ -16,8 +16,8 @@ class Renderer {
       'commandOptions' => ['enableXvfb' => true]
   ];
 
-  public static function create(): self {
-    return new self();
+  public static function create(): Renderer {
+    return new static();
   }
 
   public function render(string $compiledTemplate, array $data = []): ?string {
@@ -34,7 +34,7 @@ class Renderer {
     return $fileName;
   }
 
-  public function pdf($compiledTemplate, $data = [], $options = []) {
+  public function pdf($compiledTemplate, $data = [], $options = []): string {
     $pdf = new Pdf($options ?: self::PDF_OPTIONS);
     $pdf->addPage($this->render($compiledTemplate, $data));
     return $this->saveToFile($pdf);
