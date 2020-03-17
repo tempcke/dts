@@ -11,9 +11,15 @@
         <td width="45%">
             <span class="char-style-override-5">
             {{#with cscs.[0] as |approval|~}}
-                NSCA Certification Commission Executive Council approved {{course.hours}} contact hour(s) for CSCS and NSCA-CPT certificants who successfully complete this course.<br />
+                NSCA Certification Commission Executive Council approved {{ ../../course.hours}} contact hour(s) for CSCS and NSCA-CPT certificants who successfully complete this course.<br />
                 NSCA CEU Provider #I1015
-            {{~/with}}
+            {{~/with}}<br /><br />
+            Contact hours by state:&nbsp;
+            {{#each cscs as |approval|~}}
+                {{#if approval.hours }}
+                    {{ approval.state }}: {{ approval.hours }}{{#unless ../@last}}; {{/unless}}
+                {{/if}}
+            {{~/each}}
             </span>
         </td>
     </tr>

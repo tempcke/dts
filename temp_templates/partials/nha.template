@@ -8,7 +8,13 @@
             <span class="char-style-override-5">
             {{#with nha.[0] as |approval|~}}
                 {{approval.statement}} NAB/NCERS Approval #:{{approval.code}}
-            {{~/with}}
+            {{~/with}}<br /><br />
+            Contact hours by state:&nbsp;
+            {{#each nha as |approval|~}}
+                {{#if approval.hours }}
+                    {{ approval.state }}: {{ approval.hours }}{{#unless ../@last}}; {{/unless}}
+                {{/if}}
+            {{~/each}}
             </span>
         </td>
     </tr>

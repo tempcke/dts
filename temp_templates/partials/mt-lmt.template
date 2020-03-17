@@ -26,11 +26,8 @@
                 course satisfies the CEU requirements of the designated regulatory board in the following states: {{approval.approval_str}}
             {{~/with}}
             {{~#each mt-lmt as |approval|~}}
-                {{approval.state}}{{#unless @last}}, {{/unless}}
+                {{approval.state}}: {{ approval.status }}{{#unless @last}}, {{/unless}}
             {{~/each~}}&nbsp;
-            {{#each mt-lmt as |approval|~}}
-                {{ approval.category }}: {{ approval.status }} {{ approval.code }} - {{ approval.statement }}{{#unless @last}}; {{/unless}}
-            {{~/each}}
             <br />
             1 Contact Hour = 1 CE Hour.
             </span>
