@@ -13,7 +13,7 @@
         {{> homeceu_logo.png }}
     </p>
 
-    <span id="cert_number" style="float: right;">Certificate #: {{ certificate.number }}</span>
+    <span id="cert_number" style="float: right;">Enrollment #: {{ enrollmentId }}</span>
     <div style="clear:both"></div>
     <h1>Certificate of Course Completion</h1>
 

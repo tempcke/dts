@@ -15,7 +15,7 @@
     </p>
 
     <p style="text-align:center;">
-        Certificate #: <span class="char-style-override-6">{{ certificate.number }}</span>
+        Enrollment #: <span class="char-style-override-6">{{ enrollmentId }}</span>
     </p>
 
     <p>
