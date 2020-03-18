@@ -31,7 +31,7 @@ class DocDataAddTest extends TestCase {
   public function testPostNewDocDataInvalidData($type, $key): void {
     $requestArray = $this->makeRequestArray($type, $key, '');
     $response = $this->post('/docdata', $requestArray);
-    $this->assertStatus(409, $response);
+    $this->assertStatus(400, $response);
   }
 
   public function invalidDataProvider(): \Generator {

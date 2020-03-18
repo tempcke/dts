@@ -14,9 +14,6 @@ class AddDocData {
 
   public function add($type, $key, $data): array {
     $docData = $this->repo->newDocData($type, $key, $data);
-    if (!$docData->isValid()) {
-      throw new InvalidDocDataAddRequestException();
-    }
     $this->repo->save($docData);
     return $docData->toArray();
   }

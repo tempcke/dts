@@ -6,6 +6,7 @@ use DateTime;
 use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\UseCase\InvalidDocDataAddRequestException;
 
 class DocDataRepository {
   /** @var Persistence */
@@ -28,6 +29,7 @@ class DocDataRepository {
   }
 
   public function newDocData($type, $key, $data) {
+    $this->validate($type, $key);
     return DocData::fromState(
         [
             'dataId' => $this->persistence->generateId(),
@@ -61,5 +63,18 @@ class DocDataRepository {
     ];
     $row = $this->repoHelper->findNewest($filter, $cols);
     return $row['dataId'];
+  }
+
+  private function validate($type, $key) {
+    $errors = [];
+    if (empty($key)) {
+      $errors[] = "The key 'dataKey' is missing or empty";
+    }
+    if (empty($type)) {
+      $errors[] = "The key 'docType' is missing or empty";
+    }
+    if (!empty($errors)) {
+      throw (new InvalidDocDataAddRequestException())->setErrors($errors);
+    }
   }
 }

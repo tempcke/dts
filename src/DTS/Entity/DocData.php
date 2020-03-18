@@ -31,8 +31,4 @@ class DocData implements Entity {
     self::buildFromState($entity, $state);
     return $entity;
   }
-
-  public function isValid(): bool {
-    return !empty($this->dataKey) && !empty($this->docType);
-  }
 }

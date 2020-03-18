@@ -11,6 +11,7 @@ use HomeCEU\DTS\Persistence\DocDataPersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\UseCase\AddDocData;
 use HomeCEU\DTS\UseCase\InvalidDocDataAddRequestException;
+use phpDocumentor\Reflection\TypeResolver;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -55,7 +56,13 @@ class DocDataAdd {
       );
       return $response->withStatus(201)->withJson($savedDocData);
     } catch (InvalidDocDataAddRequestException $e) {
-      return $response->withStatus(409)->withJson(['errors' => 'one or more required keys are missing. "docType", "dataKey", "data"']);
+      return $response->withStatus(400)->withJson(
+          [
+              'status' => 400,
+              'errors' => $e->errors,
+              'date' => new \DateTime(),
+          ]
+      );
     }
   }
 }
