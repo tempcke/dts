@@ -16,7 +16,7 @@ class DocDataAddTest extends TestCase {
         $this->makeRequestArray($this->docType, __FUNCTION__, ['someid'=>uniqid()])
     );
     $this->assertStatus(201, $response);
-    $this->assertContentType($response, 'application/json');
+    $this->assertContentType('application/json', $response);
     $responseData = json_decode($response->getBody(), true);
 
     foreach (self::EXPECTED_KEYS as $key) {
@@ -31,7 +31,6 @@ class DocDataAddTest extends TestCase {
   public function testPostNewDocDataInvalidData($type, $key): void {
     $requestArray = $this->makeRequestArray($type, $key, '');
     $response = $this->post('/docdata', $requestArray);
-    echo $response->getBody();
     $this->assertStatus(409, $response);
   }
 
