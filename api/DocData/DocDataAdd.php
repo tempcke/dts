@@ -56,7 +56,7 @@ class DocDataAdd {
       return $response->withStatus(400)->withJson(
           [
               'status' => 400,
-              'errors' => $e->errors,
+              'errors' => [$e->getMessage()],
               'date' => new \DateTime(),
           ]
       );
