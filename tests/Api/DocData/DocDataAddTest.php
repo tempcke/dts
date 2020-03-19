@@ -11,10 +11,8 @@ class DocDataAddTest extends TestCase {
   const EXPECTED_KEYS = ['dataId', 'docType', 'dataKey', 'createdAt'];
 
   public function testPostNewDocData(): void {
-    $response = $this->post(
-        '/docdata',
-        $this->makeRequestArray($this->docType, __FUNCTION__, ['someid'=>uniqid()])
-    );
+    $requestArray = $this->makeRequestArray($this->docType, __FUNCTION__, ['someid'=>uniqid()]);
+    $response = $this->post('/docdata', $requestArray);
     $this->assertStatus(201, $response);
     $this->assertContentType('application/json', $response);
     $responseData = json_decode($response->getBody(), true);
