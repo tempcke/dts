@@ -28,6 +28,9 @@
         }
     },
     "scripts": {
-	    "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "post-install-cmd": [
+            "echo Done."
+        ]
     }
 }
