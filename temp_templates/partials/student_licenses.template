@@ -1,3 +1,0 @@
-{{~#each student.licenses as |license|~}}
-{{license.state}} {{license.type}} {{license.number}}{{#unless @last}}; {{/unless}}
-{{~/each~}}
