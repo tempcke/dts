@@ -6,6 +6,7 @@ use HomeCEU\DTS\Persistence;
 use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\UseCase\AddDocData;
+use HomeCEU\DTS\UseCase\InvalidDocDataAddRequestException;
 use HomeCEU\Tests\Faker;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
@@ -25,7 +26,23 @@ class AddDocDataTest extends TestCase {
     $this->repository = new DocDataRepository($this->persistence);
   }
 
-  public function testCanAddEntity() {
+  /**
+   * @dataProvider invalidRequestProvider
+   */
+  public function testInvalidRequestThrowsException($type, $key): void {
+    $this->expectException(InvalidDocDataAddRequestException::class);
+    $uc = new AddDocData($this->repository);
+    $uc->add($type, $key, ['data' => 'somedata']);
+  }
+
+  public function invalidRequestProvider(): \Generator {
+    yield [self::ENTITY_TYPE, null];
+    yield [self::ENTITY_TYPE, ''];
+    yield ['', uniqid()];
+    yield [null, uniqid()];
+  }
+
+  public function testCanAddEntity(): void {
     $fake = Faker::generator();
     $inputs = [
         'docType' => self::ENTITY_TYPE,
@@ -42,13 +59,13 @@ class AddDocDataTest extends TestCase {
     Assert::assertEquals($docData, $savedDocData);
   }
 
-  protected function profileData() {
+  protected function profileData(): array {
     $fake = Faker::generator();
     return [
-      "firstName" => $fake->firstName,
-      "lastName" => $fake->lastName,
-      "address" => $fake->address,
-      "email" => $fake->email
+        "firstName" => $fake->firstName,
+        "lastName" => $fake->lastName,
+        "address" => $fake->address,
+        "email" => $fake->email
     ];
   }
 }

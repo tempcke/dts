@@ -4,7 +4,6 @@ namespace HomeCEU\DTS\Repository;
 
 use DateTime;
 use HomeCEU\DTS\Entity\DocData;
-use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
 class DocDataRepository {
@@ -19,15 +18,15 @@ class DocDataRepository {
     $this->repoHelper = new RepoHelper($persistence);
   }
 
-  public function save(DocData $docData) {
+  public function save(DocData $docData): void {
     $this->persistence->persist($docData->toArray());
   }
 
-  public function getByDocDataId($dataId) {
+  public function getByDocDataId($dataId): DocData {
     return DocData::fromState($this->persistence->retrieve($dataId));
   }
 
-  public function newDocData($type, $key, $data) {
+  public function newDocData(string $type, string $key, $data): DocData {
     return DocData::fromState(
         [
             'dataId' => $this->persistence->generateId(),
@@ -39,7 +38,7 @@ class DocDataRepository {
     );
   }
 
-  public function allVersions(string $docType, string $dataKey) {
+  public function allVersions(string $docType, string $dataKey): ?array {
     $filter = [
         'docType' => $docType,
         'dataKey' => $dataKey
@@ -50,7 +49,7 @@ class DocDataRepository {
     return $this->persistence->find($filter, $cols);
   }
 
-  public function lookupId(string $docType, string $dataKey) {
+  public function lookupId(string $docType, string $dataKey): string {
     $filter = [
         'docType' => $docType,
         'dataKey' => $dataKey
