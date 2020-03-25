@@ -4,9 +4,7 @@ namespace HomeCEU\DTS\Repository;
 
 use DateTime;
 use HomeCEU\DTS\Entity\DocData;
-use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
-use HomeCEU\DTS\UseCase\InvalidDocDataAddRequestException;
 
 class DocDataRepository {
   /** @var Persistence */
@@ -20,16 +18,15 @@ class DocDataRepository {
     $this->repoHelper = new RepoHelper($persistence);
   }
 
-  public function save(DocData $docData) {
+  public function save(DocData $docData): void {
     $this->persistence->persist($docData->toArray());
   }
 
-  public function getByDocDataId($dataId) {
+  public function getByDocDataId($dataId): DocData {
     return DocData::fromState($this->persistence->retrieve($dataId));
   }
 
-  public function newDocData($type, $key, $data) {
-    $this->validate($type, $key);
+  public function newDocData(string $type, string $key, $data): DocData {
     return DocData::fromState(
         [
             'dataId' => $this->persistence->generateId(),
@@ -41,7 +38,7 @@ class DocDataRepository {
     );
   }
 
-  public function allVersions(string $docType, string $dataKey) {
+  public function allVersions(string $docType, string $dataKey): ?array {
     $filter = [
         'docType' => $docType,
         'dataKey' => $dataKey
@@ -52,7 +49,7 @@ class DocDataRepository {
     return $this->persistence->find($filter, $cols);
   }
 
-  public function lookupId(string $docType, string $dataKey) {
+  public function lookupId(string $docType, string $dataKey): string {
     $filter = [
         'docType' => $docType,
         'dataKey' => $dataKey
@@ -63,18 +60,5 @@ class DocDataRepository {
     ];
     $row = $this->repoHelper->findNewest($filter, $cols);
     return $row['dataId'];
-  }
-
-  private function validate($type, $key) {
-    $errors = [];
-    if (empty($key)) {
-      $errors[] = "The key 'dataKey' is missing or empty";
-    }
-    if (empty($type)) {
-      $errors[] = "The key 'docType' is missing or empty";
-    }
-    if (!empty($errors)) {
-      throw (new InvalidDocDataAddRequestException())->setErrors($errors);
-    }
   }
 }
