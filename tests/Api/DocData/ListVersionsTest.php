@@ -14,17 +14,16 @@ class ListVersionsTest extends TestCase {
 
     $uri = "/docdata/{$this->docType}/{$dataKey}/history";
     $response = $this->get($uri);
-    $this->assertContentType($response, 'application/json');
-    $responseData = json_decode(strval($response->getBody()), true);
+    $responseData = json_decode($response->getBody(), true);
 
-    Assert::assertSame($response->getStatusCode(), 200);
+    $this->assertContentType('application/json', $response);
+    $this->assertStatus(200, $response);
     $this->assertTotalItems($responseData, 2);
     $this->AssertExpectedVersionItemKeys(
         $responseData,
         ['dataId', 'docType', 'dataKey', 'createdAt']
     );
   }
-
 
   /**
    * @param string $dataKey

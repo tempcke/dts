@@ -4,10 +4,10 @@
 namespace HomeCEU\DTS\Entity;
 
 
-use HomeCEU\DTS\Entity;
+use HomeCEU\DTS\AbstractEntity;
 use HomeCEU\DTS\EntityHelperTrait;
 
-class CompiledTemplate implements Entity {
+class CompiledTemplate extends AbstractEntity {
   public $templateId;
   public $body;
   public $createdAt;

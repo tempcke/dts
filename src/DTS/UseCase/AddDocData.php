@@ -13,8 +13,8 @@ class AddDocData {
   }
 
   public function add($type, $key, $data): array {
-    $entity = $this->repo->newDocData($type, $key, $data);
-    $this->repo->save($entity);
-    return $entity->toArray();
+    $docData = $this->repo->newDocData($type, $key, $data);
+    $this->repo->save($docData);
+    return $docData->toArray();
   }
 }

@@ -2,10 +2,11 @@
 
 namespace HomeCEU\DTS\Entity;
 
-use HomeCEU\DTS\Entity;
+
+use HomeCEU\DTS\AbstractEntity;
 use HomeCEU\DTS\EntityHelperTrait;
 
-class Template implements Entity {
+class Template extends AbstractEntity {
   public $templateId;
   public $templateKey;
   public $docType;

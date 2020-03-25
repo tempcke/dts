@@ -4,10 +4,10 @@
 namespace HomeCEU\DTS\Entity;
 
 
-use HomeCEU\DTS\Entity;
+use HomeCEU\DTS\AbstractEntity;
 use HomeCEU\DTS\EntityHelperTrait;
 
-class DocData implements Entity {
+class DocData extends AbstractEntity {
   public $dataId;
   public $docType;
   public $dataKey;
