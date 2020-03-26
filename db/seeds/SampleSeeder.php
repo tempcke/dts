@@ -3,6 +3,7 @@
 
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\TemplateCompiler;
+use Phinx\Db\Table;
 use Phinx\Seed\AbstractSeed;
 
 class SampleSeeder extends AbstractSeed {
@@ -10,36 +11,70 @@ class SampleSeeder extends AbstractSeed {
   const IMAGE_TYPE = self::TYPE . '/image';
   const PARTIAL_TYPE = self::TYPE . '/partial';
 
+  /** @var string */
   private $date;
+  /** @var Table */
+  private $templateTable;
+  /** @var Table */
+  private $compiledTemplateTable;
+  /** @var Table */
+  private $docDataTable;
+  /** @var string */
+  private $mainTemplateId;
+
+  private function setup()
+  {
+    $this->date = (new \DateTime())->format('Y-m-d H:i:s');
+    $this->mainTemplateId = \Ramsey\Uuid\Uuid::uuid4();
+
+    $this->templateTable = $this->table('template');
+    $this->compiledTemplateTable = $this->table('compiled_template');
+    $this->docDataTable = $this->table('docdata');
+    $this->addDocData();
+  }
 
   public function run() {
-    $this->date = (new \DateTime())->format('Y-m-d');
-    $tTable = $this->table('template');
+    $this->setup();
 
-    $this->addDocData();
     $template = $this->getTemplate();
-
-    $tArr = $this->getTemplateArray('Example Template', 'example_template', $template, self::TYPE);
-    $tTable->insert($tArr);
-
     $partials = $this->getPartials();
-    foreach ($partials as $partial) {
-      $pArr = $this->getTemplateArray($partial->name, $partial->name, $partial->template, self::PARTIAL_TYPE);
-      $tTable->insert($pArr);
-    }
-    $tTable->save();
-
     $imgPartials = $this->getImagePartials();
-    foreach ($imgPartials as $partial) {
-      $pArr = $this->getTemplateArray($partial->name, $partial->name, $partial->template, self::IMAGE_TYPE);
-      $tTable->insert($pArr);
-    }
-    $tTable->save();
-
     $compiledTemplate = $this->compileTemplate($template, array_merge($partials, $imgPartials));
-    $this->table('compiled_template')
-        ->insert(['template_id' => $tArr['template_id'], 'body' => $compiledTemplate, 'created_at' => $this->date])
-        ->save();
+
+    $this->saveTemplate($template);
+    $this->savePartials($partials);
+    $this->saveImagePartials($imgPartials);
+    $this->saveCompiledTemplate($compiledTemplate);
+  }
+
+  private function saveCompiledTemplate($cTemplate) {
+    $this->compiledTemplateTable->insert(
+        ['template_id' => $this->mainTemplateId, 'body' => $cTemplate, 'created_at' => $this->date]
+    )->save();
+  }
+
+  private function saveTemplate($template) {
+    $tArr = $this->getTemplateArray('Example Template', 'example_template', $template, self::TYPE);
+    $tArr['template_id'] = $this->mainTemplateId;
+    $this->templateTable->insert($tArr)->save();
+  }
+
+  private function savePartials(array $partials) {
+    foreach ($partials as $partial) {
+      $this->templateTable->insert(
+          $this->getTemplateArray($partial->name, $partial->name, $partial->template, self::PARTIAL_TYPE)
+      );
+    }
+    $this->templateTable->save();
+  }
+
+  private function saveImagePartials(array $imgPartials) {
+    foreach ($imgPartials as $partial) {
+      $this->templateTable->insert(
+          $this->getTemplateArray($partial->name, $partial->name, $partial->template, self::IMAGE_TYPE)
+      );
+    }
+    $this->templateTable->save();
   }
 
   private function getTemplateArray($name, $key, $body, $type) {
@@ -62,8 +97,6 @@ class SampleSeeder extends AbstractSeed {
   }
 
   private function addDocData(): void {
-    $table = $this->table('docdata');
-
     $data = [
         'name' => 'Your Name',
         'company' => [
@@ -79,8 +112,7 @@ class SampleSeeder extends AbstractSeed {
         'created_at' => $this->date,
         'data' => json_encode($data)
     ];
-    $table->insert($docData)
-        ->save();
+    $this->docDataTable->insert($docData)->save();
   }
 
   /**
