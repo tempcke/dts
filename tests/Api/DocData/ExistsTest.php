@@ -4,7 +4,6 @@
 namespace HomeCEU\Tests\Api\DocData;
 
 use HomeCEU\Tests\Api\TestCase;
-use PHPUnit\Framework\Assert;
 
 class ExistsTest extends TestCase {
 
@@ -12,12 +11,12 @@ class ExistsTest extends TestCase {
     $dataKey = __FUNCTION__;
     $this->addDocDataFixture($dataKey);
     $response = $this->head("/docdata/{$this->docType}/{$dataKey}");
-    Assert::assertEquals(200, $response->getStatusCode());
+    $this->assertStatus(200, $response);
   }
 
   public function testDoesntHaveData() {
     $dataKey = __FUNCTION__;
     $response = $this->head("/docdata/{$this->docType}/{$dataKey}");
-    Assert::assertEquals(404, $response->getStatusCode());
+    $this->assertStatus(404, $response);
   }
 }

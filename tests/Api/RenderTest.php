@@ -15,8 +15,7 @@ class RenderTest extends TestCase {
     $templateKey = __FUNCTION__;
     $dataKey = __FUNCTION__;
 
-    $response = $this->get($this->buildURI($templateKey, $dataKey));
-    Assert::assertEquals(404, $response->getStatusCode());
+    $this->assertStatus(404, $this->get("/render/{$this->docType}/{$templateKey}/{$dataKey}"));
   }
 
   public function testRenderFromKeys(): void {
@@ -24,15 +23,10 @@ class RenderTest extends TestCase {
     $dataKey = __FUNCTION__;
     $this->addDocDataFixture($dataKey);
     $this->addTemplateFixture($templateKey);
-    $response = $this->get($this->buildURI($templateKey, $dataKey));
+    $response = $this->get("/render/{$this->docType}/{$templateKey}/{$dataKey}");
 
-    $this->assertContentType($response, 'application/pdf');
-    Assert::assertEquals(200, $response->getStatusCode());
+    $this->assertContentType('application/pdf', $response);
+    $this->assertStatus(200, $response);
     Assert::assertInstanceOf(Stream::class, $response->getBody());
-  }
-
-  private function buildURI(...$args)
-  {
-    return "/render/{$this->docType}/" . implode('/', $args);
   }
 }

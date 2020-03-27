@@ -4,10 +4,10 @@
 namespace HomeCEU\DTS\UseCase;
 
 
-use HomeCEU\DTS\Entity;
+use HomeCEU\DTS\AbstractEntity;
 use HomeCEU\DTS\EntityHelperTrait;
 
-class RenderRequest implements Entity {
+class RenderRequest extends AbstractEntity {
   public $docType;
   public $templateId;
   public $templateKey;

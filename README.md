@@ -6,7 +6,7 @@
 
 # Setup instructions
 ## Using Docker
-```bash
+```shell script
 git clone git@github.com:HomeCEU/dockerapp.git dts
 cd dts
 git checkout dts
@@ -18,6 +18,11 @@ docker-compose build
 docker-compose up
 cd ..
 ./app.sh exec phinx migrate
+```
+
+If you want a sample template and data, run
+```shell script
+./app.sh exec phinx seed:run -s SampleSeeder
 ```
 http://localhost:8080
 

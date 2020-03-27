@@ -152,12 +152,16 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return $this->app->run(true);
   }
 
-  protected function assertContentType(ResponseInterface $response, $contentType): void {
+  protected function assertContentType($contentType, ResponseInterface $response): void {
     $headers = $response->getHeaders();
 
     Assert::assertTrue(
         in_array($contentType, $headers['Content-Type']),
         sprintf('Content-Type does not include "%s"', $contentType)
     );
+  }
+
+  protected function assertStatus(int $code, ResponseInterface $response): void {
+    Assert::assertEquals($code, $response->getStatusCode(), sprintf("Status %s does not match %s", $response->getStatusCode(), $code));
   }
 }

@@ -13,8 +13,17 @@ class AddDocData {
   }
 
   public function add($type, $key, $data): array {
-    $entity = $this->repo->newDocData($type, $key, $data);
-    $this->repo->save($entity);
-    return $entity->toArray();
+    $this->checkRequiredKeys($type, $key);
+    $docData = $this->repo->newDocData($type, $key, $data);
+    $this->repo->save($docData);
+    return $docData->toArray();
+  }
+
+  private function checkRequiredKeys($type, $key) {
+    if (empty($type))
+      throw new InvalidDocDataAddRequestException("'docType' is missing or empty.");
+
+    if (empty($key))
+      throw new InvalidDocDataAddRequestException("'dataKey' is missing or empty.");
   }
 }
