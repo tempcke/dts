@@ -11,7 +11,7 @@
 <div id="container" class="page">
 
     <p class="header_images">
-        {{> homeceu_logo.png }}
+        {{> variable_logo }}
     </p>
 
     <p style="text-align:center;">
@@ -25,6 +25,7 @@
 
     <p>
         <span class="char-style-override-3">Has completed </span>
+        <br />
         <span class="char-style-override-1">{{ course.name }}</span>
     </p>
 

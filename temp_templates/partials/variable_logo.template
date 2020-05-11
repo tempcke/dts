@@ -1,0 +1,5 @@
+{{#if company.logo_url }}
+    <img src="{{ company.logo_url }}" alt="{{ company.name }}" />
+{{else}}
+    {{> homeceu_logo.png }}
+{{/if}}
