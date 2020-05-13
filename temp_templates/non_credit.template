@@ -10,7 +10,7 @@
 <body>
 <div id="container" class="page">
     <p class="header_images">
-        {{> homeceu_logo.png }}
+        {{> variable_logo }}
     </p>
 
     <span id="cert_number" style="float: right;">Enrollment #: {{ enrollmentId }}</span>
