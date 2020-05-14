@@ -5,7 +5,6 @@ namespace HomeCEU\DTS\UseCase;
 
 
 use HomeCEU\DTS\AbstractEntity;
-use HomeCEU\DTS\EntityHelperTrait;
 
 class RenderRequest extends AbstractEntity {
   public $docType;
@@ -13,8 +12,6 @@ class RenderRequest extends AbstractEntity {
   public $templateKey;
   public $dataId;
   public $dataKey;
-
-  use EntityHelperTrait;
 
   protected static function keys(): array {
     return [
@@ -24,12 +21,6 @@ class RenderRequest extends AbstractEntity {
         'dataId',
         'dataKey'
     ];
-  }
-
-  public static function fromState(array $state): self {
-    $entity = new RenderRequest();
-    self::buildFromState($entity, $state);
-    return $entity;
   }
 
   public function isValid() {
