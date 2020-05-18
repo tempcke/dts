@@ -21,7 +21,7 @@ class GetTemplateRequestTest extends TestCase {
   }
 
   /** @dataProvider validStates */
-  public function testValidCases($state): void {
+  public function testValidCases(array $state): void {
     $r = GetTemplateRequest::fromState($state);
     Assert::assertTrue($r->isValid());
   }
@@ -34,7 +34,7 @@ class GetTemplateRequestTest extends TestCase {
   }
 
   /** @dataProvider invalidStates */
-  public function testInvalidCases($state): void
+  public function testInvalidCases(array $state): void
   {
     $r = GetTemplateRequest::fromState($state);
     Assert::assertFalse($r->isValid());
