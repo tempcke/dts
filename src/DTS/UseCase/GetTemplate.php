@@ -13,9 +13,12 @@ class GetTemplate {
     $this->repository = $repository;
   }
 
-  public function getTemplate(GetTemplateRequest $request) {
+  public function getTemplates(GetTemplateRequest $request): array {
     if (!$request->isValid()) {
       throw new InvalidGetTemplateRequestException();
+    }
+    if (!empty($request->key)) {
+      return [$this->repository->getTemplateByKey($request->type, $request->key)];
     }
     return $this->repository->findByDocType($request->type);
   }
