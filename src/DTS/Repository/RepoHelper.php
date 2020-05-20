@@ -42,7 +42,7 @@ class RepoHelper {
     return $rows;
   }
 
-  public function extractUniqueColumn(array $rows, string $column): array {
+  public function extractUniqueProperty(array $rows, string $column): array {
     return array_unique(array_column($rows, $column));
   }
 }

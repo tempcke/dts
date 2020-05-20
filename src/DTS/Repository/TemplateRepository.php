@@ -41,9 +41,11 @@ class TemplateRepository {
   }
 
   public function findByDocType(string $docType) {
-    return array_map(function($result) {
-      return Template::fromState($result);
-    }, $this->persistence->find(['docType' => $docType]));
+    $templates = $this->persistence->find(['docType' => $docType]);
+
+    return array_map(function ($key) use ($docType)  {
+      return $this->getTemplateByKey($docType, $key);
+    }, $this->repoHelper->extractUniqueProperty($templates, 'templateKey'));
   }
 
   public function getTemplateByKey(string $docType, string $key) {
