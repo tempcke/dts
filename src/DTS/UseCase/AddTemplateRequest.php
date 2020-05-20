@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\DTS\UseCase;
+namespace HomeCEU\DTS\UseCase;
 
 
 use HomeCEU\DTS\AbstractEntity;

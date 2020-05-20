@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\DTS\UseCase;
 
 
+use HomeCEU\DTS\UseCase\AddTemplateRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
