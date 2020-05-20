@@ -13,6 +13,7 @@ class RenderRequest extends AbstractEntity {
   public $templateKey;
   public $dataId;
   public $dataKey;
+  public $format;
 
   use EntityHelperTrait;
 
@@ -22,7 +23,8 @@ class RenderRequest extends AbstractEntity {
         'templateId',
         'templateKey',
         'dataId',
-        'dataKey'
+        'dataKey',
+        'format'
     ];
   }
 
