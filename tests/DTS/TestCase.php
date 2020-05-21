@@ -1,6 +1,7 @@
 <?php
 namespace HomeCEU\Tests\DTS;
 
+use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
 class TestCase extends \HomeCEU\Tests\TestCase {
@@ -15,6 +16,10 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         'createdAt' => new \DateTime('yesterday'),
         'body' => 'hi {{name}}'
     ];
+  }
+
+  protected function fakeTemplate($docType = null, $key = null): Template {
+    return Template::fromState($this->fakeTemplateArray($docType, $key));
   }
 
   protected function fakeCompiledTemplate(array $template): array {

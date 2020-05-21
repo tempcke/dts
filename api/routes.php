@@ -8,4 +8,5 @@ return [
     new Api\Route('head', '/docdata/{docType}/{dataKey}', Api\DocData\Exists::class),
     new Api\Route('get', '/render/{docType}/{templateKey}/{dataKey}', Api\Render::class),
     new Api\Route('get', '/status', Api\Status::class),
+    new Api\Route('get', '/template', Api\Template\GetTemplate::class),
 ];

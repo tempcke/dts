@@ -4,7 +4,6 @@ namespace HomeCEU\DTS\Entity;
 
 
 use HomeCEU\DTS\AbstractEntity;
-use HomeCEU\DTS\EntityHelperTrait;
 
 class Template extends AbstractEntity {
   public $templateId;
@@ -14,8 +13,6 @@ class Template extends AbstractEntity {
   public $author;
   public $createdAt;
   public $body;
-
-  use EntityHelperTrait;
 
   protected static function keys(): array {
     return [
@@ -27,11 +24,5 @@ class Template extends AbstractEntity {
         'author',
         'body'
     ];
-  }
-
-  public static function fromState(array $state): Template {
-    $entity = new Template;
-    self::buildFromState($entity, $state);
-    return $entity;
   }
 }

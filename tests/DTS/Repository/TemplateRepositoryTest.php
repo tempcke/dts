@@ -84,10 +84,13 @@ class TemplateRepositoryTest extends TestCase {
 
   public function testFindByDocType() {
     $t = $this->buildTemplate(__FUNCTION__, 'A', '2000-01-01');
+    $t2 = $this->buildTemplate(__FUNCTION__, 'A', '1999-01-01');
     $this->p->persist($t);
+    $this->p->persist($t2);
     $fromDb = $this->repo->findByDocType($this->docType);
     Assert::assertCount(1, $fromDb);
-    Assert::assertEquals($t, $fromDb[0]->toArray());
+    Assert::assertContainsEquals(Template::fromState($t), $fromDb);
+    Assert::assertNotContainsEquals(Template::fromState($t2), $fromDb);
   }
 
   public function test_LookupId_shouldThrowExceptionIfNoneFound() {

@@ -41,4 +41,8 @@ class RepoHelper {
     usort($rows, $f);
     return $rows;
   }
+
+  public function extractUniqueProperty(array $rows, string $column): array {
+    return array_unique(array_column($rows, $column));
+  }
 }
