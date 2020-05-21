@@ -154,11 +154,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
 
   protected function assertContentType($contentType, ResponseInterface $response): void {
     $headers = $response->getHeaders();
-
-    Assert::assertTrue(
-        in_array($contentType, $headers['Content-Type']),
-        sprintf('Content-Type does not include "%s"', $contentType)
-    );
+    Assert::assertStringContainsString($contentType, $headers['Content-Type'][0]);
   }
 
   protected function assertStatus(int $code, ResponseInterface $response): void {
