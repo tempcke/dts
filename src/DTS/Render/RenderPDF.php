@@ -37,7 +37,7 @@ class RenderPDF extends Render {
   }
 
   private function saveToFile(): string {
-    $path = sprintf('/tmp/%s.pdf', uniqid());
+    $path = $this->createTmpFileName('pdf_');
 
     if ($this->pdf->saveAs($path))
       return $path;

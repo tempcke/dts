@@ -11,7 +11,7 @@ class RenderHTML extends Render {
 
   public function render(string $compiledTemplate, array $data = []): string {
     $t = $this->renderToString($compiledTemplate, $data);
-    $path = sprintf('/tmp/%s.html', uniqid());
+    $path = $this->createTmpFileName('html_');
     file_put_contents($path, $t);
     return $path;
   }

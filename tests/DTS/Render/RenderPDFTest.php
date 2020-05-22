@@ -15,7 +15,7 @@ class RenderPDFTest extends TestCase {
 
     $path = $renderer->render($template, $data);
     Assert::assertFileExists($path);
-    Assert::assertEquals('pdf', pathinfo($path)['extension']);
+    Assert::assertEquals('application/pdf', mime_content_type($path));
     unlink($path);
   }
 }
