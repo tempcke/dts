@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
 
 class RenderResponseTest extends TestCase {
   public function testBuildFromArray(): void {
-    $state = ['path' => 'something.html', 'contentType' => Render::CONTENT_TYPE_HTML];
+    $state = ['path' => 'something.html', 'contentType' => Render::FORMAT_HTML];
     $obj = RenderResponse::fromState($state);
     Assert::assertEquals($state['path'], $obj->path);
     Assert::assertEquals($state['contentType'], $obj->contentType);
