@@ -15,4 +15,8 @@ class RenderHTML extends Render {
     file_put_contents($path, $t);
     return $path;
   }
+
+  public function getContentType(): string {
+    return 'text/html';
+  }
 }

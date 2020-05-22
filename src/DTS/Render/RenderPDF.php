@@ -32,6 +32,10 @@ class RenderPDF extends Render {
     return $this->saveToFile();
   }
 
+  public function getContentType(): string {
+    return 'application/pdf';
+  }
+
   private function saveToFile(): string {
     $path = sprintf('/tmp/%s.pdf', uniqid());
 

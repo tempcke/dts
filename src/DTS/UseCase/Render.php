@@ -6,11 +6,14 @@ namespace HomeCEU\DTS\UseCase;
 
 use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Entity\Template;
-use HomeCEU\DTS\Render\Renderer;
+use HomeCEU\DTS\Render\RenderFactory;
+use HomeCEU\DTS\Render\RenderInterface;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 
 class Render {
+  const FORMAT_HTML = 'html';
+  const FORMAT_PDF = 'pdf';
 
   /** @var DocDataRepository */
   private $docDataRepo;
@@ -29,7 +32,7 @@ class Render {
     $this->templateRepo = $templateRepo;
   }
 
-  public function renderDoc(RenderRequest $request) {
+  public function renderDoc(RenderRequest $request): RenderResponse {
     if (!$request->isValid()) {
       throw new InvalidRenderRequestException;
     }
@@ -37,6 +40,7 @@ class Render {
     $this->completeRequest = $this->buildRequestOfIds($request);
 
     return $this->renderTemplate(
+        $this->getRenderService($request),
         $this->templateRepo->getTemplateById($this->completeRequest->templateId),
         $this->docDataRepo->getByDocDataId($this->completeRequest->dataId)
     );
@@ -63,8 +67,18 @@ class Render {
     return $this->templateRepo->lookupId($request->docType, $request->templateKey);
   }
 
-  private function renderTemplate(Template $template, DocData $docData): string {
+  private function renderTemplate(RenderInterface $renderer, Template $template, DocData $docData): RenderResponse {
     $template = $this->templateRepo->getCompiledTemplateById($template->templateId);
-    return Renderer::create()->pdf($template->body, $docData->data);
+
+    return RenderResponse::fromState([
+        'path' => $renderer->render($template->body, $docData->data),
+        'contentType' => $renderer->getContentType()
+    ]);
+  }
+
+  protected function getRenderService(RenderRequest $request): RenderInterface {
+    return ($request->format === self::FORMAT_PDF)
+        ? RenderFactory::createPDF()
+        : RenderFactory::createHTML();
   }
 }
