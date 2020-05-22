@@ -1,18 +1,19 @@
 <?php declare(strict_types=1);
 
 
-namespace DTS\Render;
+namespace HomeCEU\Tests\DTS\Render;
 
 
-use HomeCEU\Tests\DTS\Render\TestCase;
+use HomeCEU\DTS\Render\RenderPDF;
 use PHPUnit\Framework\Assert;
 
 class RenderPDFTest extends TestCase {
   public function testCreatePDF(): void {
+    $renderer = RenderPDF::create();
     $data = ['name' => 'Peter Parker'];
     $template = $this->compile('{{ name }}');
 
-    $path = $this->renderPDF($template, $data);
+    $path = $renderer->render($template, $data);
     Assert::assertFileExists($path);
     Assert::assertEquals('pdf', pathinfo($path)['extension']);
     unlink($path);
