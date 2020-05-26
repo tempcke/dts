@@ -43,11 +43,12 @@ class Render {
 
   public function __invoke(Request $request, Response $response, $args) {
     try {
+      $qp = $request->getQueryParams();
       $renderRequest = RenderRequest::fromState([
           'docType' => $args['docType'],
           'templateKey' => $args['templateKey'],
           'dataKey' => $args['dataKey'],
-          'format' => $request->getQueryParams()['format']
+          'format' => empty($qp['format']) ? 'html' : $qp['format']
       ]);
       $renderResponse = $this->useCase->renderDoc($renderRequest);
       return $response
