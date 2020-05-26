@@ -18,12 +18,12 @@ class RenderPDF extends Render {
 
   private $pdf;
 
-  private function __construct(array $options = []) {
-    $this->pdf = new Pdf($options ?: self::PDF_OPTIONS);
+  private function __construct() {
+    $this->pdf = new Pdf(self::PDF_OPTIONS);
   }
 
-  public static function create(array $options = []): RenderInterface {
-    return new static($options);
+  public static function create(): RenderInterface {
+    return new static();
   }
 
   public function render(string $compiledTemplate, array $data = []): string {
