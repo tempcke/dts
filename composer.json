@@ -1,12 +1,13 @@
 {
     "require": {
         "php": "7.3.*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ext-fileinfo": "*",
         "slim/slim": "^3.0",
         "ramsey/uuid": "^3.9",
         "robmorgan/phinx": "^0.11.4",
-        "ext-json": "*",
         "nette/database": "^3.0",
-        "ext-pdo": "*",
         "zordius/lightncandy": "^1.2",
         "mikehaertl/phpwkhtmltopdf": "^2.4"
     },
