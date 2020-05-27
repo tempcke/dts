@@ -42,6 +42,12 @@ class RenderTest extends TestCase {
     );
 
     $this->render = new Render($this->templateRepo, $this->dataRepo);
+
+    $templateId = 'tid';
+    $body = 'Hi {{name}}';
+    $this->persistTemplate($templateId, $body);
+    $this->persistCompiledTemplate($templateId, $body);
+    $this->persistData();
   }
 
   public function testInvalidRequestThrowsException() {
@@ -50,35 +56,55 @@ class RenderTest extends TestCase {
     $this->render->renderDoc($request);
   }
 
-  public function testCanResolveRequest() {
-    $templateId = 'tid';
-    $body = 'Hi {{name}}';
+  public function testRenderHtmlRequest(): void {
+    $request = $this->createRenderRequest(Render::FORMAT_HTML);
+    $response = $this->render->renderDoc($request);
+
+    Assert::assertFileExists($response->path);
+    Assert::assertEquals('text/html', $response->contentType);
+    Assert::assertContains(mime_content_type($response->path), ['text/plain', 'text/html']);
+  }
+
+  public function testRenderPDFRequest(): void {
+    $request = $this->createRenderRequest(Render::FORMAT_PDF);
+    $response = $this->render->renderDoc($request);
+
+    Assert::assertFileExists($response->path);
+    Assert::assertEquals('application/pdf', $response->contentType);
+    Assert::assertEquals('application/pdf', mime_content_type($response->path));
+  }
+
+  protected function persistTemplate(string $templateId, string $body): void {
     $this->templatePersistence->persist([
         'docType' => 'dt',
         'templateId' => $templateId,
         'templateKey' => 'tk',
         'body' => $body
     ]);
+  }
+
+  protected function persistCompiledTemplate(string $templateId, string $body): void {
     $this->compiledTemplatePersistence->persist([
         'templateId' => $templateId,
         'body' => TemplateCompiler::create()->compile($body)
     ]);
+  }
+
+  protected function persistData(): void {
     $this->dataPersistence->persist([
         'docType' => 'dt',
         'dataId' => 'did',
         'dataKey' => 'dk',
-        'data'=>['name'=>'Fred']
+        'data' => ['name' => 'Fred']
     ]);
-    $request = RenderRequest::fromState([
+  }
+
+  protected function createRenderRequest(string $format): RenderRequest {
+    return RenderRequest::fromState([
         'docType' => 'dt',
         'templateKey' => 'tk',
-        'dataKey' => 'dk'
+        'dataKey' => 'dk',
+        'format' => $format
     ]);
-
-    $r = $this->render;
-
-    $this->render->renderDoc($request);
-    Assert::assertEquals('did', $r->completeRequest->dataId);
-    Assert::assertEquals($templateId, $r->completeRequest->templateId);
   }
 }

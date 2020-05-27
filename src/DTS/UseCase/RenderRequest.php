@@ -12,6 +12,7 @@ class RenderRequest extends AbstractEntity {
   public $templateKey;
   public $dataId;
   public $dataKey;
+  public $format;
 
   protected static function keys(): array {
     return [
@@ -19,7 +20,8 @@ class RenderRequest extends AbstractEntity {
         'templateId',
         'templateKey',
         'dataId',
-        'dataKey'
+        'dataKey',
+        'format'
     ];
   }
 

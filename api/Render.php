@@ -43,15 +43,17 @@ class Render {
 
   public function __invoke(Request $request, Response $response, $args) {
     try {
+      $qp = $request->getQueryParams();
       $renderRequest = RenderRequest::fromState([
           'docType' => $args['docType'],
           'templateKey' => $args['templateKey'],
           'dataKey' => $args['dataKey'],
+          'format' => empty($qp['format']) ? 'html' : $qp['format']
       ]);
-      $stream = $this->useCase->renderDoc($renderRequest);
+      $renderResponse = $this->useCase->renderDoc($renderRequest);
       return $response
-          ->withAddedHeader('Content-Type', 'application/pdf')
-          ->withBody(new Stream(fopen($stream, 'r')))
+          ->withHeader('Content-Type', $renderResponse->contentType)
+          ->withBody(new Stream(fopen($renderResponse->path, 'r')))
           ->withStatus(200);
     } catch (RecordNotFoundException $e) {
       return $response->withStatus(404);
