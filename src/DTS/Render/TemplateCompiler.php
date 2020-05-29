@@ -40,6 +40,10 @@ class TemplateCompiler {
     $this->partials[$partial->name] = $partial->template;
   }
 
+  public function ignoreMissingPartials(): void {
+    $this->flags |= Flags::FLAG_ERROR_SKIPPARTIAL;
+  }
+
   public function compile(string $template): string {
     try {
       $options = [
