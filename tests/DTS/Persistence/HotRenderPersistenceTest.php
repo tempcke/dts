@@ -45,7 +45,7 @@ class HotRenderPersistenceTest extends TestCase {
   protected function fakeHotRenderRequestArray(): array {
     return [
         'requestId' => $this->persistence->generateId()->toString(),
-        'template' => TemplateCompiler::create()->compile('{{ name }}'),
+        'template' => '<?php /* a compiled template */ ?>',
         'data' => ['name' => 'test'],
         'createdAt' => new \DateTime('yesterday')
     ];
