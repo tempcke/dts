@@ -1,27 +1,23 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\DTS\UseCase;
+namespace HomeCEU\DTS\Entity;
 
 
 use HomeCEU\DTS\AbstractEntity;
 
 class HotRenderRequest extends AbstractEntity {
-  public $format;
+  public $requestId;
   public $template;
-  public $docType;
   public $data;
+  public $createdAt;
 
   protected static function keys(): array {
     return [
-        'format',
+        'requestId',
         'template',
-        'docType',
         'data',
+        'createdAt',
     ];
-  }
-
-  public function isValid(): bool {
-    return (!empty($this->template) && !is_null($this->data));
   }
 }

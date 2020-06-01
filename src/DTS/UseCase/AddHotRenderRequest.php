@@ -1,23 +1,21 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\DTS\Entity;
+namespace HomeCEU\DTS\UseCase;
 
 
 use HomeCEU\DTS\AbstractEntity;
 
-class HotRender extends AbstractEntity {
-  public $requestId;
+class AddHotRenderRequest extends AbstractEntity {
   public $template;
   public $data;
-  public $createdAt;
+  public $docType;
 
   protected static function keys(): array {
     return [
-        'requestId',
         'template',
         'data',
-        'createdAt'
+        'docType'
     ];
   }
 }

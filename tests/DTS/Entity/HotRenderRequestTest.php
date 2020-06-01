@@ -4,11 +4,11 @@
 namespace HomeCEU\Tests\DTS\Entity;
 
 
-use HomeCEU\DTS\Entity\HotRender;
+use HomeCEU\DTS\Entity\HotRenderRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
-class HotRenderTest extends TestCase {
+class HotRenderRequestTest extends TestCase {
   public function testBuildFromState(): void {
     $state = [
         'requestId' => 'RID',
@@ -16,7 +16,7 @@ class HotRenderTest extends TestCase {
         'data' => ['name' => 'test'],
         'createdAt' => new \DateTime('yesterday')
     ];
-    $r = HotRender::fromState($state);
+    $r = HotRenderRequest::fromState($state);
     Assert::assertEquals($state['requestId'], $r->requestId);
     Assert::assertEquals($state['template'], $r->template);
     Assert::assertEquals($state['data'], $r->data);
