@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DTS\Api;
+namespace HomeCEU\DTS\Api\Render;
 
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
