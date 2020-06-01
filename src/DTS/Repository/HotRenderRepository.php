@@ -4,7 +4,7 @@
 namespace HomeCEU\DTS\Repository;
 
 
-use HomeCEU\DTS\Entity\HotRender;
+use HomeCEU\DTS\Entity\HotRenderRequest;
 use HomeCEU\DTS\Persistence;
 
 class HotRenderRepository {
@@ -15,12 +15,21 @@ class HotRenderRepository {
     $this->persistence = $persistence;
   }
 
-  public function getById(string $id): HotRender {
-    $hr = $this->persistence->retrieve($id);
-    return HotRender::fromState($hr);
+  public function newHotRenderRequest(string $template, array $data): HotRenderRequest {
+    return HotRenderRequest::fromState([
+      'requestId' => $this->persistence->generateId(),
+      'template' => $template,
+      'data' => $data,
+      'createdAt' => new \DateTime()
+    ]);
   }
 
-  public function save(HotRender $hotRender) {
+  public function getById(string $id): HotRenderRequest {
+    $hr = $this->persistence->retrieve($id);
+    return HotRenderRequest::fromState($hr);
+  }
+
+  public function save(HotRenderRequest $hotRender) {
     $this->persistence->persist($hotRender->toArray());
   }
 }
