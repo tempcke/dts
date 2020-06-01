@@ -19,7 +19,6 @@ class AddHotRenderTest extends TestCase {
 
   private $useCase;
   private $hotRenderRequestPersistence;
-  private $hotRenderRepo;
   private $templatePersistence;
 
   protected function setUp(): void {
@@ -27,10 +26,10 @@ class AddHotRenderTest extends TestCase {
     $this->hotRenderRequestPersistence = $this->fakePersistence('hotrender_request', 'requestId');
     $this->templatePersistence = $this->fakePersistence('template', 'templateId');
 
-    $this->hotRenderRepo = new HotRenderRepository($this->hotRenderRequestPersistence);
-    $this->templateRepo = new TemplateRepository($this->templatePersistence, $this->fakePersistence('compiled_template', 'templateId'));
-
-    $this->useCase = new AddHotRender($this->hotRenderRepo, $this->templateRepo);
+    $this->useCase = new AddHotRender(
+        new HotRenderRepository($this->hotRenderRequestPersistence),
+        new TemplateRepository($this->templatePersistence, $this->fakePersistence('compiled_template', 'templateId'))
+    );
   }
 
   public function testInvalidRequest(): void {
