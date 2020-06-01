@@ -6,7 +6,6 @@ namespace HomeCEU\Tests\DTS\Persistence;
 
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Persistence\HotRenderPersistence;
-use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 

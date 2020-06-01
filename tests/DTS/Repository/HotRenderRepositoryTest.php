@@ -5,9 +5,8 @@ namespace HomeCEU\Tests\DTS\Repository;
 
 
 use HomeCEU\DTS\Db;
-use HomeCEU\DTS\Entity\HotRender;
+use HomeCEU\DTS\Entity\HotRenderRequest;
 use HomeCEU\DTS\Persistence\HotRenderPersistence;
-use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\DTS\Repository\HotRenderRepository;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
@@ -35,13 +34,13 @@ class HotRenderRepositoryTest extends TestCase {
     $request = $this->fakeHotRenderRequestArray();
     $this->persistence->persist($request);
 
-    $entity = HotRender::fromState($request);
+    $entity = HotRenderRequest::fromState($request);
     $hotRender = $this->repo->getById($request['requestId']);
     Assert::assertEquals($entity, $hotRender);
   }
 
   public function testSave(): void {
-    $hotRender = HotRender::fromState($this->fakeHotRenderRequestArray());
+    $hotRender = HotRenderRequest::fromState($this->fakeHotRenderRequestArray());
     $this->repo->save($hotRender);
 
     Assert::assertEquals($hotRender->toArray(), $this->persistence->retrieve($hotRender->requestId));
