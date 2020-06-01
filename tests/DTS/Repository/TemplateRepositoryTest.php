@@ -7,6 +7,7 @@ use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Render\Image;
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
@@ -124,15 +125,27 @@ class TemplateRepositoryTest extends TestCase {
   }
 
   public function testFindPartialsByDocType(): void {
-    $t = $this->buildTemplate('a_partial', 'a partial', 'today');
-    $t['docType'] = $this->docType . '/partial';
-    $this->p->persist($t);
+    $partial = $this->buildTemplate('a_partial', 'a partial', 'today');
+    $partial['docType'] = $this->docType . '/partial';
+    $this->p->persist($partial);
 
     $partials = $this->repo->findPartialsByDocType($this->docType);
     Assert::assertCount(1, $partials);
     Assert::assertInstanceOf(Partial::class, $partials[0]);
-    Assert::assertEquals($t['name'], $partials[0]->name);
-    Assert::assertEquals($t['body'], $partials[0]->template);
+    Assert::assertEquals($partial['name'], $partials[0]->name);
+    Assert::assertEquals($partial['body'], $partials[0]->template);
+  }
+
+  public function testFindImagesByDocType(): void {
+    $t = $this->buildTemplate('an_image', 'an image', 'today');
+    $t['docType'] = $this->docType . '/image';
+    $this->p->persist($t);
+
+    $images = $this->repo->findImagesByDocType($this->docType);
+    Assert::assertCount(1, $images);
+    Assert::assertInstanceOf(Image::class, $images[0]);
+    Assert::assertEquals($t['name'], $images[0]->name);
+    Assert::assertEquals($t['body'], $images[0]->template);
   }
 
   private function buildTemplate($key, $name, $createdAt) {

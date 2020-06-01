@@ -7,6 +7,7 @@ namespace HomeCEU\DTS\Repository;
 use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Render\Image;
 use HomeCEU\DTS\Render\Partial;
 
 class TemplateRepository {
@@ -53,6 +54,12 @@ class TemplateRepository {
     return array_map(function ($partial) {
       return new Partial($partial->name, $partial->body);
     }, $this->findByDocType($docType . '/partial'));
+  }
+
+  public function findImagesByDocType(string $docType): array {
+    return array_map(function ($partial) {
+      return new Image($partial->name, $partial->body);
+    }, $this->findByDocType($docType . '/image'));
   }
 
   public function getTemplateByKey(string $docType, string $key) {
