@@ -7,6 +7,7 @@ namespace HomeCEU\DTS\Repository;
 use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Render\Partial;
 
 class TemplateRepository {
   /** @var Persistence */
@@ -43,9 +44,15 @@ class TemplateRepository {
   public function findByDocType(string $docType) {
     $templates = $this->persistence->find(['docType' => $docType]);
 
-    return array_map(function ($key) use ($docType)  {
+    return array_map(function ($key) use ($docType) {
       return $this->getTemplateByKey($docType, $key);
     }, $this->repoHelper->extractUniqueProperty($templates, 'templateKey'));
+  }
+
+  public function findPartialsByDocType(string $docType): array {
+    return array_map(function ($partial) {
+      return new Partial($partial->name, $partial->body);
+    }, $this->findByDocType($docType . '/partial'));
   }
 
   public function getTemplateByKey(string $docType, string $key) {

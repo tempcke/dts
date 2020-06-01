@@ -7,6 +7,7 @@ use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\Tests\DTS\TestCase;
@@ -97,6 +98,7 @@ class TemplateRepositoryTest extends TestCase {
     $this->expectException(RecordNotFoundException::class);
     $this->repo->lookupId($this->docType, __FUNCTION__);
   }
+
   public function testLookupIdFromKey() {
     $p = $this->fakePersistence('template', 'templateId');
     $ctp = $this->fakePersistence('compiled_template', 'templateId');
@@ -119,6 +121,18 @@ class TemplateRepositoryTest extends TestCase {
     $this->p->persist($c);
     $id = $this->repo->lookupId($this->docType, $key);
     Assert::assertEquals($c['templateId'], $id);
+  }
+
+  public function testFindPartialsByDocType(): void {
+    $t = $this->buildTemplate('a_partial', 'a partial', 'today');
+    $t['docType'] = $this->docType . '/partial';
+    $this->p->persist($t);
+
+    $partials = $this->repo->findPartialsByDocType($this->docType);
+    Assert::assertCount(1, $partials);
+    Assert::assertInstanceOf(Partial::class, $partials[0]);
+    Assert::assertEquals($t['name'], $partials[0]->name);
+    Assert::assertEquals($t['body'], $partials[0]->template);
   }
 
   private function buildTemplate($key, $name, $createdAt) {
