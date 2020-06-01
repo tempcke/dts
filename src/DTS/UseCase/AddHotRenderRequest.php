@@ -18,4 +18,8 @@ class AddHotRenderRequest extends AbstractEntity {
         'docType'
     ];
   }
+
+  public function isValid(): bool {
+    return !empty($this->template) && !is_null($this->data);
+  }
 }

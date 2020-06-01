@@ -20,4 +20,28 @@ class AddHotRenderRequestTest extends TestCase {
     Assert::assertEquals($state['data'], $r->data);
     Assert::assertEquals($state['docType'], $r->docType);
   }
+
+  /** @dataProvider validStates() */
+  public function testValidStates($state): void {
+    $r = AddHotRenderRequest::fromState($state);
+    Assert::assertTrue($r->isValid());
+  }
+
+  public function validStates(): \Generator {
+    yield [['template' => 'T', 'data' => ['name' => 'example']]];
+    yield [['template' => 'T', 'data' => ['name' => 'example'], 'docType' => __FUNCTION__]];
+  }
+
+  /** @dataProvider invalidStates() */
+  public function testInvalidStates($state): void {
+    $r = AddHotRenderRequest::fromState($state);
+    Assert::assertFalse($r->isValid());
+  }
+
+  public function invalidStates(): \Generator {
+    yield [['data' => ['name' => 'example'], 'docType' => __FUNCTION__]];
+    yield [['template' => 'T', 'docType' => __FUNCTION__]];
+    yield [['template' => 'T']];
+    yield [['data' => ['name' => 'example']]];
+  }
 }
