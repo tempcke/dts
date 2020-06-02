@@ -15,7 +15,7 @@ class HotRender {
     $this->repository = $repository;
   }
 
-  public function render(GetHotRenderRequest $request): RenderResponse {
+  public function render(HotRenderRequest $request): RenderResponse {
     $renderer = $this->getRenderService($request->format);
     $request = $this->repository->getById($request->requestId);
 

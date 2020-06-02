@@ -6,7 +6,7 @@ namespace HomeCEU\DTS\UseCase;
 
 use HomeCEU\DTS\AbstractEntity;
 
-class GetHotRenderRequest extends AbstractEntity {
+class HotRenderRequest extends AbstractEntity {
   public $requestId;
   public $format;
 
