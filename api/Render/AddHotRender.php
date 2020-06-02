@@ -1,0 +1,71 @@
+<?php declare(strict_types=1);
+
+
+namespace HomeCEU\DTS\Api\Render;
+
+
+use HomeCEU\DTS\Api\ApiHelper;
+use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
+use HomeCEU\DTS\Persistence\HotRenderPersistence;
+use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Render\CompilationException;
+use HomeCEU\DTS\Repository\HotRenderRepository;
+use HomeCEU\DTS\Repository\TemplateRepository;
+use HomeCEU\DTS\UseCase\AddHotRender as AddHotRenderUseCase;
+use HomeCEU\DTS\UseCase\AddHotRenderRequest;
+use HomeCEU\DTS\UseCase\InvalidHotRenderRequestException;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+
+class AddHotRender {
+  /** @var \HomeCEU\DTS\UseCase\AddHotRender */
+  private $useCase;
+
+  public function __construct(ContainerInterface $container) {
+    $conn = $container->dbConnection;
+
+    $templateRepo = new TemplateRepository(
+        new TemplatePersistence($conn),
+        new CompiledTemplatePersistence($conn)
+    );
+    $hotRenderRepo = new HotRenderRepository(
+        new HotRenderPersistence($conn)
+    );
+    $this->useCase = new AddHotRenderUseCase($hotRenderRepo, $templateRepo);
+  }
+
+  public function __invoke(Request $request, Response $response): Response {
+    try {
+      $reqData = $request->getParsedBody();
+      $renderRequest = $this->useCase->add(
+          AddHotRenderRequest::fromState([
+              'template' => $reqData['template'],
+              'data' => $reqData['data'],
+              'docType' => $reqData['docType'],
+          ])
+      );
+      $getUrl = ApiHelper::buildUrl("/hotrender/{$renderRequest['requestId']}");
+      return $response->withStatus(201)
+          ->withHeader('Location', $getUrl)
+          ->withJson([
+              'requestId' => $renderRequest['requestId'],
+              'createdAt' => $renderRequest['createdAt'],
+              'location' => $getUrl
+          ]);
+    } catch (InvalidHotRenderRequestException $e) {
+      return $response->withStatus(400)->withJson([
+          'status' => 400,
+          'errors' => [$e->getMessage()],
+          'date' => new \DateTime(),
+      ]);
+    } catch (CompilationException $e) {
+      return $response->withStatus(409)->withJson([
+          'status' => 400,
+          'errors' => [$e->getMessage()],
+          'data' => new \DateTime(),
+          'docType' => $reqData['docType']
+      ]);
+    }
+  }
+}

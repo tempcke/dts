@@ -81,6 +81,18 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     ]);
   }
 
+  protected function addPartialFeature(string $docType, string $templateKey): void {
+    $this->templatePersistence()->persist([
+        'docType' => $docType . '/partial',
+        'templateKey' => $templateKey,
+        'createdAt' => $this->createdAtDateTime(),
+        'templateId' => uniqid(),
+        'body'=> 'this is a partial',
+        'author'=>'author',
+        'name'=> 'A partial'
+    ]);
+  }
+
   protected function addTemplateFixture($templateKey) {
     $id = uniqid();
     $body = 'Hi {{name}}';
