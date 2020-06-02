@@ -10,6 +10,7 @@ use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\InvalidRenderRequestException;
 use HomeCEU\DTS\UseCase\Render;
+use HomeCEU\DTS\UseCase\RenderFormat;
 use HomeCEU\DTS\UseCase\RenderRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
@@ -57,7 +58,7 @@ class RenderTest extends TestCase {
   }
 
   public function testRenderHtmlRequest(): void {
-    $request = $this->createRenderRequest(Render::FORMAT_HTML);
+    $request = $this->createRenderRequest(RenderFormat::FORMAT_HTML);
     $response = $this->render->renderDoc($request);
 
     Assert::assertFileExists($response->path);
@@ -66,7 +67,7 @@ class RenderTest extends TestCase {
   }
 
   public function testRenderPDFRequest(): void {
-    $request = $this->createRenderRequest(Render::FORMAT_PDF);
+    $request = $this->createRenderRequest(RenderFormat::FORMAT_PDF);
     $response = $this->render->renderDoc($request);
 
     Assert::assertFileExists($response->path);
