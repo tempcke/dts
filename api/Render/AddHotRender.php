@@ -40,9 +40,9 @@ class AddHotRender {
       $reqData = $request->getParsedBody();
       $renderRequest = $this->useCase->add(
           AddHotRenderRequest::fromState([
-              'template' => $reqData['template'],
-              'data' => $reqData['data'],
-              'docType' => $reqData['docType'],
+              'template' => !empty($reqData['template']) ? $reqData['template'] : '',
+              'data' => !empty($reqData['data']) ? $reqData['data'] : [],
+              'docType' => !empty($reqData['docType']) ? $reqData['docType'] : null,
           ])
       );
       $getUrl = ApiHelper::buildUrl("/hotrender/{$renderRequest['requestId']}");
