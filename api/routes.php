@@ -10,7 +10,7 @@ return [
   # Render
     new Api\Route('get', '/render/{docType}/{templateKey}/{dataKey}', Api\Render\Render::class),
     new Api\Route('post', '/hotrender', Api\Render\AddHotRender::class),
-//    new Api\Route('get', '/hotrender/{requestId}', Api\Render\HotRender::class),
+    new Api\Route('get', '/hotrender/{requestId}', Api\Render\HotRender::class),
   # Template
     new Api\Route('get', '/template', Api\Template\GetTemplate::class),
   # API

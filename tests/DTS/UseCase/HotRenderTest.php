@@ -7,7 +7,7 @@ namespace DTS\UseCase;
 use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\DTS\Repository\HotRenderRepository;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
-use HomeCEU\DTS\UseCase\GetHotRenderRequest;
+use HomeCEU\DTS\UseCase\HotRenderRequest;
 use HomeCEU\DTS\UseCase\HotRender;
 use HomeCEU\DTS\UseCase\RenderFormat;
 use HomeCEU\DTS\UseCase\RenderResponse;
@@ -53,7 +53,7 @@ class HotRenderTest extends TestCase {
   }
 
   protected function render($requestId, $format): RenderResponse {
-    return $this->useCase->render(GetHotRenderRequest::fromState([
+    return $this->useCase->render(HotRenderRequest::fromState([
         'requestId' => $requestId,
         'format' => $format,
     ]));
