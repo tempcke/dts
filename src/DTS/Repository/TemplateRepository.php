@@ -52,13 +52,13 @@ class TemplateRepository {
 
   public function findPartialsByDocType(string $docType): array {
     return array_map(function ($partial) {
-      return new Partial($partial->name, $partial->body);
+      return new Partial($partial->templateKey, $partial->body);
     }, $this->findByDocType($docType . '/partial'));
   }
 
   public function findImagesByDocType(string $docType): array {
     return array_map(function ($partial) {
-      return new Image($partial->name, $partial->body);
+      return new Image($partial->templateKey, $partial->body);
     }, $this->findByDocType($docType . '/image'));
   }
 

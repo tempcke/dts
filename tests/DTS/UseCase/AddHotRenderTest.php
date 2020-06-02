@@ -55,13 +55,13 @@ class AddHotRenderTest extends TestCase {
   }
 
   public function testAddTemplateWithPartials(): void {
-    $partial = $this->fakeTemplate(self::EXAMPLE_DOCTYPE . '/partial');
-    $partial->name = 'a_partial';
+    $partial = $this->fakeTemplate(self::EXAMPLE_DOCTYPE . '/partial', 'a_partial');
     $partial->body = 'world';
     $this->templatePersistence->persist($partial->toArray());
     $addRequest = $this->fakeAddRequest('Hello, {{> a_partial }}!', [], self::EXAMPLE_DOCTYPE);
     $renderRequest = $this->useCase->add($addRequest);
 
+    $this->assertRequestPersisted($renderRequest);
     Assert::assertEquals("Hello, world!", $this->renderHtml($renderRequest['template']));
   }
 

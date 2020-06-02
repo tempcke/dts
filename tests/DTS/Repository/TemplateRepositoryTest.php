@@ -132,20 +132,20 @@ class TemplateRepositoryTest extends TestCase {
     $partials = $this->repo->findPartialsByDocType($this->docType);
     Assert::assertCount(1, $partials);
     Assert::assertInstanceOf(Partial::class, $partials[0]);
-    Assert::assertEquals($partial['name'], $partials[0]->name);
+    Assert::assertEquals($partial['templateKey'], $partials[0]->name);
     Assert::assertEquals($partial['body'], $partials[0]->template);
   }
 
   public function testFindImagesByDocType(): void {
-    $t = $this->buildTemplate('an_image', 'an image', 'today');
-    $t['docType'] = $this->docType . '/image';
-    $this->p->persist($t);
+    $image = $this->buildTemplate('an_image', 'an image', 'today');
+    $image['docType'] = $this->docType . '/image';
+    $this->p->persist($image);
 
     $images = $this->repo->findImagesByDocType($this->docType);
     Assert::assertCount(1, $images);
     Assert::assertInstanceOf(Image::class, $images[0]);
-    Assert::assertEquals($t['name'], $images[0]->name);
-    Assert::assertEquals($t['body'], $images[0]->template);
+    Assert::assertEquals($image['templateKey'], $images[0]->name);
+    Assert::assertEquals($image['body'], $images[0]->template);
   }
 
   private function buildTemplate($key, $name, $createdAt) {
