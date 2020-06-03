@@ -6,9 +6,8 @@ namespace HomeCEU\Tests\DTS\Render;
 
 use HomeCEU\DTS\Render\TemplateHelpers;
 
-class CustomHelpersTest extends TestCase {
+class DefaultHelpersTest extends TestCase {
   public function testEqualHelper(): void {
-    $this->compiler->addHelper(TemplateHelpers::equal());
     $cTemplate = $this->compile("{{#if (eq value_1 value_2)}}matches{{else}}doesn't match{{/if}}");
 
     $text = $this->render($cTemplate, ['value_1' => 'live', 'value_2' => 'text']);

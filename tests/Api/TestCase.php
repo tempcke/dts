@@ -8,6 +8,7 @@ use HomeCEU\DTS\Api\App;
 use HomeCEU\DTS\Api\DiContainer;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\DocDataPersistence;
+use HomeCEU\DTS\Persistence\HotRenderPersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Render\TemplateCompiler;
 use PHPUnit\Framework\Assert;
@@ -34,6 +35,9 @@ class TestCase extends \HomeCEU\Tests\TestCase {
 
   /** @var string */
   protected $docType;
+
+  /** @var HotRenderPersistence */
+  protected $hotRenderPersistence;
 
   protected function setUp(): void {
     parent::setUp();
@@ -71,6 +75,13 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return $this->compiledTemplatePersistence;
   }
 
+  protected function hotRenderPersistence(): HotRenderPersistence {
+    if (empty($this->hotRenderPersistence)) {
+      $this->hotRenderPersistence = new HotRenderPersistence($this->di->dbConnection);
+    }
+    return $this->hotRenderPersistence;
+  }
+
   protected function addDocDataFixture($dataKey) {
     $this->docDataPersistence()->persist([
         'docType' => $this->docType,
@@ -78,6 +89,18 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         'createdAt' => $this->createdAtDateTime(),
         'dataId' => uniqid(),
         'data' => ['name'=>'Fred']
+    ]);
+  }
+
+  protected function addPartialFeature(string $docType, string $templateKey): void {
+    $this->templatePersistence()->persist([
+        'docType' => $docType . '/partial',
+        'templateKey' => $templateKey,
+        'createdAt' => $this->createdAtDateTime(),
+        'templateId' => uniqid(),
+        'body'=> 'this is a partial',
+        'author'=>'author',
+        'name'=> 'A partial'
     ]);
   }
 
@@ -96,6 +119,15 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     $this->compiledTemplatePersistence()->persist([
         'templateId' => $id,
         'body' => TemplateCompiler::create()->compile($body)
+    ]);
+  }
+
+  protected function addHotRenderRequestFixture($requestId, $value) {
+    $this->hotRenderPersistence()->persist([
+        'requestId' => $requestId,
+        'template' => TemplateCompiler::create()->compile('{{ value }}'),
+        'data' => ['value' => $value],
+        'createdAt' => new \DateTime()
     ]);
   }
 

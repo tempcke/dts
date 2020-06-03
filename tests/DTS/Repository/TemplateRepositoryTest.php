@@ -7,6 +7,8 @@ use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
+use HomeCEU\DTS\Render\Image;
+use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\Tests\DTS\TestCase;
@@ -97,6 +99,7 @@ class TemplateRepositoryTest extends TestCase {
     $this->expectException(RecordNotFoundException::class);
     $this->repo->lookupId($this->docType, __FUNCTION__);
   }
+
   public function testLookupIdFromKey() {
     $p = $this->fakePersistence('template', 'templateId');
     $ctp = $this->fakePersistence('compiled_template', 'templateId');
@@ -119,6 +122,30 @@ class TemplateRepositoryTest extends TestCase {
     $this->p->persist($c);
     $id = $this->repo->lookupId($this->docType, $key);
     Assert::assertEquals($c['templateId'], $id);
+  }
+
+  public function testFindPartialsByDocType(): void {
+    $partial = $this->buildTemplate('a_partial', 'a partial', 'today');
+    $partial['docType'] = $this->docType . '/partial';
+    $this->p->persist($partial);
+
+    $partials = $this->repo->findPartialsByDocType($this->docType);
+    Assert::assertCount(1, $partials);
+    Assert::assertInstanceOf(Partial::class, $partials[0]);
+    Assert::assertEquals($partial['templateKey'], $partials[0]->name);
+    Assert::assertEquals($partial['body'], $partials[0]->template);
+  }
+
+  public function testFindImagesByDocType(): void {
+    $image = $this->buildTemplate('an_image', 'an image', 'today');
+    $image['docType'] = $this->docType . '/image';
+    $this->p->persist($image);
+
+    $images = $this->repo->findImagesByDocType($this->docType);
+    Assert::assertCount(1, $images);
+    Assert::assertInstanceOf(Image::class, $images[0]);
+    Assert::assertEquals($image['templateKey'], $images[0]->name);
+    Assert::assertEquals($image['body'], $images[0]->template);
   }
 
   private function buildTemplate($key, $name, $createdAt) {

@@ -12,8 +12,7 @@ use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
 
 class Render {
-  const FORMAT_HTML = 'html';
-  const FORMAT_PDF = 'pdf';
+  use RenderServiceTrait;
 
   /** @var DocDataRepository */
   private $docDataRepo;
@@ -40,7 +39,7 @@ class Render {
     $this->completeRequest = $this->buildRequestOfIds($request);
 
     return $this->renderTemplate(
-        $this->getRenderService($request),
+        $this->getRenderService($request->format),
         $this->templateRepo->getTemplateById($this->completeRequest->templateId),
         $this->docDataRepo->getByDocDataId($this->completeRequest->dataId)
     );
@@ -74,11 +73,5 @@ class Render {
         'path' => $renderer->render($template->body, $docData->data),
         'contentType' => $renderer->getContentType()
     ]);
-  }
-
-  protected function getRenderService(RenderRequest $request): RenderInterface {
-    return ($request->format === self::FORMAT_PDF)
-        ? RenderFactory::createPDF()
-        : RenderFactory::createHTML();
   }
 }

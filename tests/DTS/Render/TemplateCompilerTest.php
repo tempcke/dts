@@ -8,6 +8,7 @@ use HomeCEU\DTS\Render\CompilationException;
 use HomeCEU\DTS\Render\Helper;
 use HomeCEU\DTS\Render\Partial;
 use HomeCEU\DTS\Render\TemplateCompiler;
+use PHPUnit\Framework\Assert;
 
 class TemplateCompilerTest extends TestCase {
   public function testCompileTemplate(): void {
@@ -19,6 +20,12 @@ class TemplateCompilerTest extends TestCase {
   public function testExpectedPartialNotProvided(): void {
     $this->expectException(CompilationException::class);
     $this->compiler->compile('{{> expected_partial }}');
+  }
+
+  public function testDisablePartialNotProvidedException(): void {
+    $this->compiler->ignoreMissingPartials();
+    $template = $this->compiler->compile('This, {{>expected_partial}}is a test');
+    Assert::assertEquals('This, is a test', $this->render($template));
   }
 
   public function testProvidedPartialNotExpected(): void {

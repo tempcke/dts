@@ -3,6 +3,7 @@
 
 namespace HomeCEU\Tests\DTS\Persistence\InMemory;
 
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\Tests\DTS\TestCase;
 use HomeCEU\DTS\Persistence\InMemory\DocDataPersistence;
 use PHPUnit\Framework\Assert;
@@ -60,12 +61,12 @@ class DocDataPersistenceTest extends TestCase {
     ];
     $this->persistence()->persist($data);
     $this->persistence()->delete($data[$this->idCol]);
-    $this->expectException(\OutOfBoundsException::class);
+    $this->expectException(RecordNotFoundException::class);
     $this->persistence()->retrieve($data[$this->idCol]);
   }
 
   public function testDeleteIdThatDoesNotExistThrowsException() {
-    $this->expectException(\OutOfBoundsException::class);
+    $this->expectException(RecordNotFoundException::class);
     $this->persistence()->delete(99);
   }
 
