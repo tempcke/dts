@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\UseCase;
 
 
 use HomeCEU\DTS\Entity\Template;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\GetTemplate;
 use HomeCEU\DTS\UseCase\GetTemplateRequest;
@@ -33,6 +34,19 @@ class GetTemplateTest extends TestCase {
     $this->expectException(InvalidGetTemplateRequestException::class);
     $r = GetTemplateRequest::fromState([]);
     $this->useCase->getTemplates($r);
+  }
+
+  public function testGetTemplateById(): void {
+    $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
+    $this->persistTemplates($t1);
+
+    $template = $this->useCase->getTemplateById($t1->templateId);
+    Assert::assertEquals($t1, $template);
+  }
+
+  public function testGetTemplateByIdNotFound(): void {
+    $this->expectException(RecordNotFoundException::class);
+    $this->useCase->getTemplateById('abcdefg');
   }
 
   public function testGetTemplateByType(): void {
