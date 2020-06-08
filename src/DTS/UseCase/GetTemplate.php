@@ -14,7 +14,7 @@ class GetTemplate {
     $this->repository = $repository;
   }
 
-  public function getTemplates(GetTemplateRequest $request): array {
+  public function findTemplates(FindTemplateRequest $request): array {
     if (!$request->isValid()) {
       throw new InvalidGetTemplateRequestException();
     }
@@ -24,7 +24,7 @@ class GetTemplate {
     return $this->repository->findByDocType($request->type);
   }
 
-  public function getTemplateById(string $templateId): Template {
-    return $this->repository->getTemplateById($templateId);
+  public function getTemplateById(GetTemplateByIdRequest $request): Template {
+    return $this->repository->getTemplateById($request->templateId);
   }
 }

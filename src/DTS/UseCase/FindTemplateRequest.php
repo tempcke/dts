@@ -6,7 +6,7 @@ namespace HomeCEU\DTS\UseCase;
 
 use HomeCEU\DTS\AbstractEntity;
 
-class GetTemplateRequest extends AbstractEntity {
+class FindTemplateRequest extends AbstractEntity {
   public $type;
   public $key;
   public $search;

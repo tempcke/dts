@@ -4,16 +4,16 @@
 namespace HomeCEU\Tests\DTS\UseCase;
 
 
-use HomeCEU\DTS\UseCase\GetTemplateRequest;
+use HomeCEU\DTS\UseCase\FindTemplateRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
-class GetTemplateRequestTest extends TestCase {
+class FindTemplateRequestTest extends TestCase {
   const SEARCH_TERM = 'search term';
 
   public function testBuildFromArray(): void {
     $state = ['type' => 'enrollment', 'key' => __FUNCTION__, 'search' => 'none'];
-    $obj = GetTemplateRequest::fromState($state);
+    $obj = FindTemplateRequest::fromState($state);
 
     Assert::assertEquals($state['type'], $obj->type);
     Assert::assertEquals($state['key'], $obj->key);
@@ -22,7 +22,7 @@ class GetTemplateRequestTest extends TestCase {
 
   /** @dataProvider validStates */
   public function testValidCases(array $state): void {
-    $r = GetTemplateRequest::fromState($state);
+    $r = FindTemplateRequest::fromState($state);
     Assert::assertTrue($r->isValid());
   }
 
@@ -36,7 +36,7 @@ class GetTemplateRequestTest extends TestCase {
   /** @dataProvider invalidStates */
   public function testInvalidCases(array $state): void
   {
-    $r = GetTemplateRequest::fromState($state);
+    $r = FindTemplateRequest::fromState($state);
     Assert::assertFalse($r->isValid());
   }
 

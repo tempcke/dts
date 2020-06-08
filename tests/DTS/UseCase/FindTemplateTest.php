@@ -8,7 +8,8 @@ use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\GetTemplate;
-use HomeCEU\DTS\UseCase\GetTemplateRequest;
+use HomeCEU\DTS\UseCase\GetTemplateByIdRequest;
+use HomeCEU\DTS\UseCase\FindTemplateRequest;
 use HomeCEU\DTS\UseCase\InvalidGetTemplateRequestException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
@@ -32,7 +33,7 @@ class GetTemplateTest extends TestCase {
 
   public function testInvalidRequestThrowsException(): void {
     $this->expectException(InvalidGetTemplateRequestException::class);
-    $r = GetTemplateRequest::fromState([]);
+    $r = FindTemplateRequest::fromState([]);
     $this->useCase->getTemplates($r);
   }
 
@@ -40,13 +41,14 @@ class GetTemplateTest extends TestCase {
     $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
     $this->persistTemplates($t1);
 
-    $template = $this->useCase->getTemplateById($t1->templateId);
-    Assert::assertEquals($t1, $template);
+    Assert::assertEquals($t1, $this->useCase->getTemplateById(
+        GetTemplateByIdRequest::fromState(['templateId' => $t1->templateId])
+    ));
   }
 
   public function testGetTemplateByIdNotFound(): void {
     $this->expectException(RecordNotFoundException::class);
-    $this->useCase->getTemplateById('abcdefg');
+    $this->useCase->getTemplateById(GetTemplateByIdRequest::fromState(['templateId' => uniqid()]));
   }
 
   public function testGetTemplateByType(): void {
@@ -55,7 +57,7 @@ class GetTemplateTest extends TestCase {
     $t3 = $this->fakeTemplate(self::DOC_TYPE_EXAMPLE);
     $this->persistTemplates($t1, $t2, $t3);
 
-    $r = GetTemplateRequest::fromState(['type' => self::DOC_TYPE_ENROLLMENT]);
+    $r = FindTemplateRequest::fromState(['type' => self::DOC_TYPE_ENROLLMENT]);
     $result = $this->useCase->getTemplates($r);
 
     Assert::assertContainsEquals($t1, $result);
@@ -92,8 +94,8 @@ class GetTemplateTest extends TestCase {
     Assert::assertNotContainsEquals($t2, $result);
   }
 
-  private function createRequest($type, $key = null, $search = null): GetTemplateRequest {
-    return GetTemplateRequest::fromState([
+  private function createRequest($type, $key = null, $search = null): FindTemplateRequest {
+    return FindTemplateRequest::fromState([
         'type' => $type,
         'key' => $key,
         'search' => $search,
