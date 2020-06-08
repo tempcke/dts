@@ -5,10 +5,8 @@ namespace HomeCEU\Tests\DTS\UseCase;
 
 
 use HomeCEU\DTS\Entity\Template;
-use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\GetTemplate;
-use HomeCEU\DTS\UseCase\GetTemplateByIdRequest;
 use HomeCEU\DTS\UseCase\FindTemplateRequest;
 use HomeCEU\DTS\UseCase\InvalidGetTemplateRequestException;
 use HomeCEU\Tests\DTS\TestCase;
@@ -34,21 +32,7 @@ class GetTemplateTest extends TestCase {
   public function testInvalidRequestThrowsException(): void {
     $this->expectException(InvalidGetTemplateRequestException::class);
     $r = FindTemplateRequest::fromState([]);
-    $this->useCase->getTemplates($r);
-  }
-
-  public function testGetTemplateById(): void {
-    $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
-    $this->persistTemplates($t1);
-
-    Assert::assertEquals($t1, $this->useCase->getTemplateById(
-        GetTemplateByIdRequest::fromState(['templateId' => $t1->templateId])
-    ));
-  }
-
-  public function testGetTemplateByIdNotFound(): void {
-    $this->expectException(RecordNotFoundException::class);
-    $this->useCase->getTemplateById(GetTemplateByIdRequest::fromState(['templateId' => uniqid()]));
+    $this->useCase->findTemplates($r);
   }
 
   public function testGetTemplateByType(): void {
@@ -58,7 +42,7 @@ class GetTemplateTest extends TestCase {
     $this->persistTemplates($t1, $t2, $t3);
 
     $r = FindTemplateRequest::fromState(['type' => self::DOC_TYPE_ENROLLMENT]);
-    $result = $this->useCase->getTemplates($r);
+    $result = $this->useCase->findTemplates($r);
 
     Assert::assertContainsEquals($t1, $result);
     Assert::assertContainsEquals($t2, $result);
@@ -70,7 +54,7 @@ class GetTemplateTest extends TestCase {
     $t2 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
     $this->persistTemplates($t1, $t2);
 
-    $result = $this->useCase->getTemplates(
+    $result = $this->useCase->findTemplates(
         $this->createRequest(self::DOC_TYPE_ENROLLMENT, $t1->templateKey)
     );
 
@@ -87,7 +71,7 @@ class GetTemplateTest extends TestCase {
     $t2->createdAt = new \DateTime('-1 week');
 
     $this->persistTemplates($t1, $t2);
-    $result = $this->useCase->getTemplates(
+    $result = $this->useCase->findTemplates(
         $this->createRequest(self::DOC_TYPE_ENROLLMENT, $sharedKey)
     );
     Assert::assertContainsEquals($t1, $result);

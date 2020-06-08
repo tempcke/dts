@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeCEU\DTS\UseCase;
+namespace HomeCEU\DTS\UseCase\Render;
 
 use Throwable;
 

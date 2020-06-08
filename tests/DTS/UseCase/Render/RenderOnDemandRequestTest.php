@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\DTS\UseCase;
+namespace HomeCEU\Tests\DTS\UseCase\Render;
 
 
-use HomeCEU\DTS\UseCase\RenderOnDemandRequest;
+use HomeCEU\DTS\UseCase\Render\RenderOnDemandRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
