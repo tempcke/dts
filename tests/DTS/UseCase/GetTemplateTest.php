@@ -9,6 +9,7 @@ use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\GetTemplate;
 use HomeCEU\DTS\UseCase\GetTemplateRequest;
+use HomeCEU\DTS\UseCase\InvalidGetTemplateRequestException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -29,16 +30,30 @@ class GetTemplateTest extends TestCase {
     $this->useCase = new GetTemplate($this->templateRepository);
   }
 
+  public function testInvalidRequest(): void {
+    $this->expectException(InvalidGetTemplateRequestException::class);
+    $this->useCase->getTemplate(GetTemplateRequest::fromState([]));
+  }
+
   public function testGetTemplateById(): void {
-    $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
-    $this->persistTemplates($t1);
-    Assert::assertEquals($t1, $this->useCase->getTemplateById(
-        GetTemplateRequest::fromState(['templateId' => $t1->templateId])
+    $template = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
+    $this->persistTemplates($template);
+    Assert::assertEquals($template, $this->useCase->getTemplate(
+        GetTemplateRequest::fromState(['templateId' => $template->templateId])
     ));
   }
+
   public function testGetTemplateByIdNotFound(): void {
     $this->expectException(RecordNotFoundException::class);
-    $this->useCase->getTemplateById(GetTemplateRequest::fromState(['templateId' => uniqid()]));
+    $this->useCase->getTemplate(GetTemplateRequest::fromState(['templateId' => uniqid()]));
+  }
+
+  public function testGetTemplateByTypeAndKey(): void {
+    $template = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
+    $this->persistTemplates($template);
+    Assert::assertEquals($template, $this->useCase->getTemplate(
+        GetTemplateRequest::fromState(['docType' => self::DOC_TYPE_ENROLLMENT, 'templateKey' => $template->templateKey])
+    ));
   }
 
   private function persistTemplates(Template ...$templates): void {

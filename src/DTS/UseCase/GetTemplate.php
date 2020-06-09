@@ -24,7 +24,13 @@ class GetTemplate {
     return $this->repository->findByDocType($request->type);
   }
 
-  public function getTemplateById(GetTemplateRequest $request): Template {
-    return $this->repository->getTemplateById($request->templateId);
+  public function getTemplate(GetTemplateRequest $request): Template {
+    if (!$request->isValid()) {
+      throw new InvalidGetTemplateRequestException();
+    }
+    if (!empty($request->templateId)) {
+      return $this->repository->getTemplateById($request->templateId);
+    }
+    return $this->repository->getTemplateByKey($request->docType, $request->templateKey);
   }
 }
