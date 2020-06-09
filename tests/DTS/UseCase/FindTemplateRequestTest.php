@@ -20,7 +20,7 @@ class FindTemplateRequestTest extends TestCase {
     Assert::assertEquals($state['search'], $obj->search);
   }
 
-  /** @dataProvider validStates */
+  /** @dataProvider validStates() */
   public function testValidCases(array $state): void {
     $r = FindTemplateRequest::fromState($state);
     Assert::assertTrue($r->isValid());
@@ -33,7 +33,7 @@ class FindTemplateRequestTest extends TestCase {
     yield [['type' => 'enrollment']];
   }
 
-  /** @dataProvider invalidStates */
+  /** @dataProvider invalidStates() */
   public function testInvalidCases(array $state): void
   {
     $r = FindTemplateRequest::fromState($state);
