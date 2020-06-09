@@ -12,7 +12,7 @@ use HomeCEU\DTS\UseCase\InvalidGetTemplateRequestException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
-class GetTemplateTest extends TestCase {
+class FindTemplateTest extends TestCase {
   const DOC_TYPE_ENROLLMENT = 'enrollment';
   const DOC_TYPE_EXAMPLE = 'example';
 
