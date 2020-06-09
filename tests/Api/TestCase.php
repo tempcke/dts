@@ -104,9 +104,9 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     ]);
   }
 
-  protected function addTemplateFixture($templateKey) {
-    $id = uniqid();
-    $body = 'Hi {{name}}';
+  protected function addTemplateFixture($templateKey, $id = null, $body = null) {
+    $id = $id ?? uniqid();
+    $body = $body ?? 'Hi {{name}}';
     $this->templatePersistence()->persist([
         'docType' => $this->docType,
         'templateKey' => $templateKey,
