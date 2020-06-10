@@ -3,7 +3,7 @@
 use HomeCEU\DTS\Api;
 
 return [
-    # DocData
+  # DocData
     new Api\Route('post', '/docdata', Api\DocData\DocDataAdd::class),
     new Api\Route('get', '/docdata/{docType}/{dataKey}/history', Api\DocData\ListVersions::class),
     new Api\Route('head', '/docdata/{docType}/{dataKey}', Api\DocData\Exists::class),
@@ -13,6 +13,8 @@ return [
     new Api\Route('get', '/hotrender/{requestId}', Api\Render\HotRender::class),
   # Template
     new Api\Route('get', '/template', Api\Template\GetTemplate::class),
+    new Api\Route('get', '/template/{templateId}', Api\Template\GetTemplate::class),
+    new Api\Route('get', '/template/{docType}/{templateKey}', Api\Template\GetTemplate::class),
   # API
     new Api\Route('get', '/status', Api\Status::class),
 ];

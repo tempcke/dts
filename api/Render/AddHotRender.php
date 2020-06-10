@@ -11,15 +11,15 @@ use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Render\CompilationException;
 use HomeCEU\DTS\Repository\HotRenderRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
-use HomeCEU\DTS\UseCase\AddHotRender as AddHotRenderUseCase;
-use HomeCEU\DTS\UseCase\AddHotRenderRequest;
-use HomeCEU\DTS\UseCase\InvalidHotRenderRequestException;
+use HomeCEU\DTS\UseCase\Render\AddHotRender as AddHotRenderUseCase;
+use HomeCEU\DTS\UseCase\Render\AddHotRenderRequest;
+use HomeCEU\DTS\UseCase\Render\InvalidHotRenderRequestException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class AddHotRender {
-  /** @var \HomeCEU\DTS\UseCase\AddHotRender */
+  /** @var \HomeCEU\DTS\UseCase\Render\AddHotRender */
   private $useCase;
 
   public function __construct(ContainerInterface $container) {

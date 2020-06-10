@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\DTS\UseCase;
+namespace HomeCEU\Tests\DTS\UseCase\Render;
 
 
 use HomeCEU\DTS\Render\CompilationException;
 use HomeCEU\DTS\Render\RenderFactory;
 use HomeCEU\DTS\Repository\HotRenderRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
-use HomeCEU\DTS\UseCase\AddHotRender;
-use HomeCEU\DTS\UseCase\AddHotRenderRequest;
-use HomeCEU\DTS\UseCase\InvalidHotRenderRequestException;
+use HomeCEU\DTS\UseCase\Render\AddHotRender;
+use HomeCEU\DTS\UseCase\Render\AddHotRenderRequest;
+use HomeCEU\DTS\UseCase\Render\InvalidHotRenderRequestException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 

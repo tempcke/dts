@@ -9,40 +9,35 @@ use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class GetTemplateRequestTest extends TestCase {
-  const SEARCH_TERM = 'search term';
-
   public function testBuildFromArray(): void {
-    $state = ['type' => 'enrollment', 'key' => __FUNCTION__, 'search' => 'none'];
-    $obj = GetTemplateRequest::fromState($state);
+    $state = ['templateId' => 'TID', 'docType' => 'DT', 'templateKey' => 'KEY'];
+    $r = GetTemplateRequest::fromState($state);
 
-    Assert::assertEquals($state['type'], $obj->type);
-    Assert::assertEquals($state['key'], $obj->key);
-    Assert::assertEquals($state['search'], $obj->search);
+    Assert::assertEquals($state['templateId'], $r->templateId);
+    Assert::assertEquals($state['docType'], $r->docType);
+    Assert::assertEquals($state['templateKey'], $r->templateKey);
   }
 
-  /** @dataProvider validStates */
+  /** @dataProvider validStates() */
   public function testValidCases(array $state): void {
     $r = GetTemplateRequest::fromState($state);
     Assert::assertTrue($r->isValid());
   }
 
   public function validStates(): \Generator {
-    yield [['type' => 'enrollment', 'key' => __FUNCTION__, 'search' => self::SEARCH_TERM]];
-    yield [['type' => 'enrollment', 'search' => self::SEARCH_TERM]];
-    yield [['type' => 'enrollment', 'key' => __FUNCTION__]];
-    yield [['type' => 'enrollment']];
+    yield [['templateId' => 'TID']];
+    yield [['templateId' => 'TID', 'docType' => 'DT', 'templateKey' => 'KEY']];
+    yield [['docType' => 'DT', 'templateKey' => 'KEY']];
   }
 
-  /** @dataProvider invalidStates */
-  public function testInvalidCases(array $state): void
-  {
+  /** @dataProvider invalidStates() */
+  public function testInvalidStates(array $state): void {
     $r = GetTemplateRequest::fromState($state);
     Assert::assertFalse($r->isValid());
   }
 
   public function invalidStates(): \Generator {
-    yield [['key' => __FUNCTION__, 'search' => self::SEARCH_TERM]];
-    yield [['key' => __FUNCTION__]];
-    yield [['search' => self::SEARCH_TERM]];
+    yield [['docType' => 'DT']];
+    yield [['templateKey' => 'KEY']];
   }
 }

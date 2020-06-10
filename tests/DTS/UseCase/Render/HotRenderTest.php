@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
 
-namespace DTS\UseCase;
+namespace HomeCEU\Tests\DTS\UseCase\Render;
 
 
 use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\DTS\Repository\HotRenderRepository;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
-use HomeCEU\DTS\UseCase\HotRenderRequest;
-use HomeCEU\DTS\UseCase\HotRender;
-use HomeCEU\DTS\UseCase\RenderFormat;
-use HomeCEU\DTS\UseCase\RenderResponse;
+use HomeCEU\DTS\UseCase\Render\HotRenderRequest;
+use HomeCEU\DTS\UseCase\Render\HotRender;
+use HomeCEU\DTS\UseCase\Render\RenderFormat;
+use HomeCEU\DTS\UseCase\Render\RenderResponse;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 

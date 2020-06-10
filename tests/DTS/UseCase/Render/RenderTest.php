@@ -1,17 +1,17 @@
 <?php
 
 
-namespace HomeCEU\Tests\DTS\UseCase;
+namespace HomeCEU\Tests\DTS\UseCase\Render;
 
 
 use HomeCEU\DTS\Persistence;
 use HomeCEU\DTS\Render\TemplateCompiler;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\TemplateRepository;
-use HomeCEU\DTS\UseCase\InvalidRenderRequestException;
-use HomeCEU\DTS\UseCase\Render;
-use HomeCEU\DTS\UseCase\RenderFormat;
-use HomeCEU\DTS\UseCase\RenderRequest;
+use HomeCEU\DTS\UseCase\Render\InvalidRenderRequestException;
+use HomeCEU\DTS\UseCase\Render\Render;
+use HomeCEU\DTS\UseCase\Render\RenderFormat;
+use HomeCEU\DTS\UseCase\Render\RenderRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 

@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\UseCase;
 
 
 use HomeCEU\DTS\Entity\Template;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\GetTemplate;
 use HomeCEU\DTS\UseCase\GetTemplateRequest;
@@ -17,8 +18,8 @@ class GetTemplateTest extends TestCase {
   const DOC_TYPE_EXAMPLE = 'example';
 
   private $useCase;
-  private $templatePersistence;
   private $templateRepository;
+  private $templatePersistence;
 
   protected function setUp(): void {
     parent::setUp();
@@ -29,61 +30,30 @@ class GetTemplateTest extends TestCase {
     $this->useCase = new GetTemplate($this->templateRepository);
   }
 
-  public function testInvalidRequestThrowsException(): void {
+  public function testInvalidRequest(): void {
     $this->expectException(InvalidGetTemplateRequestException::class);
-    $r = GetTemplateRequest::fromState([]);
-    $this->useCase->getTemplates($r);
+    $this->useCase->getTemplate(GetTemplateRequest::fromState([]));
   }
 
-  public function testGetTemplateByType(): void {
-    $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
-    $t2 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
-    $t3 = $this->fakeTemplate(self::DOC_TYPE_EXAMPLE);
-    $this->persistTemplates($t1, $t2, $t3);
+  public function testGetTemplateById(): void {
+    $template = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
+    $this->persistTemplates($template);
+    Assert::assertEquals($template, $this->useCase->getTemplate(
+        GetTemplateRequest::fromState(['templateId' => $template->templateId])
+    ));
+  }
 
-    $r = GetTemplateRequest::fromState(['type' => self::DOC_TYPE_ENROLLMENT]);
-    $result = $this->useCase->getTemplates($r);
-
-    Assert::assertContainsEquals($t1, $result);
-    Assert::assertContainsEquals($t2, $result);
-    Assert::assertNotContainsEquals($t3, $result);
+  public function testGetTemplateByIdNotFound(): void {
+    $this->expectException(RecordNotFoundException::class);
+    $this->useCase->getTemplate(GetTemplateRequest::fromState(['templateId' => uniqid()]));
   }
 
   public function testGetTemplateByTypeAndKey(): void {
-    $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
-    $t2 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
-    $this->persistTemplates($t1, $t2);
-
-    $result = $this->useCase->getTemplates(
-        $this->createRequest(self::DOC_TYPE_ENROLLMENT, $t1->templateKey)
-    );
-
-    Assert::assertContainsEquals($t1, $result);
-    Assert::assertNotContainsEquals($t2, $result);
-  }
-
-  public function testGetOnlyNewestForEachTypeAndKeyCombination(): void {
-    $sharedKey = uniqid();
-
-    $t1 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT, $sharedKey);
-    $t2 = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT, $sharedKey);
-    $t1->createdAt = new \DateTime('-1 day');
-    $t2->createdAt = new \DateTime('-1 week');
-
-    $this->persistTemplates($t1, $t2);
-    $result = $this->useCase->getTemplates(
-        $this->createRequest(self::DOC_TYPE_ENROLLMENT, $sharedKey)
-    );
-    Assert::assertContainsEquals($t1, $result);
-    Assert::assertNotContainsEquals($t2, $result);
-  }
-
-  private function createRequest($type, $key = null, $search = null): GetTemplateRequest {
-    return GetTemplateRequest::fromState([
-        'type' => $type,
-        'key' => $key,
-        'search' => $search,
-    ]);
+    $template = $this->fakeTemplate(self::DOC_TYPE_ENROLLMENT);
+    $this->persistTemplates($template);
+    Assert::assertEquals($template, $this->useCase->getTemplate(
+        GetTemplateRequest::fromState(['docType' => self::DOC_TYPE_ENROLLMENT, 'templateKey' => $template->templateKey])
+    ));
   }
 
   private function persistTemplates(Template ...$templates): void {
