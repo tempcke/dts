@@ -40,7 +40,9 @@ class AddTemplateTest extends TestCase {
         'body' => 'Hi, {{ name }}!'
     ]);
     $template = $this->useCase->addTemplate($request);
+
     Assert::assertEquals($template->toArray(), $this->templatePersistence->retrieve($template->templateId));
+    Assert::assertNotEmpty($this->compiledTemplatePersistence->retrieve($template->templateId));
   }
 
   public function testAddPartial(): void {
