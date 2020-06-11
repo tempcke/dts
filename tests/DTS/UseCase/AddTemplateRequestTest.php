@@ -25,4 +25,18 @@ class AddTemplateRequestTest extends TestCase {
     Assert::assertEquals($state['author'], $obj->author);
     Assert::assertEquals($state['body'], $obj->body);
   }
+
+  /** @dataProvider invalidStates() */
+  public function testInvalidStates(array $state) {
+    $r = AddTemplateRequest::fromState($state);
+    Assert::assertFalse($r->isValid());
+  }
+
+  public function invalidStates(): \Generator {
+    yield [['type' => 'E', 'key' => 'K', 'author' => 'A']];
+    yield [['type' => 'E', 'key' => 'K', 'body' => 'B']];
+    yield [['type' => 'E', 'author' => 'A', 'body' => 'B']];
+    yield [['key' => 'K', 'author' => 'A', 'body' => 'B']];
+    yield [[]];
+  }
 }

@@ -20,4 +20,11 @@ class AddTemplateRequest extends AbstractEntity {
         'body',
     ];
   }
+
+  public function isValid(): bool {
+    return !empty($this->type)
+        && !empty($this->key)
+        && !empty($this->author)
+        && !empty($this->body);
+  }
 }
