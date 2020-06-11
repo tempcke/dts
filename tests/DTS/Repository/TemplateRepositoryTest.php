@@ -45,6 +45,21 @@ class TemplateRepositoryTest extends TestCase {
     $this->db->rollBack();
   }
 
+  public function testCreateNewTemplate(): void {
+    $type = 'type';
+    $key = 'key';
+    $author = 'author';
+    $body = 'body';
+
+    $template = $this->repo->createNewTemplate($type, $key, $author, $body);
+    Assert::assertSame($type, $template->docType);
+    Assert::assertSame($key, $template->templateKey);
+    Assert::assertSame($author, $template->author);
+    Assert::assertSame($body, $template->body);
+    Assert::assertNotEmpty($template->templateId);
+    Assert::assertNotEmpty($template->createdAt);
+  }
+
   public function testGetNewestTemplateByKey() {
     $key = __FUNCTION__;
     $this->p->persist($this->buildTemplate($key,'B','2000-01-02'));
@@ -75,7 +90,7 @@ class TemplateRepositoryTest extends TestCase {
     Assert::assertInstanceOf(CompiledTemplate::class, $template);
     Assert::assertEquals($t['templateId'], $template->templateId);
   }
-  
+
   public function testSave() {
     $templateArray = $this->fakeTemplateArray($this->docType, __FUNCTION__);
     $template = Template::fromState($templateArray);
@@ -107,11 +122,12 @@ class TemplateRepositoryTest extends TestCase {
         'docType' => 'dt',
         'templateId' => 'tid',
         'templateKey' => 'tk',
-        'body'=>'Hi {{name}}'
+        'body' => 'Hi {{name}}'
     ]);
     $repo = new TemplateRepository($p, $ctp);
-    Assert::assertEquals('tid', $repo->lookupId('dt','tk'));
+    Assert::assertEquals('tid', $repo->lookupId('dt', 'tk'));
   }
+
   public function testGetNewestTemplateIdWhenLookupByKey() {
     $key = __FUNCTION__;
     $a = $this->buildTemplate($key, 'A', '2000-01-01');
@@ -150,8 +166,8 @@ class TemplateRepositoryTest extends TestCase {
 
   private function buildTemplate($key, $name, $createdAt) {
     $t = $this->fakeTemplateArray($this->docType, $key);
-    $t['createdAt']= new \DateTime($createdAt);
-    $t['name']=$name;
+    $t['createdAt'] = new \DateTime($createdAt);
+    $t['name'] = $name;
     return $t;
   }
 }

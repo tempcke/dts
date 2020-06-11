@@ -4,6 +4,7 @@
 namespace HomeCEU\DTS\Repository;
 
 
+use DateTime;
 use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
@@ -26,6 +27,17 @@ class TemplateRepository {
     $this->compiledTemplatePersistence = $compiledTemplatePersistence;
 
     $this->repoHelper = new RepoHelper($persistence);
+  }
+
+  public function createNewTemplate(string $docType, string $key, string $author, string $body):Template {
+    return Template::fromState([
+        'templateId' => $this->persistence->generateId(),
+        'docType' => $docType,
+        'templateKey' => $key,
+        'author' => $author,
+        'body' => $body,
+        'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+    ]);
   }
 
   public function save(Template $template) {
