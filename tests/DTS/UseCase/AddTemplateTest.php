@@ -32,7 +32,7 @@ class AddTemplateTest extends TestCase {
     $this->useCase->addTemplate(AddTemplateRequest::fromState([]));
   }
 
-  public function testAddTemplate(): void {
+  public function testAddBasicTemplate(): void {
     $request = AddTemplateRequest::fromState([
         'type' => 'test_doctype',
         'key' => uniqid('key_'),
