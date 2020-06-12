@@ -48,25 +48,25 @@ class TemplateRepository {
     ]);
   }
 
-  public function save(Template $template) {
+  public function save(Template $template): void {
     $this->persistence->persist($template->toArray());
   }
 
-  public function getTemplateById(string $id) {
+  public function getTemplateById(string $id): Template {
     $array = $this->persistence->retrieve($id);
     return Template::fromState($array);
   }
 
-  public function saveCompiled(CompiledTemplate $compiledTemplate) {
+  public function saveCompiled(CompiledTemplate $compiledTemplate): void {
     $this->compiledTemplatePersistence->persist($compiledTemplate->toArray());
   }
 
-  public function getCompiledTemplateById(string $id) {
+  public function getCompiledTemplateById(string $id): CompiledTemplate {
     $arr = $this->compiledTemplatePersistence->retrieve($id);
     return CompiledTemplate::fromState($arr);
   }
 
-  public function findByDocType(string $docType) {
+  public function findByDocType(string $docType): array {
     $templates = $this->persistence->find(['docType' => $docType]);
 
     return array_map(function ($key) use ($docType) {
@@ -86,7 +86,7 @@ class TemplateRepository {
     }, $this->findByDocType($docType . '/image'));
   }
 
-  public function getTemplateByKey(string $docType, string $key) {
+  public function getTemplateByKey(string $docType, string $key): Template {
     $filter = [
         'docType' => $docType,
         'templateKey' => $key
@@ -95,7 +95,7 @@ class TemplateRepository {
     return Template::fromState($row);
   }
 
-  public function lookupId($docType, $templateKey) {
+  public function lookupId($docType, $templateKey): string {
     $filter = [
         'docType' => $docType,
         'templateKey' => $templateKey
