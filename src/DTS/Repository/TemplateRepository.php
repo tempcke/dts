@@ -57,8 +57,12 @@ class TemplateRepository {
     return Template::fromState($array);
   }
 
-  public function saveCompiled(CompiledTemplate $compiledTemplate): void {
-    $this->compiledTemplatePersistence->persist($compiledTemplate->toArray());
+  public function addCompiled(Template $template, string $compiled): void {
+    $this->compiledTemplatePersistence->persist(CompiledTemplate::fromState([
+        'templateId' => $template->templateId,
+        'body' => $compiled,
+        'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+    ])->toArray());
   }
 
   public function getCompiledTemplateById(string $id): CompiledTemplate {

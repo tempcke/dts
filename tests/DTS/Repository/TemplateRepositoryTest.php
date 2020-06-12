@@ -71,14 +71,12 @@ class TemplateRepositoryTest extends TestCase {
     Assert::assertNotEmpty($compiled->createdAt);
   }
 
-  public function testSaveCompiledTemplate(): void {
+  public function testAddCompiledTemplate(): void {
     $template = $this->repo->createNewTemplate('T', 'K', 'A', 'B');
     $this->repo->save($template);
 
-    $compiled = $this->repo->createNewCompiledTemplate($template, "<?php /* compiled template */ ?>");
-
-    $this->repo->saveCompiled($compiled);
-    Assert::assertEquals($compiled->toArray(), $this->ctp->retrieve($template->templateId));
+    $this->repo->addCompiled($template, "<?php /* compiled template */ ?>");
+    Assert::assertEquals("<?php /* compiled template */ ?>", $this->ctp->retrieve($template->templateId)['body']);
   }
 
   public function testGetNewestTemplateByKey() {

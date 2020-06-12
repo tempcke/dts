@@ -23,6 +23,7 @@ class AddTemplate {
     }
     $t = $this->repository->createNewTemplate($request->type, $request->key, $request->author, $request->body);
     $this->repository->save($t);
+    $this->repository->addCompiled($t, $this->compiler->compile($t->body));
 
     return $t;
   }
