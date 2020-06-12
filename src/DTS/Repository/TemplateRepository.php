@@ -10,6 +10,7 @@ use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 use HomeCEU\DTS\Render\Image;
 use HomeCEU\DTS\Render\Partial;
+use Nette\Database\ForeignKeyConstraintViolationException;
 
 class TemplateRepository {
   /** @var Persistence */
@@ -58,11 +59,15 @@ class TemplateRepository {
   }
 
   public function addCompiled(Template $template, string $compiled): void {
-    $this->compiledTemplatePersistence->persist(CompiledTemplate::fromState([
-        'templateId' => $template->templateId,
-        'body' => $compiled,
-        'createdAt' => (new DateTime())->format(DateTime::ISO8601),
-    ])->toArray());
+    try {
+      $this->compiledTemplatePersistence->persist(CompiledTemplate::fromState([
+          'templateId' => $template->templateId,
+          'body' => $compiled,
+          'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+      ])->toArray());
+    } catch (ForeignKeyConstraintViolationException $e) {
+      throw new RecordNotFoundException("Cannot add compiled template, template not found {$template->templateId}");
+    }
   }
 
   public function getCompiledTemplateById(string $id): CompiledTemplate {
