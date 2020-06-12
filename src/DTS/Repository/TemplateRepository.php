@@ -29,13 +29,21 @@ class TemplateRepository {
     $this->repoHelper = new RepoHelper($persistence);
   }
 
-  public function createNewTemplate(string $docType, string $key, string $author, string $body):Template {
+  public function createNewTemplate(string $docType, string $key, string $author, string $body): Template {
     return Template::fromState([
         'templateId' => $this->persistence->generateId(),
         'docType' => $docType,
         'templateKey' => $key,
         'author' => $author,
         'body' => $body,
+        'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+    ]);
+  }
+
+  public function createNewCompiledTemplate(Template $template, string $compiled): CompiledTemplate {
+    return CompiledTemplate::fromState([
+        'templateId' => $template->templateId,
+        'body' => $compiled,
         'createdAt' => (new DateTime())->format(DateTime::ISO8601),
     ]);
   }
@@ -47,6 +55,10 @@ class TemplateRepository {
   public function getTemplateById(string $id) {
     $array = $this->persistence->retrieve($id);
     return Template::fromState($array);
+  }
+
+  public function saveCompiled(CompiledTemplate $compiledTemplate) {
+    $this->compiledTemplatePersistence->persist($compiledTemplate->toArray());
   }
 
   public function getCompiledTemplateById(string $id) {
