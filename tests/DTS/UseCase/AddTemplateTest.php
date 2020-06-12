@@ -12,6 +12,7 @@ use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class AddTemplateTest extends TestCase {
+  const TEST_DOCTYPE = 'test_doctype';
   private $templatePersistence;
   private $compiledTemplatePersistence;
   private $useCase;
@@ -33,12 +34,15 @@ class AddTemplateTest extends TestCase {
   }
 
   public function testAddBasicTemplate(): void {
-    $request = AddTemplateRequest::fromState([
-        'type' => 'test_doctype',
-        'key' => uniqid('key_'),
-        'author' => 'Author',
-        'body' => 'Hi, {{ name }}!'
-    ]);
+    $request = $this->createAddRequest('Hi, {{ name }}!');
+    $template = $this->useCase->addTemplate($request);
+
+    Assert::assertEquals($template->toArray(), $this->templatePersistence->retrieve($template->templateId));
+    Assert::assertNotEmpty($this->compiledTemplatePersistence->retrieve($template->templateId));
+  }
+
+  public function testAddTemplateWithPartials(): void {
+    $request = $this->createAddRequest('{{> a_partial }}');
     $template = $this->useCase->addTemplate($request);
 
     Assert::assertEquals($template->toArray(), $this->templatePersistence->retrieve($template->templateId));
@@ -51,5 +55,14 @@ class AddTemplateTest extends TestCase {
 
   public function testAddImage(): void {
     $this->fail('not yet implemented, should not compile image');
+  }
+
+  private function createAddRequest(string $body): AddTemplateRequest {
+    return AddTemplateRequest::fromState([
+        'type' => self::TEST_DOCTYPE,
+        'key' => uniqid('key_'),
+        'author' => 'Author',
+        'body' => $body
+    ]);
   }
 }
