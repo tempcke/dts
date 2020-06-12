@@ -15,6 +15,7 @@ class CompiledTemplate extends AbstractEntity {
     return [
         'templateId',
         'body',
+        'createdAt',
     ];
   }
 }
