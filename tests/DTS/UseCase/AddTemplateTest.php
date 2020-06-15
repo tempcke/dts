@@ -4,7 +4,6 @@
 namespace HomeCEU\Tests\DTS\UseCase;
 
 
-use HomeCEU\DTS\Render\RenderFactory;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\AddTemplate;
 use HomeCEU\DTS\UseCase\AddTemplateRequest;
