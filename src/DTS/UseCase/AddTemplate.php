@@ -34,6 +34,10 @@ class AddTemplate {
   }
 
   private function addCompiled(Template $template): void {
+    $partials = $this->repository->findPartialsByDocType($template->docType);
+    $images = $this->repository->findImagesByDocType($template->docType);
+
+    $this->compiler->setPartials(array_merge($partials, $images));
     $this->repository->addCompiled($template, $this->compiler->compile($template->body));
   }
 }

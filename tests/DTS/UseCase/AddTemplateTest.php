@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\DTS\UseCase;
 
 
+use HomeCEU\DTS\Render\RenderFactory;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\AddTemplate;
 use HomeCEU\DTS\UseCase\AddTemplateRequest;
@@ -34,7 +35,7 @@ class AddTemplateTest extends TestCase {
   }
 
   public function testAddBasicTemplate(): void {
-    $request = $this->createAddRequest('Hi, {{ name }}!');
+    $request = $this->createAddRequestWithBody('Hi, {{ name }}!');
     $template = $this->useCase->addTemplate($request);
 
     Assert::assertEquals($template->toArray(), $this->templatePersistence->retrieve($template->templateId));
@@ -42,7 +43,19 @@ class AddTemplateTest extends TestCase {
   }
 
   public function testAddTemplateWithPartials(): void {
-    $request = $this->createAddRequest('{{> a_partial }}');
+    $this->templatePersistence->persist($this->fakeTemplate(self::TEST_DOCTYPE . '/partial', 'a_partial')->toArray());
+
+    $request = $this->createAddRequestWithBody('{{> a_partial }}');
+    $template = $this->useCase->addTemplate($request);
+
+    Assert::assertEquals($template->toArray(), $this->templatePersistence->retrieve($template->templateId));
+    Assert::assertNotEmpty($this->compiledTemplatePersistence->retrieve($template->templateId));
+  }
+
+  public function testAddTemplateWithImages(): void {
+    $this->templatePersistence->persist($this->fakeTemplate(self::TEST_DOCTYPE . '/image', 'image.png')->toArray());
+
+    $request = $this->createAddRequestWithBody('{{> image.png }}');
     $template = $this->useCase->addTemplate($request);
 
     Assert::assertEquals($template->toArray(), $this->templatePersistence->retrieve($template->templateId));
@@ -57,7 +70,7 @@ class AddTemplateTest extends TestCase {
     $this->fail('not yet implemented, should not compile image');
   }
 
-  private function createAddRequest(string $body): AddTemplateRequest {
+  private function createAddRequestWithBody(string $body): AddTemplateRequest {
     return AddTemplateRequest::fromState([
         'type' => self::TEST_DOCTYPE,
         'key' => uniqid('key_'),
