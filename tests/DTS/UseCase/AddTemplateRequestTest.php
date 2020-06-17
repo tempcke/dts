@@ -5,6 +5,7 @@ namespace HomeCEU\Tests\DTS\UseCase;
 
 
 use HomeCEU\DTS\UseCase\AddTemplateRequest;
+use HomeCEU\DTS\UseCase\InvalidAddTemplateRequestException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -28,8 +29,8 @@ class AddTemplateRequestTest extends TestCase {
 
   /** @dataProvider invalidStates() */
   public function testInvalidStates(array $state) {
-    $r = AddTemplateRequest::fromState($state);
-    Assert::assertFalse($r->isValid());
+    $this->expectException(InvalidAddTemplateRequestException::class);
+    AddTemplateRequest::fromState($state);
   }
 
   public function invalidStates(): \Generator {

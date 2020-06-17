@@ -21,10 +21,17 @@ class AddTemplateRequest extends AbstractEntity {
     ];
   }
 
-  public function isValid(): bool {
-    return !empty($this->type)
-        && !empty($this->key)
-        && !empty($this->author)
-        && !empty($this->body);
+  public static function fromState(array $state): AbstractEntity {
+    return parent::fromState($state)->validate();
+  }
+
+  protected function validate(): self {
+    if (empty($this->type)
+        || empty($this->key)
+        || empty($this->author)
+        || empty($this->body)) {
+      throw new InvalidAddTemplateRequestException();
+    }
+    return $this;
   }
 }
