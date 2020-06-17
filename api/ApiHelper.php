@@ -6,7 +6,8 @@ namespace HomeCEU\DTS\Api;
 
 class ApiHelper {
   public static function getBaseURL(): string {
-    return "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}";
+    $scheme = $_SERVER['REQUEST_SCHEME'] ?? 'https';
+    return "{$scheme}://{$_SERVER['HTTP_HOST']}";
   }
 
   public static function buildUrl(string $route) {
