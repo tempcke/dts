@@ -7,15 +7,15 @@ namespace HomeCEU\DTS\UseCase;
 use HomeCEU\DTS\AbstractEntity;
 
 class AddTemplateRequest extends AbstractEntity {
-  public $type;
-  public $key;
+  public $docType;
+  public $templateKey;
   public $author;
   public $body;
 
   protected static function keys(): array {
     return [
-        'type',
-        'key',
+        'docType',
+        'templateKey',
         'author',
         'body',
     ];
@@ -26,11 +26,11 @@ class AddTemplateRequest extends AbstractEntity {
   }
 
   protected function validate(): self {
-    if (empty($this->type)
-        || empty($this->key)
+    if (empty($this->docType)
+        || empty($this->templateKey)
         || empty($this->author)
         || empty($this->body)) {
-      throw new InvalidAddTemplateRequestException();
+      throw new InvalidAddTemplateRequestException("Required values: " . implode(', ', self::keys()));
     }
     return $this;
   }

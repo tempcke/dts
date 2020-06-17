@@ -7,7 +7,7 @@ namespace HomeCEU\Tests\DTS\UseCase;
 use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\AddTemplate;
 use HomeCEU\DTS\UseCase\AddTemplateRequest;
-use HomeCEU\DTS\UseCase\InvalidTemplateAddRequestException;
+use HomeCEU\DTS\UseCase\InvalidAddTemplateRequestException;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -29,7 +29,7 @@ class AddTemplateTest extends TestCase {
   }
 
   public function testAddTemplateInvalidRequest(): void {
-    $this->expectException(InvalidTemplateAddRequestException::class);
+    $this->expectException(InvalidAddTemplateRequestException::class);
     $this->useCase->addTemplate(AddTemplateRequest::fromState([]));
   }
 
@@ -71,8 +71,8 @@ class AddTemplateTest extends TestCase {
 
   private function createAddRequestWithBody(string $body): AddTemplateRequest {
     return AddTemplateRequest::fromState([
-        'type' => self::TEST_DOCTYPE,
-        'key' => uniqid('key_'),
+        'docType' => self::TEST_DOCTYPE,
+        'templateKey' => uniqid('key_'),
         'author' => 'Author',
         'body' => $body
     ]);
