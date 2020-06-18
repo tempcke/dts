@@ -17,10 +17,6 @@ use Slim\Http\Environment;
 use Slim\Http\Request;
 
 class TestCase extends \HomeCEU\Tests\TestCase {
-  const HOST = 'example.com:8080';
-  const SCHEME_HTTP = 'http';
-  const BASE_HTTP_URL = self::SCHEME_HTTP . '://' . self::HOST;
-
   /** @var DiContainer */
   protected $di;
 
@@ -44,9 +40,6 @@ class TestCase extends \HomeCEU\Tests\TestCase {
 
   protected function setUp(): void {
     parent::setUp();
-    $_SERVER['HTTP_HOST'] = self::HOST;
-    $_SERVER['REQUEST_SCHEME'] = self::SCHEME_HTTP;
-
     $this->di = new DiContainer();
     $this->di->dbConnection->beginTransaction();
     $this->app = new App($this->di);
