@@ -4,7 +4,6 @@
 namespace HomeCEU\DTS\Api\Template;
 
 
-use HomeCEU\DTS\Api\ApiHelper;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Repository\TemplateRepository;
@@ -32,17 +31,17 @@ class AddTemplate {
       /** @var AddTemplateRequest $addRequest */
       $addRequest = AddTemplateRequest::fromState($request->getParsedBody());
       $template = $this->useCase->addTemplate($addRequest);
-      $url = ApiHelper::buildUrl("/template/{$template->templateId}");
+      $route = "/template/{$template->templateId}";
 
       return $response->withStatus(201)
-          ->withHeader('Location', $url)
+          ->withHeader('Location', $route)
           ->withJson([
               'templateId' => $template->templateId,
               'templateKey' => $template->templateKey,
               'docType' => $template->docType,
               'author' => $template->author,
               'createdAt' => $template->createdAt,
-              'bodyUri' => $url,
+              'bodyUri' => $route,
           ]);
     } catch (InvalidAddTemplateRequestException $e) {
       return $response->withStatus(400)->withJson(['errors' => "Invalid Request | {$e->getMessage()}"]);
