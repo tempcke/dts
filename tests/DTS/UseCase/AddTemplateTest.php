@@ -61,14 +61,6 @@ class AddTemplateTest extends TestCase {
     Assert::assertNotEmpty($this->compiledTemplatePersistence->retrieve($template->templateId));
   }
 
-  public function testAddPartial(): void {
-    $this->fail('not yet implemented, should not compile partial');
-  }
-
-  public function testAddImage(): void {
-    $this->fail('not yet implemented, should not compile image');
-  }
-
   private function createAddRequestWithBody(string $body): AddTemplateRequest {
     return AddTemplateRequest::fromState([
         'docType' => self::TEST_DOCTYPE,
