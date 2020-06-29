@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
 
-namespace Api;
+namespace HomeCEU\Tests\Api;
 
-
-use HomeCEU\Tests\Api\TestCase;
 
 class GetTemplateTest extends TestCase {
   protected function setUp(): void {

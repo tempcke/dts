@@ -4,11 +4,13 @@
 namespace HomeCEU\DTS\Repository;
 
 
+use DateTime;
 use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 use HomeCEU\DTS\Render\Image;
 use HomeCEU\DTS\Render\Partial;
+use Nette\Database\ForeignKeyConstraintViolationException;
 
 class TemplateRepository {
   /** @var Persistence */
@@ -28,21 +30,52 @@ class TemplateRepository {
     $this->repoHelper = new RepoHelper($persistence);
   }
 
-  public function save(Template $template) {
+  public function createNewTemplate(string $docType, string $key, string $author, string $body): Template {
+    return Template::fromState([
+        'templateId' => $this->persistence->generateId(),
+        'docType' => $docType,
+        'templateKey' => $key,
+        'author' => $author,
+        'body' => $body,
+        'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+    ]);
+  }
+
+  public function createNewCompiledTemplate(Template $template, string $compiled): CompiledTemplate {
+    return CompiledTemplate::fromState([
+        'templateId' => $template->templateId,
+        'body' => $compiled,
+        'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+    ]);
+  }
+
+  public function save(Template $template): void {
     $this->persistence->persist($template->toArray());
   }
 
-  public function getTemplateById(string $id) {
+  public function getTemplateById(string $id): Template {
     $array = $this->persistence->retrieve($id);
     return Template::fromState($array);
   }
 
-  public function getCompiledTemplateById(string $id) {
+  public function addCompiled(Template $template, string $compiled): void {
+    try {
+      $this->compiledTemplatePersistence->persist(CompiledTemplate::fromState([
+          'templateId' => $template->templateId,
+          'body' => $compiled,
+          'createdAt' => (new DateTime())->format(DateTime::ISO8601),
+      ])->toArray());
+    } catch (ForeignKeyConstraintViolationException $e) {
+      throw new RecordNotFoundException("Cannot add compiled template, template not found {$template->templateId}");
+    }
+  }
+
+  public function getCompiledTemplateById(string $id): CompiledTemplate {
     $arr = $this->compiledTemplatePersistence->retrieve($id);
     return CompiledTemplate::fromState($arr);
   }
 
-  public function findByDocType(string $docType) {
+  public function findByDocType(string $docType): array {
     $templates = $this->persistence->find(['docType' => $docType]);
 
     return array_map(function ($key) use ($docType) {
@@ -62,7 +95,7 @@ class TemplateRepository {
     }, $this->findByDocType($docType . '/image'));
   }
 
-  public function getTemplateByKey(string $docType, string $key) {
+  public function getTemplateByKey(string $docType, string $key): Template {
     $filter = [
         'docType' => $docType,
         'templateKey' => $key
@@ -71,7 +104,7 @@ class TemplateRepository {
     return Template::fromState($row);
   }
 
-  public function lookupId($docType, $templateKey) {
+  public function lookupId($docType, $templateKey): string {
     $filter = [
         'docType' => $docType,
         'templateKey' => $templateKey

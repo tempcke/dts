@@ -17,7 +17,6 @@ use Slim\Http\Environment;
 use Slim\Http\Request;
 
 class TestCase extends \HomeCEU\Tests\TestCase {
-
   /** @var DiContainer */
   protected $di;
 

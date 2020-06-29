@@ -45,13 +45,13 @@ class AddHotRender {
               'docType' => !empty($reqData['docType']) ? $reqData['docType'] : null,
           ])
       );
-      $getUrl = ApiHelper::buildUrl("/hotrender/{$renderRequest['requestId']}");
+      $route = "/hotrender/{$renderRequest['requestId']}";
       return $response->withStatus(201)
-          ->withHeader('Location', $getUrl)
+          ->withHeader('Location', $route)
           ->withJson([
               'requestId' => $renderRequest['requestId'],
               'createdAt' => $renderRequest['createdAt'],
-              'location' => $getUrl
+              'location' => $route
           ]);
     } catch (InvalidHotRenderRequestException $e) {
       return $response->withStatus(400)->withJson([
