@@ -30,4 +30,17 @@ class TemplatePersistence extends AbstractPersistence implements Persistence {
     );
     throw new \Exception($error);
   }
+
+  public function search(array $fields, string $string) {
+    $dbFields = array_map([$this,'dbKey'], $fields);
+    $sql = sprintf(
+        "select * from %s where CONCAT_WS(' ', %s) like :pattern",
+        static::TABLE,
+        implode(', ', $dbFields)
+    );
+    $pattern = '%'.implode("%",explode(" ", $string)).'%';
+    $binds = ['pattern' => $pattern];
+    $rows = $this->db->pdoQuery($sql, $binds)->fetchAll();
+    return array_map([$this, 'hydrate'], $rows);
+  }
 }
