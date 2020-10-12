@@ -87,7 +87,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   }
 
 
-  protected function newTemplate(array $overwrite): Template {
+  protected function newTemplate(array $overwrite=[]): Template {
     $base = [
         'templateId' => self::faker()->uuid,
         'docType' => __FUNCTION__.'-'.time(),
