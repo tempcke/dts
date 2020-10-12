@@ -45,6 +45,16 @@ class TemplateRepositoryTest extends TestCase {
     $this->db->rollBack();
   }
 
+  protected function newPersistedTemplate(array $overwrite): Template {
+    if (empty($overwrite['docType'])) {
+      $overwrite['docType'] = $this->docType;
+    }
+
+    $t = $this->newTemplate($overwrite);
+    $this->p->persist($t->toArray());
+    return $t;
+  }
+
   public function testCreateNewTemplate(): void {
     $type = 'type';
     $key = 'key';
@@ -133,6 +143,26 @@ class TemplateRepositoryTest extends TestCase {
     Assert::assertCount(1, $fromDb);
     Assert::assertContainsEquals(Template::fromState($t), $fromDb);
     Assert::assertNotContainsEquals(Template::fromState($t2), $fromDb);
+  }
+
+  public function testSearchAllFields() {
+    $this->newPersistedTemplate([]);
+    $t = $this->newPersistedTemplate([
+        'docType' => $this->uniqueName($this->docType, 'foo'),
+        'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
+        'name' => $this->uniqueName(self::faker()->name, 'baz'),
+        'author' => $this->uniqueName(self::faker()->name, 'fin')
+    ]);
+    $records = $this->repo->search('foo bar baz fin');
+
+
+    Assert::assertCount(1, $records);
+    Assert::assertInstanceOf(Template::class, $records[0]);
+    Assert::assertEquals($t->templateId, $records[0]->templateId);
+    // we don't want it to return body because body is big
+    // the expectation is that whoever is searching will get the results
+    // then open the one they want which will lookup by templateId and get body that way
+    Assert::assertEmpty($records[0]->body, "body is to large and should not be included in search results");
   }
 
   public function test_LookupId_shouldThrowExceptionIfNoneFound() {

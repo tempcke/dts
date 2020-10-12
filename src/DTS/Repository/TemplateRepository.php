@@ -116,4 +116,19 @@ class TemplateRepository {
     $row = $this->repoHelper->findNewest($filter, $cols);
     return $row['templateId'];
   }
+
+  /**
+   * @param $searchString
+   * @return Template[]
+   */
+  public function search($searchString): array {
+    $rows = $this->persistence->search(
+        ['docType','templateKey','name','author'],
+        $searchString,
+        ['templateId','docType','templateKey','name','author','createdAt']
+    );
+    return array_map(function($row) {
+      return Template::fromState($row);
+    }, $rows);
+  }
 }

@@ -4,6 +4,7 @@
 namespace HomeCEU\DTS\Persistence;
 
 
+use Exception;
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence;
 
@@ -28,19 +29,6 @@ class TemplatePersistence extends AbstractPersistence implements Persistence {
         "%s not implemented",
         __METHOD__
     );
-    throw new \Exception($error);
-  }
-
-  public function search(array $fields, string $string) {
-    $dbFields = array_map([$this,'dbKey'], $fields);
-    $sql = sprintf(
-        "select * from %s where CONCAT_WS(' ', %s) like :pattern",
-        static::TABLE,
-        implode(', ', $dbFields)
-    );
-    $pattern = '%'.implode("%",explode(" ", $string)).'%';
-    $binds = ['pattern' => $pattern];
-    $rows = $this->db->pdoQuery($sql, $binds)->fetchAll();
-    return array_map([$this, 'hydrate'], $rows);
+    throw new Exception($error);
   }
 }

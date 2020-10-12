@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\DTS\Persistence;
 
 
+use Exception;
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
@@ -43,22 +44,15 @@ class TemplatePersistenceTest extends TestCase {
     $this->cleanupDocTypes[] = $doctype;
   }
 
-  protected function newTemplate(array $overwrite): Template {
-    $base = [
-        'templateId' => self::faker()->uuid,
-        'docType' => $this->docType,
-        'templateKey' => uniqid(__FUNCTION__),
-        'name' => self::faker()->monthName,
-        'author' => self::faker()->name,
-        'createdAt' => new \DateTime('yesterday'),
-        'body' => 'hi {{name}}'
-    ];
-    $templateData = array_merge($base, $overwrite);
+  protected function newPersistedTemplate(array $overwrite): Template {
+    if (empty($overwrite['docType'])) {
+      $overwrite['docType'] = $this->docType;
+    }
 
-    $t = Template::fromState($templateData);
+    $t = $this->newTemplate($overwrite);
     $this->p->persist($t->toArray());
-    if (!in_array($templateData['docType'], $this->cleanupDocTypes)) {
-      $this->addCleanupDoctype($templateData['docType']);
+    if (!in_array($t->docType, $this->cleanupDocTypes)) {
+      $this->addCleanupDoctype($t->docType);
     }
     return $t;
   }
@@ -78,28 +72,25 @@ class TemplatePersistenceTest extends TestCase {
 
   protected function searchTemplateTest(string $field, string $prefix) {
     $subStr = self::faker()->firstName;
-    $this->newTemplate([
+    $this->newPersistedTemplate([
         $field => implode('-',[$prefix, 'foo', uniqid()])
     ]);
-    $t = $this->newTemplate([
+    $t = $this->newPersistedTemplate([
         $field => implode('-',[$prefix, $subStr, uniqid()])
     ]);
     $results = $this->p->search([$field], $subStr);
     $this->assertSearchMatches($results, $t);
   }
 
-  protected function uniqueName($prefix, $substring) {
-    return implode('-',[$prefix, $substring, uniqid()]);
-  }
 
   public function testSearchForTemplateByStringSpanningTypeKeyNameAuthor() {
-    $this->newTemplate([
+    $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'nil'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'nil'),
         'name' => $this->uniqueName(self::faker()->name, 'nil'),
         'author' => $this->uniqueName(self::faker()->name, 'nil')
     ]);
-    $t = $this->newTemplate([
+    $t = $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'foo'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
@@ -113,18 +104,18 @@ class TemplatePersistenceTest extends TestCase {
   }
 
   public function testSearchWithMultipleResults() {
-    $this->newTemplate([
+    $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'nil'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'nil'),
         'name' => $this->uniqueName(self::faker()->name, 'nil'),
         'author' => $this->uniqueName(self::faker()->name, 'nil')
     ]);
-    $this->newTemplate([
+    $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'foo'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
         'author' => $this->uniqueName(self::faker()->name, 'fin')
-    ]);$this->newTemplate([
+    ]);$this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'foo'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
@@ -162,7 +153,7 @@ class TemplatePersistenceTest extends TestCase {
   public function testNoDelete() {
     $record = $this->fakeTemplateArray($this->docType);
     $this->p->persist($record);
-    $this->expectException(\Exception::class);
+    $this->expectException(Exception::class);
     $this->p->delete($record['templateId']);
   }
 }
