@@ -57,33 +57,7 @@ class TemplatePersistenceTest extends TestCase {
     return $t;
   }
 
-  public function testSearchForTemplateLikeDoctype() {
-    $this->searchTemplateTest('docType', $this->docType);
-  }
-  public function testSearchForTemplateLikeKey() {
-    $this->searchTemplateTest('templateKey', __FUNCTION__);
-  }
-  public function testSearchForTemplateLikeName() {
-    $this->searchTemplateTest('name', __FUNCTION__);
-  }
-  public function testSearchForTemplateLikeAuthor() {
-    $this->searchTemplateTest('author', __FUNCTION__);
-  }
-
-  protected function searchTemplateTest(string $field, string $prefix) {
-    $subStr = self::faker()->firstName;
-    $this->newPersistedTemplate([
-        $field => implode('-',[$prefix, 'foo', uniqid()])
-    ]);
-    $t = $this->newPersistedTemplate([
-        $field => implode('-',[$prefix, $subStr, uniqid()])
-    ]);
-    $results = $this->p->search([$field], $subStr);
-    $this->assertSearchMatches($results, $t);
-  }
-
-
-  public function testSearchForTemplateByStringSpanningTypeKeyNameAuthor() {
+  public function testFilterBySearchString() {
     $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'nil'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'nil'),
@@ -96,14 +70,13 @@ class TemplatePersistenceTest extends TestCase {
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
         'author' => $this->uniqueName(self::faker()->name, 'fin')
     ]);
-    $results = $this->p->search(
-        ['docType','templateKey','name','author'],
-        'foo bar baz fin'
-    );
+
+    $results = $this->p->filterBySearchString('foo bar baz fin');
+
     $this->assertSearchMatches($results, $t);
   }
 
-  public function testSearchWithMultipleResults() {
+  public function testFilterBySearchStringWithMultipleResults() {
     $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'nil'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'nil'),
@@ -121,10 +94,7 @@ class TemplatePersistenceTest extends TestCase {
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
         'author' => $this->uniqueName(self::faker()->name, 'fin')
     ]);
-    $results = $this->p->search(
-        ['docType','templateKey','name','author'],
-        'foo bar baz fin'
-    );
+    $results = $this->p->filterBySearchString('foo bar baz fin');
     Assert::assertCount(2, $results);
   }
 

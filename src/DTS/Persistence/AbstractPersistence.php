@@ -52,34 +52,6 @@ abstract class AbstractPersistence implements Persistence {
   }
 
   /**
-   * Usage Example:
-   *   search(
-   *     [docType, templateKey, name, author],
-   *     "this is a test"
-   *   )
-   *   will search concat(docType, templateKey, name, author)
-   *   for *this*is*a*test*
-   * @param string[] $searchCols
-   * @param string $searchString
-   * @param string[] $cols
-   * @return array
-   */
-  public function search(array $searchCols, string $searchString, array $cols=['*']) {
-    $dbFields = array_map([$this, 'dbKey'], $searchCols);
-
-    $sql = sprintf(
-        "select %s from %s where CONCAT_WS(' ', %s) like :pattern",
-        $this->selectColumns(...$cols),
-        static::TABLE,
-        implode(', ', $dbFields)
-    );
-    $pattern = '%'.str_replace(' ','%', $searchString).'%';
-    $binds = ['pattern' => $pattern];
-    $rows = $this->db->pdoQuery($sql, $binds)->fetchAll( \PDO::FETCH_ASSOC);
-    return array_map([$this, 'hydrate'], $rows);
-  }
-
-  /**
    * @param array $map map of hydratedKey => db_key
    */
   public function useKeyMap(array $map) {

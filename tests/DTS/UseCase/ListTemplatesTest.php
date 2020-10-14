@@ -18,19 +18,16 @@ class ListTemplatesTest extends TestCase {
   /** @var TemplatePersistence */
   private $p;
 
-  /** @var TemplateRepository */
-  private $repo;
-
   /** @var ListTemplates */
-  private $usecase;
+  private $useCase;
 
   protected function setUp(): void {
     parent::setUp();
     $this->db = Db::connection();
     $this->db->beginTransaction();
     $this->p = new TemplatePersistence($this->db);
-    $this->repo = new TemplateRepository($this->p, $this->compiledTemplatePersistence());
-    $this->usecase = new ListTemplates($this->repo);
+    $repo = new TemplateRepository($this->p, $this->compiledTemplatePersistence());
+    $this->useCase = new ListTemplates($repo);
   }
 
   protected function tearDown(): void {
@@ -38,7 +35,16 @@ class ListTemplatesTest extends TestCase {
     $this->db->rollBack();
   }
 
-  public function testGetTemplateListBySearchString() {
+  public function testListTemplatesByType() {
+    $type = 'findMe';
+    $this->p->persist($this->fakeTemplateArray($type, 'foo'));
+    $this->p->persist($this->fakeTemplateArray($type, 'bar'));
+    $this->p->persist($this->fakeTemplateArray('dontFindMe', 'baz'));
+    $results = $this->useCase->filterByType($type);
+    Assert::assertCount(2, $results);
+  }
+
+  public function testListTemplatesBySearchString() {
     $count = 3;
     $searchString = "cert not cool bob";
 
@@ -56,7 +62,7 @@ class ListTemplatesTest extends TestCase {
     }
     // non matching template
     $this->p->persist($this->fakeTemplateArray());
-    $templates = $this->usecase->search($searchString);
+    $templates = $this->useCase->search($searchString);
     Assert::assertCount($count, $templates);
   }
 

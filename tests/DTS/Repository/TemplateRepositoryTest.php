@@ -2,6 +2,7 @@
 
 namespace HomeCEU\Tests\DTS\Repository;
 
+use DateTime;
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
@@ -145,26 +146,6 @@ class TemplateRepositoryTest extends TestCase {
     Assert::assertNotContainsEquals(Template::fromState($t2), $fromDb);
   }
 
-  public function testSearchAllFields() {
-    $this->newPersistedTemplate([]);
-    $t = $this->newPersistedTemplate([
-        'docType' => $this->uniqueName($this->docType, 'foo'),
-        'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
-        'name' => $this->uniqueName(self::faker()->name, 'baz'),
-        'author' => $this->uniqueName(self::faker()->name, 'fin')
-    ]);
-    $records = $this->repo->search('foo bar baz fin');
-
-
-    Assert::assertCount(1, $records);
-    Assert::assertInstanceOf(Template::class, $records[0]);
-    Assert::assertEquals($t->templateId, $records[0]->templateId);
-    // we don't want it to return body because body is big
-    // the expectation is that whoever is searching will get the results
-    // then open the one they want which will lookup by templateId and get body that way
-    Assert::assertEmpty($records[0]->body, "body is to large and should not be included in search results");
-  }
-
   public function test_LookupId_shouldThrowExceptionIfNoneFound() {
     $this->expectException(RecordNotFoundException::class);
     $this->repo->lookupId($this->docType, __FUNCTION__);
@@ -221,7 +202,7 @@ class TemplateRepositoryTest extends TestCase {
 
   private function buildTemplate($key, $name, $createdAt) {
     $t = $this->fakeTemplateArray($this->docType, $key);
-    $t['createdAt'] = new \DateTime($createdAt);
+    $t['createdAt'] = new DateTime($createdAt);
     $t['name'] = $name;
     return $t;
   }

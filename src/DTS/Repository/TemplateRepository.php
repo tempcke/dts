@@ -13,7 +13,7 @@ use HomeCEU\DTS\Render\Partial;
 use Nette\Database\ForeignKeyConstraintViolationException;
 
 class TemplateRepository {
-  /** @var Persistence */
+  /** @var Persistence\TemplatePersistence */
   private $persistence;
 
   /** @var RepoHelper */
@@ -117,16 +117,34 @@ class TemplateRepository {
     return $row['templateId'];
   }
 
+  /** @return Template[] */
+  public function latestVersions() {
+    $cols = ['templateId','docType','templateKey','name','author','createdAt'];
+    $rows = $this->persistence->latestVersions($cols);
+    return array_map(function($row) {
+      return Template::fromState($row);
+    }, $rows);
+  }
+
+  /**
+   * @param $type
+   * @return Template[]
+   */
+  public function filterByType($type) {
+    $cols = ['templateId','docType','templateKey','name','author','createdAt'];
+    $rows = $this->persistence->filterByDoctype($type, $cols);
+    return array_map(function($row) {
+      return Template::fromState($row);
+    }, $rows);
+  }
+
   /**
    * @param $searchString
    * @return Template[]
    */
-  public function search($searchString): array {
-    $rows = $this->persistence->search(
-        ['docType','templateKey','name','author'],
-        $searchString,
-        ['templateId','docType','templateKey','name','author','createdAt']
-    );
+  public function filterBySearchString($searchString) {
+    $cols = ['templateId','docType','templateKey','name','author','createdAt'];
+    $rows = $this->persistence->filterBySearchString($searchString, $cols);
     return array_map(function($row) {
       return Template::fromState($row);
     }, $rows);

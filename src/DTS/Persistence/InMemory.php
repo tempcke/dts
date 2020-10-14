@@ -64,10 +64,6 @@ abstract class InMemory implements Persistence {
     return $matching;
   }
 
-  public function search(array $searchCols, string $searchString, array $cols=['*']) {
-    throw new \Exception("not implemented");
-  }
-
   private function matchesFilter(array $entity, array $filter) {
     foreach ($filter as $k=>$v) {
       if (empty($entity[$k]) || $entity[$k] != $v) {
