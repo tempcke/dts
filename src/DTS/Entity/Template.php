@@ -3,6 +3,7 @@
 namespace HomeCEU\DTS\Entity;
 
 
+use DateTime;
 use HomeCEU\DTS\AbstractEntity;
 
 class Template extends AbstractEntity {
@@ -11,6 +12,7 @@ class Template extends AbstractEntity {
   public $docType;
   public $name;
   public $author;
+  /** @var DateTime */
   public $createdAt;
   public $body;
 

@@ -6,18 +6,6 @@ use HomeCEU\DTS\Persistence;
 
 class TestCase extends \HomeCEU\Tests\TestCase {
 
-  protected function fakeTemplateArray($docType = null, $key = null) {
-    return [
-        'templateId' => self::faker()->uuid,
-        'docType' => $docType ?: __FUNCTION__,
-        'templateKey' => $key ?: uniqid(),
-        'name' => self::faker()->monthName,
-        'author' => self::faker()->name,
-        'createdAt' => new \DateTime('yesterday'),
-        'body' => 'hi {{name}}'
-    ];
-  }
-
   protected function fakeTemplate($docType = null, $key = null): Template {
     return Template::fromState($this->fakeTemplateArray($docType, $key));
   }
@@ -78,7 +66,31 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         $this->spiedFindCols = $cols;
       }
 
+      public function search(array $searchCols, string $searchSearchString, array $cols = ['*']) {
+        return [];
+      }
+
       public function delete($id) {}
     };
+  }
+
+
+  protected function newTemplate(array $overwrite=[]): Template {
+    $base = [
+        'templateId' => self::faker()->uuid,
+        'docType' => __FUNCTION__.'-'.time(),
+        'templateKey' => uniqid(__FUNCTION__),
+        'name' => self::faker()->monthName,
+        'author' => self::faker()->name,
+        'createdAt' => new \DateTime('yesterday'),
+        'body' => 'hi {{name}}'
+    ];
+    $templateData = array_merge($base, $overwrite);
+
+    return Template::fromState($templateData);
+  }
+
+  protected function uniqueName($prefix, $substring) {
+    return implode('-',[$prefix, $substring, uniqid()]);
   }
 }

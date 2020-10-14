@@ -13,7 +13,7 @@ return [
     new Api\Route('get', '/hotrender/{requestId}', Api\Render\HotRender::class),
     # Template
     new Api\Route('post', '/template', Api\Template\AddTemplate::class),
-    new Api\Route('get', '/template', Api\Template\GetTemplate::class),
+    new Api\Route('get', '/template', Api\Template\ListTemplates::class),
     new Api\Route('get', '/template/{templateId}', Api\Template\GetTemplate::class),
     new Api\Route('get', '/template/{docType}/{templateKey}', Api\Template\GetTemplate::class),
     # API

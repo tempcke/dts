@@ -2,6 +2,7 @@
 
 namespace HomeCEU\Tests\DTS\Repository;
 
+use DateTime;
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Entity\CompiledTemplate;
 use HomeCEU\DTS\Entity\Template;
@@ -43,6 +44,16 @@ class TemplateRepositoryTest extends TestCase {
   protected function tearDown(): void {
     parent::tearDown();
     $this->db->rollBack();
+  }
+
+  protected function newPersistedTemplate(array $overwrite): Template {
+    if (empty($overwrite['docType'])) {
+      $overwrite['docType'] = $this->docType;
+    }
+
+    $t = $this->newTemplate($overwrite);
+    $this->p->persist($t->toArray());
+    return $t;
   }
 
   public function testCreateNewTemplate(): void {
@@ -191,7 +202,7 @@ class TemplateRepositoryTest extends TestCase {
 
   private function buildTemplate($key, $name, $createdAt) {
     $t = $this->fakeTemplateArray($this->docType, $key);
-    $t['createdAt'] = new \DateTime($createdAt);
+    $t['createdAt'] = new DateTime($createdAt);
     $t['name'] = $name;
     return $t;
   }
