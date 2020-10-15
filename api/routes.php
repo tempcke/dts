@@ -16,6 +16,7 @@ return [
     new Api\Route('get', '/template', Api\Template\ListTemplates::class),
     new Api\Route('get', '/template/{templateId}', Api\Template\GetTemplate::class),
     new Api\Route('get', '/template/{docType}/{templateKey}', Api\Template\GetTemplate::class),
+    new Api\Route('get', '/template/{docType}/{templateKey}/history', Api\Template\ListVersions::class),
     # API
     new Api\Route('get', '/status', Api\Status::class),
 ];
