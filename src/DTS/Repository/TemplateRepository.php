@@ -121,9 +121,7 @@ class TemplateRepository {
   public function latestVersions() {
     $cols = ['templateId','docType','templateKey','name','author','createdAt'];
     $rows = $this->persistence->latestVersions($cols);
-    return array_map(function($row) {
-      return Template::fromState($row);
-    }, $rows);
+    return $this->toTemplateArray($rows);
   }
 
   /**
@@ -133,9 +131,7 @@ class TemplateRepository {
   public function filterByType($type) {
     $cols = ['templateId','docType','templateKey','name','author','createdAt'];
     $rows = $this->persistence->filterByDoctype($type, $cols);
-    return array_map(function($row) {
-      return Template::fromState($row);
-    }, $rows);
+    return $this->toTemplateArray($rows);
   }
 
   /**
@@ -145,7 +141,30 @@ class TemplateRepository {
   public function filterBySearchString($searchString) {
     $cols = ['templateId','docType','templateKey','name','author','createdAt'];
     $rows = $this->persistence->filterBySearchString($searchString, $cols);
-    return array_map(function($row) {
+    return $this->toTemplateArray($rows);
+  }
+
+  /**
+   * @param string $type
+   * @param string $key
+   * @return Template[]
+   */
+  public function getVersions(string $type, string $key) {
+    $filter = [
+        'docType' => $type,
+        'templateKey' => $key
+    ];
+    $cols = ['templateId','docType','templateKey','name','author','createdAt'];
+    $rows = $this->persistence->find($filter, $cols);
+    return $this->toTemplateArray($rows);
+  }
+
+  /**
+   * @param array $rows
+   * @return array|Template[]
+   */
+  private function toTemplateArray(array $rows) {
+    return array_map(function ($row) {
       return Template::fromState($row);
     }, $rows);
   }
