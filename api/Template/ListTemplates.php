@@ -19,6 +19,7 @@ class ListTemplates {
   /** @var ListTemplatesUseCase */
   private $useCase;
 
+
   public function __construct(ContainerInterface $diContainer) {
     $db = $diContainer->dbConnection;
     $repo = new TemplateRepository(
@@ -37,7 +38,9 @@ class ListTemplates {
 
       $responseData = [
           'total' => count($templates),
-          'items' => array_map([$this, 'templateResponseModel'],$templates)
+          'items' => array_map(function (Template $t) {
+            return TemplateResponseHelper::templateDetailModel($t);
+          },$templates)
       ];
       return $response
           ->withStatus(200)
@@ -45,17 +48,6 @@ class ListTemplates {
     } catch (Exception $e) {
       return $response->withStatus(500, "failed to list templates");
     }
-  }
-
-  protected function templateResponseModel(Template $t): array {
-    return [
-        'templateId' => $t->templateId,
-        'docType' => $t->docType,
-        'templateKey' => $t->templateKey,
-        'author' => $t->author,
-        'createdAt' => $t->createdAt->format(DateTime::W3C),
-        'bodyUri' => "/template/{$t->templateId}"
-    ];
   }
 
   protected function getTemplates($filter=[]) {

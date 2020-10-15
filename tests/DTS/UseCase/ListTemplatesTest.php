@@ -44,6 +44,24 @@ class ListTemplatesTest extends TestCase {
     Assert::assertCount(2, $results);
   }
 
+  public function testListAllTemplates() {
+    $count = rand(20,50);
+    $ids = [];
+    for ($i=0;$i<$count;$i++) {
+      $data = $this->fakeTemplateArray(__FUNCTION__);
+      $this->p->persist($data);
+      array_push($ids, $data['templateId']);
+    }
+    $resultIds = [];
+    $templates = $this->useCase->all();
+    foreach ($templates as $t) {
+      array_push($resultIds, $t->templateId);
+    }
+    foreach ($ids as $id) {
+      Assert::assertContains($id, $resultIds);
+    }
+  }
+
   public function testListTemplatesBySearchString() {
     $count = 3;
     $searchString = "cert not cool bob";
