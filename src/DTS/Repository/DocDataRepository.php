@@ -46,7 +46,8 @@ class DocDataRepository {
     $cols = [
         'dataId', 'docType', 'dataKey', 'createdAt'
     ];
-    return $this->persistence->find($filter, $cols);
+    $rows = $this->persistence->find($filter, $cols);
+    return $this->toDocDataArray($rows);
   }
 
   public function lookupId(string $docType, string $dataKey): string {
@@ -60,5 +61,17 @@ class DocDataRepository {
     ];
     $row = $this->repoHelper->findNewest($filter, $cols);
     return $row['dataId'];
+  }
+
+
+
+  /**
+   * @param array $rows
+   * @return array|DocData[]
+   */
+  private function toDocDataArray(array $rows) {
+    return array_map(function ($row) {
+      return DocData::fromState($row);
+    }, $rows);
   }
 }
