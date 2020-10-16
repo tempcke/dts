@@ -3,8 +3,8 @@
 
 namespace HomeCEU\DTS\Api\Template;
 
-use DateTime;
 use Exception;
+use HomeCEU\DTS\Api\ResponseHelper;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\UseCase\ListTemplates as ListTemplatesUseCase;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
@@ -39,14 +39,14 @@ class ListTemplates {
       $responseData = [
           'total' => count($templates),
           'items' => array_map(function (Template $t) {
-            return TemplateResponseHelper::templateDetailModel($t);
+            return ResponseHelper::templateDetailModel($t);
           },$templates)
       ];
       return $response
           ->withStatus(200)
           ->withJson($responseData);
     } catch (Exception $e) {
-      return $response->withStatus(500, "failed to list templates");
+      return $response->withStatus(500, __CLASS__." failure");
     }
   }
 
