@@ -131,10 +131,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   }
 
   protected function createdAtDateTime(): \DateTime {
-    static $date;
-    if (empty($date)) {
-      $date = '2000-01-01';
-    }
+    static $date = '2000-01-01';
     $dt = new \DateTime($date.' + 1day');
     $date = $dt->format('Y-m-d');
     return $dt;

@@ -25,6 +25,37 @@ class ListVersionsTest extends TestCase {
     );
   }
 
+  public function testResponseFormat() {
+    // load fixture
+    $key = self::faker()->colorName;
+    $id = self::faker()->uuid;
+
+    $this->docDataPersistence()->persist([
+        'dataId' => $id,
+        'docType' => $this->docType,
+        'dataKey' => $key,
+        "createdAt" => new \DateTime("2020-10-13 23:47:07"),
+        'data' => ['name'=>'Fred']
+    ]);
+    $expected = [
+        'total' => 1,
+        'items' => [
+            [
+                'dataId' => $id,
+                'docType' => $this->docType,
+                'dataKey' => $key,
+                "createdAt" => "2020-10-13T23:47:07+00:00",
+                "link" => "/docdata/{$id}"
+            ]
+        ]
+    ];
+
+    $uri = "/docdata/{$this->docType}/{$key}/history";
+    $response = $this->get($uri);
+    $responseData = json_decode($response->getBody(), true);
+    Assert::assertEquals($expected, $responseData);
+  }
+
   /**
    * @param string $dataKey
    */
@@ -50,7 +81,8 @@ class ListVersionsTest extends TestCase {
   }
 
   /**
-   * @param $responseData
+   * @param $responseData array
+   * @param $total int
    */
   private function assertTotalItems($responseData, $total): void {
     Assert::assertCount($total, $responseData['items']);

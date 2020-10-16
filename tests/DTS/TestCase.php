@@ -64,6 +64,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
       public function find(array $filter, array $cols = ['*']) {
         $this->spiedFindFilter = $filter;
         $this->spiedFindCols = $cols;
+        return [];
       }
 
       public function search(array $searchCols, string $searchSearchString, array $cols = ['*']) {
