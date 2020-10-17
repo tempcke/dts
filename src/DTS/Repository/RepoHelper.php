@@ -18,7 +18,7 @@ class RepoHelper {
     $rows = $this->persistence->find($filter, $cols);
     if (count($rows) === 0) {
       throw new RecordNotFoundException(sprintf(
-          "no template was found matching (%s)",
+          "no record was found matching (%s)",
           $this->encode($filter)
       ));
     }

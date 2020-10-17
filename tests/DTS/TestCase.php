@@ -1,6 +1,7 @@
 <?php
 namespace HomeCEU\Tests\DTS;
 
+use DateTime;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
@@ -14,7 +15,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return [
         'templateId' => $template['templateId'],
         'body' => 'a template body',
-        'createdAt' => new \DateTime('yesterday'),
+        'createdAt' => new DateTime('yesterday'),
     ];
   }
 
@@ -83,7 +84,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         'templateKey' => uniqid(__FUNCTION__),
         'name' => self::faker()->monthName,
         'author' => self::faker()->name,
-        'createdAt' => new \DateTime('yesterday'),
+        'createdAt' => new DateTime('yesterday'),
         'body' => 'hi {{name}}'
     ];
     $templateData = array_merge($base, $overwrite);
