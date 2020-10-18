@@ -14,6 +14,7 @@ return [
     new Api\Route('post', '/hotrender', Api\Render\AddHotRender::class),
     new Api\Route('get', '/hotrender/{requestId}', Api\Render\HotRender::class),
     # Template
+    new Api\Route('get', '/doctype', Api\Template\ListDocTypes::class),
     new Api\Route('post', '/template', Api\Template\AddTemplate::class),
     new Api\Route('get', '/template', Api\Template\ListTemplates::class),
     new Api\Route('get', '/template/{templateId}', Api\Template\GetTemplate::class),

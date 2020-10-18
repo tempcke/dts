@@ -159,6 +159,10 @@ class TemplateRepository {
     return $this->toTemplateArray($rows);
   }
 
+  public function docTypeList(): array {
+    return $this->persistence->listDocTypes();
+  }
+
   /**
    * @param array $rows
    * @return array|Template[]

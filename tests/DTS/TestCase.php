@@ -77,20 +77,6 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   }
 
 
-  protected function newTemplate(array $overwrite=[]): Template {
-    $base = [
-        'templateId' => self::faker()->uuid,
-        'docType' => __FUNCTION__.'-'.time(),
-        'templateKey' => uniqid(__FUNCTION__),
-        'name' => self::faker()->monthName,
-        'author' => self::faker()->name,
-        'createdAt' => new DateTime('yesterday'),
-        'body' => 'hi {{name}}'
-    ];
-    $templateData = array_merge($base, $overwrite);
-
-    return Template::fromState($templateData);
-  }
 
   protected function uniqueName($prefix, $substring) {
     return implode('-',[$prefix, $substring, uniqid()]);
