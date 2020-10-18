@@ -36,6 +36,7 @@ class GetDocDataTest extends TestCase {
     $repo = new DocDataRepository($this->p);
     $this->useCase = new GetDocData($repo);
     $this->docType = uniqid('GetDocDataTest');
+    $this->loadFixtureData();
   }
 
   protected function tearDown(): void {
@@ -45,11 +46,18 @@ class GetDocDataTest extends TestCase {
 
   public function testGetByTypeAndKey() {
     // should return only the most recent version
-    $this->loadFixtureData();
     $expectedId = $this->fixtureData['A2']['dataId'];
     $docData = $this->useCase->getLatestVersion($this->docType, 'A');
     Assert::assertEquals($expectedId, $docData->dataId);
   }
+
+  public function testGetById() {
+    $dataId = $this->fixtureData['find']['dataId'];
+    $docData = $this->useCase->getById($dataId);
+    Assert::assertEquals($dataId, $docData->dataId);
+    Assert::assertEquals($this->fixtureData['find'], $docData->toArray());
+  }
+
   protected function loadFixtureData() {
     $day = 0;
     $this->fixtureData = [
@@ -77,6 +85,10 @@ class GetDocDataTest extends TestCase {
             'dataKey' => 'B',
             'createdAt' => new DateTime('2020-01-0'.++$day)
         ],
+        'find' => $this->docDataArray([
+            'dataId' => self::faker()->uuid,
+            'docType' => $this->docType
+        ])
     ];
     foreach ($this->fixtureData as $r) {
       $this->p->persist($this->docDataArray($r));
