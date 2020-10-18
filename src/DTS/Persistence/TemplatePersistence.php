@@ -7,6 +7,7 @@ namespace HomeCEU\DTS\Persistence;
 use Exception;
 use HomeCEU\DTS\Db\Connection;
 use HomeCEU\DTS\Persistence;
+use PDO;
 
 class TemplatePersistence extends AbstractPersistence implements Persistence {
   const TABLE = 'template';
@@ -22,6 +23,13 @@ class TemplatePersistence extends AbstractPersistence implements Persistence {
       'templateKey' => 'template_key',
       'createdAt' => 'created_at'
   ];
+  private $isLatestVersionSQL = "
+      t1.template_id = (
+          SELECT t2.template_id
+          FROM template t2
+          WHERE t1.doc_type = t2.doc_type
+            AND t1.template_key = t2.template_key
+          ORDER BY created_at DESC LIMIT 1)";
 
   public function __construct(Connection $db) {
     parent::__construct($db);
@@ -39,7 +47,7 @@ class TemplatePersistence extends AbstractPersistence implements Persistence {
   public function filterByDoctype(string $type, $cols=self::HEAD_COLS) {
     $sql = $this->latestTemplatesSQL(...$cols)." AND doc_type=:type";
     $binds = ["type" => $type];
-    $rows = $this->db->pdoQuery($sql, $binds)->fetchAll( \PDO::FETCH_ASSOC);
+    $rows = $this->fetchAll($sql, $binds);
     return array_map([$this, 'hydrate'], $rows);
   }
 
@@ -48,24 +56,30 @@ class TemplatePersistence extends AbstractPersistence implements Persistence {
     $pattern = '%'.str_replace(' ','%', $searchString).'%';
     $sql = $this->latestTemplatesSQL(...$cols).$andWhere;
     $binds = ['pattern' => $pattern];
-    $rows = $this->db->pdoQuery($sql, $binds)->fetchAll( \PDO::FETCH_ASSOC);
+    $rows = $this->fetchAll($sql, $binds);
     return array_map([$this, 'hydrate'], $rows);
   }
 
   public function latestVersions($cols=self::HEAD_COLS) {
     $sql = $this->latestTemplatesSQL(...$cols);
-    $rows = $this->db->pdoQuery($sql)->fetchAll( \PDO::FETCH_ASSOC);
+    $rows = $this->fetchAll($sql);
     return array_map([$this, 'hydrate'], $rows);
   }
 
   protected function latestTemplatesSQL(...$cols) {
     $colList = $this->selectColumns(...$cols);
     return "SELECT {$colList} FROM template t1
-      WHERE t1.template_id = (
-          SELECT t2.template_id
-          FROM template t2
-          WHERE t1.doc_type = t2.doc_type
-            AND t1.template_key = t2.template_key
-          ORDER BY created_at DESC LIMIT 1)";
+      WHERE {$this->isLatestVersionSQL}";
+  }
+
+  public function listDocTypes(): array {
+    $sql = "SELECT doc_type AS docType, count(1) AS templateCount FROM template t1
+      WHERE {$this->isLatestVersionSQL}
+      GROUP BY doc_type";
+    return $this->fetchAll($sql);
+  }
+
+  protected function fetchAll($sql, $binds=[]) {
+    return $this->db->pdoQuery($sql, $binds)->fetchAll( PDO::FETCH_ASSOC);
   }
 }

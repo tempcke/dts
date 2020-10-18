@@ -88,7 +88,8 @@ class TemplatePersistenceTest extends TestCase {
         'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
         'author' => $this->uniqueName(self::faker()->name, 'fin')
-    ]);$this->newPersistedTemplate([
+    ]);
+    $this->newPersistedTemplate([
         'docType' => $this->uniqueName($this->docType, 'foo'),
         'templateKey' => $this->uniqueName(__FUNCTION__, 'bar'),
         'name' => $this->uniqueName(self::faker()->name, 'baz'),
@@ -96,6 +97,41 @@ class TemplatePersistenceTest extends TestCase {
     ]);
     $results = $this->p->filterBySearchString('foo bar baz fin');
     Assert::assertCount(2, $results);
+  }
+
+  public function testListDocTypes() {
+    // Load Fixture Data
+    $fixtureData = [
+        [ 'docType' => 'A', 'templateKey' => 'k1' ], // 3 versions of k1
+        [ 'docType' => 'A', 'templateKey' => 'k1' ],
+        [ 'docType' => 'A', 'templateKey' => 'k1' ],
+        [ 'docType' => 'A' ], // will be unique key
+        [ 'docType' => 'A' ], // so should be 3 A's
+        [ 'docType' => 'B' ],
+        [ 'docType' => 'B' ], // 2 B's
+        [ 'docType' => 'C' ], // 1 C
+    ];
+    $expectedDoctypeCounts = [
+        'A' => 3,
+        'B' => 2,
+        'C' => 1
+    ];
+    foreach ($fixtureData as $data) {
+      $this->newPersistedTemplate($data);
+    }
+
+    // Thing we are actually testing...
+    $docTypes = $this->p->listDocTypes();
+
+    // Assertions
+    Assert::assertSameSize($expectedDoctypeCounts, $docTypes);
+    foreach ($docTypes as $row) {
+      Assert::assertArrayHasKey($row['docType'], $expectedDoctypeCounts);
+      Assert::assertEquals(
+          $expectedDoctypeCounts[$row['docType']],
+          $row['templateCount']
+      );
+    }
   }
 
 
