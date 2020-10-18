@@ -29,4 +29,14 @@ class ResponseHelper {
         "link" => "/docdata/{$d->dataId}"
     ];
   }
+
+  public static function docDataModel(DocData $d) {
+    return [
+        'dataId' => $d->dataId,
+        'docType' => $d->docType,
+        'dataKey' => $d->dataKey,
+        "createdAt" => $d->createdAt->format(\DateTime::W3C),
+        "data" => $d->data
+    ];
+  }
 }
