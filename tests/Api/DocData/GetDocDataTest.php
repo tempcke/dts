@@ -33,6 +33,31 @@ class GetDocDataTest extends TestCase {
     Assert::assertEquals($this->expectedExampleResponse, $responseData);
   }
 
+  public function testGetById_Expect404() {
+    $uri = "/docdata/no-such-id";
+    $response = $this->get($uri);
+    $this->assertStatus(404, $response);
+  }
+
+  public function testGetByKey() {
+    $responseData = $this->httpGet("/docdata/{$this->docType}/A");
+    // expect the most recent id from dataKey A
+    $expectedId = $this->fixtureData['A2']['dataId'];
+    Assert::assertEquals($expectedId, $responseData['dataId']);
+  }
+
+  public function testGetByKey_Expect404() {
+    $uri = "/docdata/{$this->docType}/no-such-key";
+    $response = $this->get($uri);
+    $this->assertStatus(404, $response);
+  }
+
+  public function testGetByKey_responseFormat() {
+    $example = $this->fixtureData['example'];
+    $responseData = $this->httpGet("/docdata/{$example["docType"]}/{$example['dataKey']}");
+    Assert::assertEquals($this->expectedExampleResponse, $responseData);
+  }
+
   protected function httpGet($uri) {
     $response = $this->get($uri);
     $responseData = json_decode($this->get($uri)->getBody(), true);
@@ -49,13 +74,15 @@ class GetDocDataTest extends TestCase {
             'dataId' => self::faker()->uuid,
             'docType' => $this->docType,
             'dataKey' => 'A',
-            'createdAt' => new DateTime('2020-01-0'.++$day)
+            'createdAt' => new DateTime('2020-01-0'.++$day),
+            'data' => ['name'=>self::faker()->name]
         ],
         'A2' => [
             'dataId' => self::faker()->uuid,
             'docType' => $this->docType,
             'dataKey' => 'A',
-            'createdAt' => new DateTime('2020-01-0'.++$day)
+            'createdAt' => new DateTime('2020-01-0'.++$day),
+            'data' => ['name'=>self::faker()->name]
         ],
         'find' => $this->docDataArray([
             'dataId' => self::faker()->uuid,
