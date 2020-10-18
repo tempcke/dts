@@ -10,6 +10,7 @@ return [
     new Api\Route('get', '/docdata/{dataId}', Api\DocData\GetDocDataById::class),
     new Api\Route('get','/docdata/{docType}/{dataKey}', API\DocData\GetDocDataByKey::class),
     # Render
+    new Api\Route('get', '/render', Api\Render\Render::class),
     new Api\Route('get', '/render/{docType}/{templateKey}/{dataKey}', Api\Render\Render::class),
     new Api\Route('post', '/hotrender', Api\Render\AddHotRender::class),
     new Api\Route('get', '/hotrender/{requestId}', Api\Render\HotRender::class),

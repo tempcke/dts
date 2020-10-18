@@ -4,7 +4,6 @@
 namespace HomeCEU\Tests\Api;
 
 use PHPUnit\Framework\Assert;
-use Slim\Http\Stream;
 
 class RenderTest extends TestCase {
   protected function setUp(): void {
@@ -27,7 +26,7 @@ class RenderTest extends TestCase {
 
     $this->assertStatus(200, $response);
     $this->assertContentType('text/html', $response);
-    $this->assertEquals("Hi Fred", (string) $response->getBody());
+    Assert::assertEquals("Hi Fred", (string) $response->getBody());
   }
 
   public function testRenderPDFFromKeys(): void {
@@ -39,5 +38,86 @@ class RenderTest extends TestCase {
 
     $this->assertStatus(200, $response);
     $this->assertContentType('application/pdf', $response);
+  }
+
+  public function testRenderFromQuery_TemplateKey_DataKey() {
+    $this->loadFixtures();
+    $templateKey = 'T';
+    $dataKey = 'D';
+    $uri = "/render?docType={$this->docType}&templateKey={$templateKey}&dataKey={$dataKey}";
+    $responseBody = $this->httpGetRender($uri);
+    Assert::assertEquals("Hi Smith, Jane", $responseBody);
+  }
+
+  public function testRenderFromQuery_TemplateKey_DataId() {
+    $fixtures = $this->loadFixtures();
+    $templateKey = 'T';
+    $dataId = $fixtures['docData'][0]['dataId'];
+    $uri = "/render?docType={$this->docType}&templateKey={$templateKey}&dataId={$dataId}";
+    $responseBody = $this->httpGetRender($uri);
+    Assert::assertEquals("Hi Doe, Jane", $responseBody);
+  }
+
+  public function testRenderFromQuery_TemplateId_DataKey() {
+    $fixtures = $this->loadFixtures();
+    $dataKey = 'D';
+    $templateId = $fixtures['template'][0]['id'];
+    $uri = "/render?docType={$this->docType}&templateId={$templateId}&dataKey={$dataKey}";
+    $responseBody = $this->httpGetRender($uri);
+    Assert::assertEquals("Hi Jane Smith", $responseBody);
+  }
+
+  public function testRenderFromQuery_TemplateId_DataId() {
+    $fixtures = $this->loadFixtures();
+    $templateId = $fixtures['template'][0]['id'];
+    $dataId = $fixtures['docData'][0]['dataId'];
+    $uri = "/render?docType={$this->docType}&templateId={$templateId}&dataId={$dataId}";
+    $responseBody = $this->httpGetRender($uri);
+    Assert::assertEquals("Hi Jane Doe", $responseBody);
+  }
+
+  public function testRenderFromQuery_Pdf() {
+    $this->loadFixtures();
+    $templateKey = 'T';
+    $dataKey = 'D';
+    $uri = "/render?docType={$this->docType}&templateKey={$templateKey}&dataKey={$dataKey}";
+    $response = $this->get($uri."&format=pdf");
+    $this->assertStatus(200, $response);
+    $this->assertContentType('application/pdf', $response);
+  }
+
+  protected function httpGetRender($uri) {
+    $response = $this->get($uri);
+    $this->assertStatus(200, $response);
+    $this->assertContentType('text/html', $response);
+    return strval($response->getBody());
+  }
+
+  protected function loadFixtures() {
+    $templates = [
+        // 2 templates with the same key to ensure we get the newest one...
+        ['id' => self::faker()->uuid, 'key'=>'T', 'body'=>'Hi {{fname}} {{lname}}'],
+        ['id' => self::faker()->uuid, 'key'=>'T', 'body'=>'Hi {{lname}}, {{fname}}']
+    ];
+    foreach ($templates as $r) {
+      $this->addTemplateFixture($r['key'], $r['id'], $r['body']);
+    }
+
+    $data = [
+        // 2 data with same key to ensure we get the newest one...
+        ['dataId' => self::faker()->uuid, 'dataKey'=>'D', 'data' => ['fname'=>'Jane', 'lname'=>'Doe']],
+        ['dataId' => self::faker()->uuid, 'dataKey'=>'D', 'data' => ['fname'=>'Jane', 'lname'=>'Smith']],
+    ];
+    foreach ($data as $r) {
+      $r['docType'] = $this->docType;
+      $this->docDataPersistence()->persist(
+        $this->docDataArray($r)
+      );
+    }
+
+    return [
+        'template' => $templates,
+        'docData' => $data
+    ];
   }
 }

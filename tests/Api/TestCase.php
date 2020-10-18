@@ -83,12 +83,12 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return $this->hotRenderPersistence;
   }
 
-  protected function addDocDataFixture($dataKey) {
+  protected function addDocDataFixture($dataKey, $id = null) {
     $this->docDataPersistence()->persist([
         'docType' => $this->docType,
         'dataKey' => $dataKey,
         'createdAt' => $this->createdAtDateTime(),
-        'dataId' => uniqid(),
+        'dataId' => $id ?? uniqid(),
         'data' => ['name'=>'Fred']
     ]);
   }
