@@ -11,6 +11,9 @@ class App extends \Slim\App {
   public $servicesFile = APP_ROOT.'/api/services.php';
 
   public function __construct(ContainerInterface $diContainer=null) {
+    if (getenv('APP_ENV') == 'dev') {
+      error_reporting(E_ALL);
+    }
     parent::__construct($diContainer ?: $this->_diContainer());
     $this->loadRoutes(...$this->_routes());
   }
