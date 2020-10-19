@@ -86,6 +86,46 @@ class RenderTest extends TestCase {
     $this->assertContentType('application/pdf', $response);
   }
 
+
+
+  public function testRenderFromQuery_404() {
+    $fixtures = $this->loadFixtures();
+    $templateId = $fixtures['template'][0]['id'];
+    $dataId = $fixtures['docData'][0]['dataId'];
+    $templateKey = 'T';
+    $dataKey = 'D';
+    $fake = 'i-dont-exist';
+    $uris = [
+        "/render?docType={$this->docType}&templateKey={$templateKey}&dataKey={$fake}",
+        "/render?docType={$this->docType}&templateKey={$fake}&dataKey={$dataKey}",
+        "/render?docType={$this->docType}&templateId={$templateId}&dataId={$fake}",
+        "/render?docType={$this->docType}&templateId={$fake}&dataId={$dataId}"
+    ];
+    foreach ($uris as $uri) {
+      $response = $this->get($uri);
+      $this->assertStatus(404, $response);
+    }
+  }
+
+  public function testRenderFromQuery_InvalidRequest() {
+    $fixtures = $this->loadFixtures();
+    $templateId = $fixtures['template'][0]['id'];
+    $dataId = $fixtures['docData'][0]['dataId'];
+    $templateKey = 'T';
+    $dataKey = 'D';
+    $uris = [
+        "/render?docType={$this->docType}&templateKey={$templateKey}", // data Key or Id required
+        "/render?docType={$this->docType}&dataKey={$dataKey}",         // template Key or Id required
+        "/render?docType={$this->docType}&templateId={$templateId}",   // data Key or Id required
+        "/render?docType={$this->docType}&dataId={$dataId}",           // template Key or Id required
+        "/render?templateKey={$templateKey}&dataKey={$dataKey}",       // docType required
+    ];
+    foreach ($uris as $uri) {
+      $response = $this->get($uri);
+      $this->assertStatus(400, $response);
+    }
+  }
+
   protected function httpGetRender($uri) {
     $response = $this->get($uri);
     $this->assertStatus(200, $response);

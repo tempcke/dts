@@ -10,6 +10,7 @@ use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\Repository\TemplateRepository;
+use HomeCEU\DTS\UseCase\Render\InvalidRenderRequestException;
 use HomeCEU\DTS\UseCase\Render\Render as RenderUseCase;
 use HomeCEU\DTS\UseCase\Render\RenderRequest;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -55,6 +56,8 @@ class Render {
           ->withStatus(200);
     } catch (RecordNotFoundException $e) {
       return $response->withStatus(404);
+    } catch (InvalidRenderRequestException $e) {
+      return $response->withStatus(400, "Invalid Render Request, not enough information");
     } catch (\Exception $e) {
       return $response->withStatus(500, __CLASS__." failure");
     }
