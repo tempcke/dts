@@ -4,7 +4,6 @@
 namespace HomeCEU\Tests\Api\Template;
 
 use DateTime;
-use HomeCEU\Tests\Api\TestCase;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -90,21 +89,6 @@ class ListTemplatesTest extends TestCase {
       Assert::assertContains($row['templateId'], $expectedIds);
       Assert::assertArrayNotHasKey('body', $row);
     }
-  }
-
-  protected function httpGetTemplatesFromUri($uri) {
-    $response = $this->get($uri);
-    $responseData = json_decode($response->getBody(), true);
-
-    $this->assertContentType('application/json', $response);
-    $this->assertStatus(200, $response);
-
-    Assert::assertArrayHasKey('total', $responseData);
-    Assert::assertArrayHasKey('items', $responseData);
-    Assert::assertIsArray($responseData['items']);
-
-    Assert::assertCount($responseData['total'], $responseData['items']);
-    return $responseData;
   }
 
   protected function loadFixtureData() {

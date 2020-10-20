@@ -3,22 +3,21 @@
 
 namespace HomeCEU\DTS\Api\Template;
 
+
 use Exception;
 use HomeCEU\DTS\Api\ResponseHelper;
 use HomeCEU\DTS\Entity\Template;
-use HomeCEU\DTS\UseCase\ListTemplates as ListTemplatesUseCase;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
 use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Repository\TemplateRepository;
-use Slim\Http\Response;
+use HomeCEU\DTS\UseCase\TemplateVersionList;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Http\Response;
 
-class ListTemplates {
+class ListVersions {
 
-  /** @var ListTemplatesUseCase */
   private $useCase;
-
 
   public function __construct(ContainerInterface $diContainer) {
     $db = $diContainer->dbConnection;
@@ -26,16 +25,12 @@ class ListTemplates {
         new TemplatePersistence($db),
         new CompiledTemplatePersistence($db)
     );
-
-    $this->useCase = new ListTemplatesUseCase($repo);
+    $this->useCase = new TemplateVersionList($repo);
   }
 
   public function __invoke(Request $request, Response $response, $args) {
     try {
-      $queryParams = $request->getQueryParams();
-      $filter = empty($queryParams['filter']) ? [] : $queryParams['filter'];
-      $templates = $this->getTemplates($filter);
-
+      $templates = $this->useCase->getVersions($args['docType'], $args['templateKey']);
       $responseData = [
           'total' => count($templates),
           'items' => array_map(function (Template $t) {
@@ -48,15 +43,5 @@ class ListTemplates {
     } catch (Exception $e) {
       return $response->withStatus(500, __CLASS__." failure");
     }
-  }
-
-  protected function getTemplates($filter=[]) {
-    if (!empty($filter['search'])) {
-      return $this->useCase->search($filter['search']);
-    }
-    if (!empty($filter['type'])) {
-      return $this->useCase->filterByType($filter['type']);
-    }
-    return $this->useCase->all();
   }
 }

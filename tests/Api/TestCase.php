@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\Api;
 
 
+use DateTime;
 use HomeCEU\DTS\Api\App;
 use HomeCEU\DTS\Api\DiContainer;
 use HomeCEU\DTS\Persistence\CompiledTemplatePersistence;
@@ -13,6 +14,7 @@ use HomeCEU\DTS\Persistence\TemplatePersistence;
 use HomeCEU\DTS\Render\TemplateCompiler;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionClass;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 
@@ -44,7 +46,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     $this->di->dbConnection->beginTransaction();
     $this->app = new App($this->di);
 
-    $this->docType = (new \ReflectionClass($this))->getShortName().'-'.time();
+    $this->docType = (new ReflectionClass($this))->getShortName().'-'.time();
   }
 
   protected function tearDown(): void {
@@ -81,12 +83,12 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return $this->hotRenderPersistence;
   }
 
-  protected function addDocDataFixture($dataKey) {
+  protected function addDocDataFixture($dataKey, $id = null) {
     $this->docDataPersistence()->persist([
         'docType' => $this->docType,
         'dataKey' => $dataKey,
         'createdAt' => $this->createdAtDateTime(),
-        'dataId' => uniqid(),
+        'dataId' => $id ?? uniqid(),
         'data' => ['name'=>'Fred']
     ]);
   }
@@ -126,19 +128,10 @@ class TestCase extends \HomeCEU\Tests\TestCase {
         'requestId' => $requestId,
         'template' => TemplateCompiler::create()->compile('{{ value }}'),
         'data' => ['value' => $value],
-        'createdAt' => new \DateTime()
+        'createdAt' => new DateTime()
     ]);
   }
 
-  protected function createdAtDateTime(): \DateTime {
-    static $date;
-    if (empty($date)) {
-      $date = '2000-01-01';
-    }
-    $dt = new \DateTime($date.' + 1day');
-    $date = $dt->format('Y-m-d');
-    return $dt;
-  }
 
 
   protected function post($uri, array $data): ResponseInterface {

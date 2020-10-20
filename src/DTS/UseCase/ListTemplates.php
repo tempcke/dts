@@ -35,4 +35,8 @@ class ListTemplates {
   public function all() {
     return $this->repo->latestVersions();
   }
+
+  public function getDocTypes() {
+    return $this->repo->docTypeList();
+  }
 }

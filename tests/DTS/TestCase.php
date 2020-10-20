@@ -1,6 +1,7 @@
 <?php
 namespace HomeCEU\Tests\DTS;
 
+use DateTime;
 use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
@@ -14,7 +15,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return [
         'templateId' => $template['templateId'],
         'body' => 'a template body',
-        'createdAt' => new \DateTime('yesterday'),
+        'createdAt' => new DateTime('yesterday'),
     ];
   }
 
@@ -64,6 +65,7 @@ class TestCase extends \HomeCEU\Tests\TestCase {
       public function find(array $filter, array $cols = ['*']) {
         $this->spiedFindFilter = $filter;
         $this->spiedFindCols = $cols;
+        return [];
       }
 
       public function search(array $searchCols, string $searchSearchString, array $cols = ['*']) {
@@ -75,20 +77,6 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   }
 
 
-  protected function newTemplate(array $overwrite=[]): Template {
-    $base = [
-        'templateId' => self::faker()->uuid,
-        'docType' => __FUNCTION__.'-'.time(),
-        'templateKey' => uniqid(__FUNCTION__),
-        'name' => self::faker()->monthName,
-        'author' => self::faker()->name,
-        'createdAt' => new \DateTime('yesterday'),
-        'body' => 'hi {{name}}'
-    ];
-    $templateData = array_merge($base, $overwrite);
-
-    return Template::fromState($templateData);
-  }
 
   protected function uniqueName($prefix, $substring) {
     return implode('-',[$prefix, $substring, uniqid()]);
