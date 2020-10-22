@@ -12,10 +12,17 @@ class App extends \Slim\App {
 
   public function __construct(ContainerInterface $diContainer=null) {
     if (getenv('APP_ENV') == 'dev') {
-      error_reporting(E_ALL);
+      $this->devMode();
     }
     parent::__construct($diContainer ?: $this->_diContainer());
     $this->loadRoutes(...$this->_routes());
+  }
+
+  private function devMode() {
+    $logFile = Logger::logDir()."/php-error.log";
+    error_reporting(E_ALL);
+    ini_set("log_errors", 1);
+    ini_set("error_log", $logFile);
   }
 
   private function _diContainer() {
