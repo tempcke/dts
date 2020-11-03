@@ -16,7 +16,8 @@ class Logger {
   public static function instance(): LoggerInterface {
     if (empty(self::$instance)) {
       $logger = new \Monolog\Logger('applog');
-      $logger->pushHandler(self::monologHandler());
+      $handler = self::monologHandler();
+      $logger->pushHandler($handler);
       self::$instance = $logger;
     }
     return self::$instance;
@@ -30,7 +31,7 @@ class Logger {
   }
 
   protected static function monologHandler() {
-    $logFile = self::logDir().'/app.log';
+    $logFile = self::logDir().'/dts.log';
     $h = new StreamHandler($logFile, \Monolog\Logger::NOTICE);
     $h->setFormatter(self::monologFormatter());
     return $h;

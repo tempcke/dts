@@ -4,8 +4,6 @@ namespace HomeCEU\DTS\Api;
 
 use HomeCEU\DTS\Db;
 use HomeCEU\DTS\Db\Config;
-use HomeCEU\DTS\Render\TemplateCompiler;
-use HomeCEU\DTS\Render\TemplateHelpers;
 
 // this array gets passed into Slim\Container
 return [
@@ -18,13 +16,13 @@ return [
     'dbConnection' => function($container) {
       return Db::connection();
     },
-    'templateCompiler' => function($container) {
-      $compiler = TemplateCompiler::create();
-      $compiler->addHelper(TemplateHelpers::ifComparisonHelper());
-
-      return $compiler;
-    },
     'logger' => function($container) {
       return Logger::instance();
+    },
+    'errorHandler' => function ($c) {
+      return new ErrorHandler($c);
+    },
+    'phpErrorHandler' => function ($c) {
+      return new ErrorHandler($c);
     }
 ];

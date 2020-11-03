@@ -10,11 +10,15 @@ class App extends \Slim\App {
   public $routesFile = APP_ROOT.'/api/routes.php';
   public $servicesFile = APP_ROOT.'/api/services.php';
 
+  /** @var DiContainer */
+  private $_di;
+
   public function __construct(ContainerInterface $diContainer=null) {
+    $this->_di = $diContainer ?: $this->_diContainer();
     if (getenv('APP_ENV') == 'dev') {
       $this->devMode();
     }
-    parent::__construct($diContainer ?: $this->_diContainer());
+    parent::__construct($this->_di);
     $this->loadRoutes(...$this->_routes());
   }
 
