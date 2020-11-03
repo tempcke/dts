@@ -12,6 +12,7 @@ use HomeCEU\DTS\UseCase\Render\HotRenderRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Exception\NotFoundException;
 use Slim\Http\Stream;
 
 class HotRender {
@@ -26,17 +27,17 @@ class HotRender {
   public function __invoke(Request $request, Response $response, $args) {
     try {
       $qp = $request->getQueryParams();
-      $request = HotRenderRequest::fromState([
+      $r = HotRenderRequest::fromState([
           'requestId' => $args['requestId'],
           'format' => empty($qp['format']) ? 'html' : $qp['format']
       ]);
-      $renderResponse = $this->useCase->render($request);
+      $renderResponse = $this->useCase->render($r);
       return $response
           ->withHeader('Content-Type', $renderResponse->contentType)
           ->withBody(new Stream(fopen($renderResponse->path, 'r')))
           ->withStatus(200);
     } catch (RecordNotFoundException $e) {
-      return $response->withStatus(404);
+      throw new NotFoundException($request, $response);
     }
   }
 }

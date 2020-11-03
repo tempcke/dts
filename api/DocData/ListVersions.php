@@ -36,7 +36,6 @@ class ListVersions {
   }
 
   public function __invoke(Request $request, Response $response, $args) {
-    try {
       $versions = $this->useCase->versions($args['docType'], $args['dataKey']);
       $responseData = [
           'total' => count($versions),
@@ -45,8 +44,5 @@ class ListVersions {
           }, $versions)
       ];
       return $response->withJson($responseData);
-    } catch (\Exception $e) {
-      return $response->withStatus(500, __CLASS__." failure");
-    }
   }
 }

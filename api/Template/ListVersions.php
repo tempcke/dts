@@ -29,19 +29,15 @@ class ListVersions {
   }
 
   public function __invoke(Request $request, Response $response, $args) {
-    try {
-      $templates = $this->useCase->getVersions($args['docType'], $args['templateKey']);
-      $responseData = [
-          'total' => count($templates),
-          'items' => array_map(function (Template $t) {
-            return ResponseHelper::templateDetailModel($t);
-          },$templates)
-      ];
-      return $response
-          ->withStatus(200)
-          ->withJson($responseData);
-    } catch (Exception $e) {
-      return $response->withStatus(500, __CLASS__." failure");
-    }
+    $templates = $this->useCase->getVersions($args['docType'], $args['templateKey']);
+    $responseData = [
+        'total' => count($templates),
+        'items' => array_map(function (Template $t) {
+          return ResponseHelper::templateDetailModel($t);
+        },$templates)
+    ];
+    return $response
+        ->withStatus(200)
+        ->withJson($responseData);
   }
 }

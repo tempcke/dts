@@ -11,6 +11,7 @@ use HomeCEU\DTS\UseCase\DocDataVersionList;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\NotFoundException;
 
 class Exists {
 
@@ -36,7 +37,7 @@ class Exists {
   public function __invoke(Request $request, Response $response, $args) {
     $versions = $this->useCase->versions($args['docType'], $args['dataKey']);
     if (count($versions) < 1) {
-      return $response->withStatus(404);
+      throw new NotFoundException($request, $response);
     }
     return $response->withStatus(200);
   }

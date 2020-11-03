@@ -12,6 +12,7 @@ use HomeCEU\DTS\Repository\DocDataRepository;
 use HomeCEU\DTS\Repository\RecordNotFoundException;
 use HomeCEU\DTS\UseCase\GetDocData;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\NotFoundException;
 use Slim\Http\Response;
 
 class GetDocDataByKey {
@@ -33,9 +34,7 @@ class GetDocDataByKey {
           ->withStatus(200)
           ->withJson($responseData);
     } catch (RecordNotFoundException $e) {
-      return $response->withStatus(404);
-    } catch (Exception $e) {
-      return $response->withStatus(500, __CLASS__." failure");
+      throw new NotFoundException($request, $response);
     }
   }
 }
