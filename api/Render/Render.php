@@ -15,6 +15,7 @@ use HomeCEU\DTS\UseCase\Render\Render as RenderUseCase;
 use HomeCEU\DTS\UseCase\Render\RenderRequest;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\NotFoundException;
 use Slim\Http\Stream;
 
 class Render {
@@ -55,11 +56,9 @@ class Render {
           ->withBody(new Stream(fopen($renderResponse->path, 'r')))
           ->withStatus(200);
     } catch (RecordNotFoundException $e) {
-      return $response->withStatus(404);
+      throw new NotFoundException($request, $response);
     } catch (InvalidRenderRequestException $e) {
       return $response->withStatus(400, "Invalid Render Request, not enough information");
-    } catch (\Exception $e) {
-      return $response->withStatus(500, __CLASS__." failure");
     }
   }
 

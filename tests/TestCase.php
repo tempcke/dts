@@ -6,11 +6,16 @@ use HomeCEU\DTS\Entity\DocData;
 use HomeCEU\DTS\Entity\Template;
 
 class TestCase extends \PHPUnit\Framework\TestCase {
+
+  protected static $APP_ROOT;
+
   public static function setUpBeforeClass(): void {
     parent::setUpBeforeClass();
+    self::$APP_ROOT = realpath(__DIR__.'/../');
     if (!defined('APP_ROOT')) {
-      define('APP_ROOT', realpath(__DIR__.'/../'));
+      define('APP_ROOT', self::$APP_ROOT);
     }
+    putenv("APP_LOG_DIR=/var/log/app/tests");
   }
 
   public static function faker() {

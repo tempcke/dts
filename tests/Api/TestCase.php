@@ -182,6 +182,15 @@ class TestCase extends \HomeCEU\Tests\TestCase {
   }
 
   protected function assertStatus(int $code, ResponseInterface $response): void {
-    Assert::assertEquals($code, $response->getStatusCode(), sprintf("Status %s does not match %s", $response->getStatusCode(), $code));
+    Assert::assertEquals(
+        $code,
+        $response->getStatusCode(),
+        sprintf(
+            "Status %s does not match %s\n Reason: %s",
+            $response->getStatusCode(),
+            $code,
+            $response->getReasonPhrase()
+        )
+    );
   }
 }

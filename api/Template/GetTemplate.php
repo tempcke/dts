@@ -13,6 +13,7 @@ use HomeCEU\DTS\UseCase\GetTemplateRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\NotFoundException;
 
 class GetTemplate {
   private $useCase;
@@ -40,7 +41,7 @@ class GetTemplate {
           ->getBody()
           ->write($template->body);
     } catch (RecordNotFoundException $e) {
-      return $response->withStatus(404);
+      throw new NotFoundException($request, $response);
     }
   }
 }

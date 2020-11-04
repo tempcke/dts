@@ -24,25 +24,21 @@ class ListDocTypes {
   }
 
   public function __invoke(Request $request, Response $response, $args) {
-    try {
-      $docTypes = $this->useCase->getDocTypes();
-      $responseData = [
-          'total' => count($docTypes),
-          'items' => array_map(function ($row) {
-            return [
-                'docType' => $row['docType'],
-                'templateCount' => $row['templateCount'],
-                'links' => [
-                    'templates' => "/template?filter[type]={$row['docType']}"
-                ]
-            ];
-          }, $docTypes)
-      ];
-      return $response
-          ->withStatus(200)
-          ->withJson($responseData);
-    } catch (Exception $e) {
-      return $response->withStatus(500, __CLASS__." failure");
-    }
+    $docTypes = $this->useCase->getDocTypes();
+    $responseData = [
+        'total' => count($docTypes),
+        'items' => array_map(function ($row) {
+          return [
+              'docType' => $row['docType'],
+              'templateCount' => $row['templateCount'],
+              'links' => [
+                  'templates' => "/template?filter[type]={$row['docType']}"
+              ]
+          ];
+        }, $docTypes)
+    ];
+    return $response
+        ->withStatus(200)
+        ->withJson($responseData);
   }
 }
