@@ -146,23 +146,29 @@ class TestCase extends \HomeCEU\Tests\TestCase {
     return $this->app->run(true);
   }
 
-  protected function get($uri): ResponseInterface {
-    if (strstr($uri, '?')) {
-      list($uri, $queryString) = explode('?', $uri);
-      parse_str($queryString, $queryParams);
-    }
-    else {
-      $queryParams = [];
-    }
-    $method = 'GET';
+  protected function get($uri, $headers=[]): ResponseInterface {
+    list($uri, $queryParams) = $this->separateUriAndQuery($uri);
     $env = Environment::mock([
-        'REQUEST_METHOD' => strtoupper($method),
+        'REQUEST_METHOD' => 'GET',
         'REQUEST_URI'    => $uri,
         'CONTENT_TYPE'   => 'application/json'
     ]);
-    $req = Request::createFromEnvironment($env)->withQueryParams($queryParams);
+    $req = Request::createFromEnvironment($env)
+        ->withQueryParams($queryParams);
+    foreach ($headers as $k=>$v) {
+      $req = $req->withHeader($k, $v);
+    }
     $this->app->getContainer()['request'] = $req;
     return $this->app->run(true);
+  }
+
+  private function separateUriAndQuery($uri) {
+    if (strstr($uri, '?')) {
+      list($uri, $queryString) = explode('?', $uri);
+      parse_str($queryString, $queryParams);
+      return [$uri, $queryParams];
+    }
+    return [$uri, []];
   }
 
   protected function head($uri): ResponseInterface {

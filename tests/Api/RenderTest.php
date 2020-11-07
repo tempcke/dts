@@ -40,6 +40,21 @@ class RenderTest extends TestCase {
     $this->assertContentType('application/pdf', $response);
   }
 
+  public function testAcceptHeader_pdf() {
+    $templateKey = __FUNCTION__;
+    $dataKey = __FUNCTION__;
+    $this->addDocDataFixture($dataKey);
+    $this->addTemplateFixture($templateKey);
+
+    $response = $this->get(
+        "/render/{$this->docType}/{$templateKey}/{$dataKey}",
+        ['Accept' => 'application/pdf,text/html;q=0.9,*/*;q=0.8']
+    );
+
+    $this->assertStatus(200, $response);
+    $this->assertContentType('application/pdf', $response);
+  }
+
   public function testRenderFromQuery_TemplateKey_DataKey() {
     $this->loadFixtures();
     $templateKey = 'T';

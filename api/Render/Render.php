@@ -13,6 +13,8 @@ use HomeCEU\DTS\Repository\TemplateRepository;
 use HomeCEU\DTS\UseCase\Render\InvalidRenderRequestException;
 use HomeCEU\DTS\UseCase\Render\Render as RenderUseCase;
 use HomeCEU\DTS\UseCase\Render\RenderRequest;
+use Negotiation\Accept;
+use Negotiation\Negotiator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\NotFoundException;
@@ -45,11 +47,7 @@ class Render {
 
   public function __invoke(Request $request, Response $response, $args) {
     try {
-      $params = array_merge(
-          $request->getQueryParams(),
-          $args
-      );
-      $renderRequest = RenderRequest::fromState($params);
+      $renderRequest = $this->renderRequestFromArgs($request, $args);
       $renderResponse = $this->useCase->renderDoc($renderRequest);
       return $response
           ->withHeader('Content-Type', $renderResponse->contentType)
@@ -62,12 +60,28 @@ class Render {
     }
   }
 
-  protected function renderRequestFromArgs($args, $format): RenderRequest {
-    return RenderRequest::fromState([
-        'docType' => $args['docType'],
-        'templateKey' => $args['templateKey'],
-        'dataKey' => $args['dataKey'],
-        'format' => empty($format) ? 'html' : $format
-    ]);
+  protected function renderRequestFromArgs(Request $request, $args): RenderRequest {
+    $params = array_merge($request->getQueryParams(), $args);
+
+    if (empty($params['format'])) {
+      $params['format'] = $this->determineFormat($request);
+    }
+
+    return RenderRequest::fromState($params);
+  }
+
+
+  protected function determineFormat(Request $request) {
+    $negotiator = new Negotiator();
+
+    $acceptHeader = $request->getHeader('Accept');
+    $priorities   = array('text/html', 'application/pdf', 'text/plain;q=0.5');
+
+    /** @var Accept $mediaType */
+    $mediaType = $negotiator->getBest($acceptHeader[0], $priorities);
+    switch ($mediaType->getValue()) {
+      case "application/pdf": return "pdf";
+    }
+    return "html";
   }
 }
