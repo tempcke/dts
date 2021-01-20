@@ -4,6 +4,7 @@
 namespace HomeCEU\DTS\Persistence;
 
 use HomeCEU\DTS\Persistence;
+use HomeCEU\DTS\Repository\RecordNotFoundException;
 use Ramsey\Uuid\Uuid;
 
 abstract class InMemory implements Persistence {
@@ -23,15 +24,13 @@ abstract class InMemory implements Persistence {
 
   public function retrieve($id, array $cols=['*']) {
     if (!$this->has($id))
-      throw new \OutOfBoundsException("No such user {$id}");
-
+      throw new RecordNotFoundException("No record found {$id}");
     return $this->data[$id];
   }
 
   public function delete($id) {
     if (!$this->has($id))
-      throw new \OutOfBoundsException("No such user {$id}");
-
+      throw new RecordNotFoundException("No record found {$id}");
     unset($this->data[$id]);
   }
 

@@ -14,17 +14,14 @@ class DocDataVersionListTest extends TestCase {
   /** @var DocDataPersistence */
   private $persistence;
 
-  /** @var DocDataRepository */
-  private $repo;
-
   /** @var DocDataVersionList */
   private $usecase;
 
   protected function setUp(): void {
     parent::setUp();
     $this->persistence = new DocDataPersistence();
-    $this->repo = new DocDataRepository($this->persistence);
-    $this->usecase = new DocDataVersionList($this->repo);
+    $repo = new DocDataRepository($this->persistence);
+    $this->usecase = new DocDataVersionList($repo);
   }
 
   public function testGetDocDataVersionsByDocTypeAndDataKey() {

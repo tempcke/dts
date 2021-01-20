@@ -5,7 +5,6 @@ namespace HomeCEU\DTS\Entity;
 
 
 use HomeCEU\DTS\AbstractEntity;
-use HomeCEU\DTS\EntityHelperTrait;
 
 class DocData extends AbstractEntity {
   public $dataId;
@@ -13,8 +12,6 @@ class DocData extends AbstractEntity {
   public $dataKey;
   public $createdAt;
   public $data;
-
-  use EntityHelperTrait;
 
   protected static function keys(): array {
     return [
@@ -24,11 +21,5 @@ class DocData extends AbstractEntity {
         'createdAt',
         'data'
     ];
-  }
-
-  public static function fromState(array $state): DocData {
-    $entity = new DocData;
-    self::buildFromState($entity, $state);
-    return $entity;
   }
 }

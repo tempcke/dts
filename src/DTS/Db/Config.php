@@ -24,7 +24,7 @@ class Config {
       $this->{$k} = $v;
   }
 
-  public static function fromEnv() {
+  public static function fromEnv(): self {
     return new self(
         [
             'driver' => getenv('DB_DRIVER') ?: self::DEFAULT_DRIVER,
@@ -37,7 +37,7 @@ class Config {
     );
   }
 
-  public static function sqlite($location = self::DEFAULT_SQLITE_LOCATION) {
+  public static function sqlite($location = self::DEFAULT_SQLITE_LOCATION): self {
     return new self(
         [
             'driver'   => 'sqlite',
@@ -46,7 +46,7 @@ class Config {
     );
   }
 
-  public static function mysql($host, $name, $user, $pass, $port = self::DEFAULT_MYSQL_PORT) {
+  public static function mysql($host, $name, $user, $pass, $port = self::DEFAULT_MYSQL_PORT): self {
     return new self(
         [
             'driver' => 'mysql',
@@ -59,7 +59,7 @@ class Config {
     );
   }
 
-  public function dsn() {
+  public function dsn(): string {
     if ($this->isSqlite()) {
       return $this->sqliteDsn();
     }
@@ -70,7 +70,7 @@ class Config {
     return substr($this->driver, 0, 6) == 'sqlite';
   }
 
-  private function sqliteDsn() {
+  private function sqliteDsn(): string {
     return sprintf(
         "%s:%s",
         $this->driver,
@@ -78,7 +78,7 @@ class Config {
     );
   }
 
-  private function otherDsn() {
+  private function otherDsn(): string {
     return sprintf(
         "%s:host=%s;port=%s;dbname=%s",
         $this->driver,

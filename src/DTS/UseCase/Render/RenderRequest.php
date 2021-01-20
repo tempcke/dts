@@ -1,11 +1,10 @@
 <?php
 
 
-namespace HomeCEU\DTS\UseCase;
+namespace HomeCEU\DTS\UseCase\Render;
 
 
 use HomeCEU\DTS\AbstractEntity;
-use HomeCEU\DTS\EntityHelperTrait;
 
 class RenderRequest extends AbstractEntity {
   public $docType;
@@ -13,8 +12,7 @@ class RenderRequest extends AbstractEntity {
   public $templateKey;
   public $dataId;
   public $dataKey;
-
-  use EntityHelperTrait;
+  public $format;
 
   protected static function keys(): array {
     return [
@@ -22,14 +20,14 @@ class RenderRequest extends AbstractEntity {
         'templateId',
         'templateKey',
         'dataId',
-        'dataKey'
+        'dataKey',
+        'format'
     ];
   }
 
-  public static function fromState(array $state): self {
-    $entity = new RenderRequest();
-    self::buildFromState($entity, $state);
-    return $entity;
+  public function withFormat($format): RenderRequest {
+    $this->format = $format;
+    return $this;
   }
 
   public function isValid() {

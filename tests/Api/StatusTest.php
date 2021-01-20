@@ -1,11 +1,8 @@
 <?php declare(strict_types=1);
 
 
-namespace Api;
+namespace HomeCEU\Tests\Api;
 
-
-use HomeCEU\Tests\Api\TestCase;
-use PHPUnit\Framework\Assert;
 
 class StatusTest extends TestCase {
   public function testStatusReturnsOk(): void {

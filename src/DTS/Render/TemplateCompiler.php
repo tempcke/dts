@@ -13,7 +13,10 @@ class TemplateCompiler {
   private $partials = [];
 
   public static function create(): self {
-    return new self();
+    $tc = new self();
+    $tc->addHelper(TemplateHelpers::equal());
+
+    return $tc;
   }
 
   public function setHelpers(array $helpers): self {
@@ -38,6 +41,10 @@ class TemplateCompiler {
 
   public function addPartial(Partial $partial): void {
     $this->partials[$partial->name] = $partial->template;
+  }
+
+  public function ignoreMissingPartials(): void {
+    $this->flags |= Flags::FLAG_ERROR_SKIPPARTIAL;
   }
 
   public function compile(string $template): string {

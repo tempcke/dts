@@ -1,27 +1,21 @@
 <?php
 namespace HomeCEU\Tests\DTS;
 
+use DateTime;
+use HomeCEU\DTS\Entity\Template;
 use HomeCEU\DTS\Persistence;
 
 class TestCase extends \HomeCEU\Tests\TestCase {
 
-  protected function fakeTemplateArray($docType = null, $key = null) {
-    return [
-        'templateId' => self::faker()->uuid,
-        'docType' => $docType ?: __FUNCTION__,
-        'templateKey' => $key ?: uniqid(),
-        'name' => self::faker()->monthName,
-        'author' => self::faker()->name,
-        'createdAt' => new \DateTime('yesterday'),
-        'body' => 'hi {{name}}'
-    ];
+  protected function fakeTemplate($docType = null, $key = null): Template {
+    return Template::fromState($this->fakeTemplateArray($docType, $key));
   }
 
   protected function fakeCompiledTemplate(array $template): array {
     return [
         'templateId' => $template['templateId'],
         'body' => 'a template body',
-        'createdAt' => new \DateTime('yesterday'),
+        'createdAt' => new DateTime('yesterday'),
     ];
   }
 
@@ -71,9 +65,20 @@ class TestCase extends \HomeCEU\Tests\TestCase {
       public function find(array $filter, array $cols = ['*']) {
         $this->spiedFindFilter = $filter;
         $this->spiedFindCols = $cols;
+        return [];
+      }
+
+      public function search(array $searchCols, string $searchSearchString, array $cols = ['*']) {
+        return [];
       }
 
       public function delete($id) {}
     };
+  }
+
+
+
+  protected function uniqueName($prefix, $substring) {
+    return implode('-',[$prefix, $substring, uniqid()]);
   }
 }

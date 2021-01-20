@@ -1,20 +1,23 @@
 <?php
 
 
-namespace HomeCEU\Tests\DTS\UseCase;
+namespace HomeCEU\Tests\DTS\UseCase\Render;
 
 
-use HomeCEU\DTS\UseCase\RenderRequest;
+use HomeCEU\DTS\UseCase\Render\RenderRequest;
 use HomeCEU\Tests\DTS\TestCase;
 use PHPUnit\Framework\Assert;
 
 class RenderRequestTest extends TestCase {
 
   public function testBuildFromArray() {
-    $state = ['templateId'=>'T', 'dataId'=>'D'];
+    $state = ['templateId'=>'T', 'dataId'=>'D', 'dataKey'=>'DK', 'docType'=>'DT', 'format' => 'PDF'];
     $object = RenderRequest::fromState($state);
     Assert::assertEquals($state['templateId'], $object->templateId);
     Assert::assertEquals($state['dataId'], $object->dataId);
+    Assert::assertEquals($state['dataKey'], $object->dataKey);
+    Assert::assertEquals($state['docType'], $object->docType);
+    Assert::assertEquals($state['format'], $object->format);
   }
 
   public function testValidCases() {
